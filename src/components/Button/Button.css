@@ -1,0 +1,13 @@
+.button__default {
+  border-radius: 3px;
+  border: none;
+  height: 32px;
+  background-color: #2BE080;
+  cursor: pointer;
+}
+
+.button__promo {
+  font-style: 12px;
+  font-weight: medium;
+  width: 76px;
+}
