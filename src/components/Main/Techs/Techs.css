@@ -1,0 +1,60 @@
+.techs {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 1280px;
+  background-color: #272727;
+  padding: 100px 70px;
+}
+
+.techs__subtitle {
+  margin: 90px 0 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__paragraph {
+  margin: 26px auto 0;
+  max-width: 460px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__items {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.tech__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  background-color: #303030;
+  width: 90px;
+  height: 60px;
+  border-radius: 10px;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__item:last-child {
+  margin-right: 0;
+}
