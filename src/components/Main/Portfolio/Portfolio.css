@@ -1,0 +1,20 @@
+.portfolio{
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px 70px 125px;
+  background: #202020;
+}
+
+.portfolio__title {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  color: #8B8B8B;
+}
+.portfolio-items {
+  margin: 50px 0 0; 
+  padding: 0;
+}

@@ -26,34 +26,3 @@
   font-weight: 400;
   letter-spacing: -0.04em;
 }
-
-.promo__menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  width: 100%;
-  height: 66px;
-
-  margin: 0;
-  padding: 0;
-
-  background-color: #272727;
-  list-style-type: none;
-}
-
-.promo__menu-items {
-  margin-right: 40px;
-}
-.promo__menu-items:last-child {
-  margin-right: 0;
-}
-.promo__menu-link {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 16px;
-  
-  display: flex;
-  color: #fff;
-}

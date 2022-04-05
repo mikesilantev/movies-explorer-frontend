@@ -1,0 +1,25 @@
+.nav-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1280px;
+  height: 66px;
+  margin: 0 auto;
+  background-color: #272727;
+}
+.nav-tab__items {
+  display: flex;
+}
+
+
+.nav-tab__item {
+  margin-right: 40px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+}
+.nav-tab__item:last-child {
+  margin-right: 0;
+}

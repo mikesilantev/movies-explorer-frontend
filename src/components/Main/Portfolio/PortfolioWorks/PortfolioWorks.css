@@ -1,0 +1,23 @@
+.portfolio-works__item {
+  margin-top: 20px;
+  list-style-type: none;
+  padding-bottom: 19px;
+  border-bottom: 1px solid #424242;
+}
+
+.portfolio-works__item:first-child {
+  margin-top: 0px;
+}
+.portfolio-works__item:last-child {
+  border-bottom: none;
+}
+
+.portfolio-works__link {
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 50px;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
