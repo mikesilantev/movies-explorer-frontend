@@ -2,6 +2,45 @@
   box-sizing: border-box;
   max-width: 1280px;
   margin: 0 auto;
+  padding: 0px 14px 70px;
+  background: #202020;
+}
+
+.portfolio__title {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #A0A0A0;
+}
+.portfolio-items {
+  margin: 40px 0 0; 
+  padding: 0;
+}
+
+@media screen and (min-width:768px) {
+  .portfolio{
+    padding: 0px 50px 90px;
+  }
+  
+  .portfolio__title {
+    font-size: 18px;
+  }
+  .portfolio-items {
+    margin: 50px 0 0; 
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .portfolio{
+    padding: 0px 70px 125px;
+  }
+}
+/* .portfolio{
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
   padding: 100px 70px 125px;
   background: #202020;
 }
@@ -17,4 +56,4 @@
 .portfolio-items {
   margin: 50px 0 0; 
   padding: 0;
-}
+} */

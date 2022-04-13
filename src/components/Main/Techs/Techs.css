@@ -1,6 +1,148 @@
 .techs {
   box-sizing: border-box;
   margin: 0 auto;
+  min-width: 320px;
+  max-width: 1280px;
+  background-color: #202020;
+  padding: 70px 18px;
+}
+
+.techs__title {
+  color: #fff;
+  margin: 0;
+  padding-bottom: 28px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #dadada;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+}
+
+.techs__subtitle {
+  margin: 60px 0 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__paragraph {
+  margin: 24px auto 0;
+  max-width: 292px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 178px;
+  margin: 50px auto 0;
+  padding: 0;
+  list-style-type: none;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.tech__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #303030;
+  width: 84px;
+  height: 57px;
+  border-radius: 10px;
+
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.tech__item:last-child {
+  margin-right: 0;
+}
+
+
+@media screen and (min-width: 768px) {
+  .techs {
+    padding: 90px 50px;
+    background-color: #272727;
+  }
+  
+  .techs__title {
+    padding-bottom: 23px;
+    font-size: 22px;
+    line-height: 26px;
+  }
+  
+  .techs__subtitle {
+    margin: 80px 0 0;
+    font-size: 50px;
+    line-height: 58px;
+  }
+  
+  .tech__paragraph {
+    margin-top: 22px;
+    max-width: 460px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  .tech__items {
+    max-width: 648px;
+    margin-top: 83px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .techs {
+    padding: 100px 70px;
+  }
+  
+  .techs__title {
+    line-height: 27px;
+  }
+  
+  .techs__subtitle {
+    margin: 90px 0 0;
+  }
+  
+  .tech__paragraph {
+    margin-top: 26px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .tech__items {
+    max-width: 690px;
+    margin-top: 100px;
+  } 
+}
+
+
+
+
+
+
+
+
+
+
+/* .techs {
+  box-sizing: border-box;
+  margin: 0 auto;
   max-width: 1280px;
   background-color: #272727;
   padding: 100px 70px;
@@ -57,4 +199,4 @@
 
 .tech__item:last-child {
   margin-right: 0;
-}
+} */

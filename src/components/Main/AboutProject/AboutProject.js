@@ -1,12 +1,10 @@
 import React from "react";
 import './AboutProject.css';
 
-import SectionTitle from "../SectionTitle/SectionTitle";
-
 export default function AboutProject() {
   return (
     <section className="about-project">
-      <SectionTitle text="О проекте"/>
+      <h2 className="about-project_title">О проекте</h2>
 
       <div className="about-project__articles">
 
@@ -15,6 +13,7 @@ export default function AboutProject() {
             Дипломный проект включал 5 этапов
           </h3>
           <p className="about-project__paragraph">
+            
             Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.
           </p>
         </article>

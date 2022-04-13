@@ -5,7 +5,7 @@ import SectionTitle from "../SectionTitle/SectionTitle";
 export default function Techs() {
   return (
     <section className="techs">
-      <SectionTitle text="Технологии" />
+      <h2 className="techs__title">Технологии</h2>
       <h3 className="techs__subtitle">7 технологий</h3>
       <p className="tech__paragraph">
       На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.

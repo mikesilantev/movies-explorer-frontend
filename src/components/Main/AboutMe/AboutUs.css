@@ -3,12 +3,31 @@
   margin: 0 auto;
   max-width: 1280px;
   background-color: #202020;
-  padding: 100px 70px;
+  padding: 70px 14px;
+}
+.about-us__photo-profile {
+  border-radius: 10px;
+  width: 292px;
+  height: 352px;
+  margin: 0 auto;
+}
+
+.about-us__title {
+  color: #fff;
+  margin: 0;
+  padding-bottom: 28px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #dadada;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
 }
 
 .about-us__paragraph-wrap {
   display: flex;
-  margin-top: 66px;
+  flex-direction: column;
+  margin-top: 40px;
 }
 .about-us__paragraph-content {
   width: 100%;
@@ -17,33 +36,32 @@
 .about-us__paragraph-title {
   margin: 0;
   font-weight: 400;
-  font-size: 50px;
-  line-height: 58px;
-
+  font-size: 30px;
+  line-height: 36px;
   letter-spacing: -0.04em;
   color: #fff;
 }
 
 .about-us__paragraph-job {
-  margin: 18px 0 0;
+  margin: 20px 0 0;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 11px;
+  line-height: 16px;
   color: #fff;
 }
 
 .about-us__paragraph-text {
-  margin: 26px 0 0;
-  max-width: 600px;
+  margin: 20px 0 0;
+  max-width: 292px;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 11px;
+  line-height: 16px;
   color: #fff;
 }
 
 
 .about-us__paragraph-items {
-  margin: 99px 0 0;
+  margin: 40px 0 0;
   list-style-type: none;
   display: flex;
   padding: 0;
@@ -54,15 +72,93 @@
   font-size: 14px;
   line-height: 17px;
   color: #fff;
-  margin-right: 20px;
+  margin-right: 26px;
   }
 
 .about-us__paragraph-item:last-child {
   margin-right: 0px;
 }
 
+@media screen and (min-width: 768px) {
+  .about-us {
+    padding: 90px 50px;
+  }
+
+  .about-us__title {
+    padding-bottom: 23px;
+    font-size: 22px;
+    line-height: 27px;
+  }
+  
+  .about-us__paragraph-wrap {
+    flex-direction: row-reverse;
+    margin-top: 66px;
+  }
+  .about-us__paragraph-content {
+    width: 100%;
+  }
+  
   .about-us__photo-profile {
-    border-radius: 10px;
+    width: 255px;
+    height: 307px;
+  }
+  .about-us__paragraph-title {
+    font-size: 40px;
+    line-height: 40px;
+  }
+  
+  .about-us__paragraph-job {
+    margin: 16px 0 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  .about-us__paragraph-text {
+    max-width: 364px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  
+  
+  .about-us__paragraph-items {
+    margin: 87px 0 0;
+  }
+  
+  .about-us__paragraph-item {
+    margin-right: 20px;
+    }
+}
+@media screen and (min-width: 1280px) {
+  .about-us {
+    padding: 110px 70px;
+  }
+
+  .about-us__paragraph-wrap {
+    margin-top: 66px;
+  }
+ 
+  .about-us__photo-profile {
     width: 270px;
     height: 327px;
   }
+  .about-us__paragraph-title {
+    font-size: 50px;
+    line-height: 58px;
+  }
+  
+  .about-us__paragraph-job {
+    margin: 18px 0 0;
+    font-size: 18px;
+    line-height: 20px;
+  }
+  
+  .about-us__paragraph-text {
+    max-width: 600px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .about-us__paragraph-items {
+    margin: 99px 0 0;
+  }
+}

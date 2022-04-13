@@ -6,8 +6,9 @@ import profilePhoto from "../../../images/profile-photo.png";
 export default function AboutUs() {
   return (
     <section className="about-us">
-      <SectionTitle text="Студент" />
+      <h2 className="about-us__title">Студент</h2>
       <article className="about-us__paragraph-wrap">
+      <img src={profilePhoto} alt="" className="about-us__photo-profile" />
         <article className="about-us__paragraph-content">
           <h3 className="about-us__paragraph-title">Виталий</h3>
           <p className="about-us__paragraph-job">
@@ -27,7 +28,7 @@ export default function AboutUs() {
           </ul>
         </article>
 
-        <img src={profilePhoto} alt="" className="about-us__photo-profile" />
+
       </article>
     </section>
   );

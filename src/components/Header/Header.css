@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  min-width: 320px;
+  /* min-width: 320px; */
   height: 74px;
   background: #073042;
 }
@@ -61,6 +61,8 @@
   right: 0;
   bottom: 0;
   width: 320px;
+
+  z-index: 9999;
 }
 
 .header__mobmenu-wrap {
@@ -100,6 +102,10 @@
   padding-bottom: 5px;
 }
 
+.header__auth {
+  background-color: #202020;
+}
+
 @media screen and (min-width: 768px) {
   .header__logo {
     margin-left: 30px;
@@ -137,6 +143,9 @@
   .header__link-items_auth {
     display: flex;
   }
+  .header__mobmenu{
+    display: none;
+  }
 }
 
 
@@ -153,6 +162,7 @@
   .header__link-items {
     margin-right: 70px;
   }
+
 }
 
 

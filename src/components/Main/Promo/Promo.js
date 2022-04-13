@@ -9,4 +9,4 @@ export default function Promo() {
       </h1>
     </section>
   );
-}
+};
