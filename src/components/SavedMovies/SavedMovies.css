@@ -5,9 +5,3 @@
   padding: 80px 0;
   box-sizing: border-box;
 }
-
-@media screen and (min-width: 1280px) {
-  .saved-movies {
-    padding: 0 70px;
-  }
-}

@@ -3,7 +3,7 @@ import './SavedMovies.css';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 
-export function SavedMovies(){
+export default function SavedMovies(){
   return (
     <section className="saved-movies">
     <SearchForm></SearchForm>

@@ -36,9 +36,9 @@ export default function Header({ isLogged }) {
   }
   return (
     <header className={'header ' + (loggedIn ? ('') : ('header__auth'))}>
-    {/* // {loggedIn ? ('header') : ('hui')}> */}
+      {/* // {loggedIn ? ('header') : ('hui')}> */}
 
-      <Link to="/" className="header__logo"  onClick={headerClick}>
+      <Link to="/" className="header__logo" onClick={headerClick}>
         <img src={logo} alt="Mesto" />
       </Link>
 
@@ -75,13 +75,11 @@ export default function Header({ isLogged }) {
                     Сохранённые фильмы
                   </Link>
                 </li>
-                <li className="header__link-item">
-                  <Button buttonText="Аккаунт" buttonStyle="button__header-account" />
-                </li>
               </ul>
+              <Button buttonText="Аккаунт" buttonStyle="button__header-account" />
 
-              { openMenu ? ( <div className="header__mobmenu">
-                <button className="button__default button__mobmenu-close" onClick={closeMobileMenu}/>
+              {openMenu ? (<div className="header__mobmenu">
+                <button className="button__default button__mobmenu-close" onClick={closeMobileMenu} />
                 <div className="header__mobmenu-wrap">
                   <p className="header__mobmenu-title">
                     Главная
@@ -94,8 +92,8 @@ export default function Header({ isLogged }) {
                 </div>
 
                 <Button buttonText="Аккаунт" buttonStyle="button__mobmenu-account" />
-              </div>) : ('')} 
-             
+              </div>) : ('')}
+
             </>
 
           )
