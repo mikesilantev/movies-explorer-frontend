@@ -6,7 +6,9 @@ import './MoviesCardList.css';
 export function MoviesCardList() {
   return (
     <section className="movies-list">
+      <div className="movie-list__card-wrap">
       {moviesCards.map((card) => (
+        
         <MovieCard
           key={card.id}
           cover={card.cover}
@@ -14,6 +16,7 @@ export function MoviesCardList() {
           duration={card.duration} />
       ))
       }
+      </div>
       <button className="movies-list__btn">Еще</button>
     </section>
   )

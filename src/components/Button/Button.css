@@ -14,30 +14,30 @@
   line-height: 16px;
   color: #000;
   background-color: #2BE080;
+
 }
 
-
+/* Pixel Perfect */
 .button__header-account {
-  width: 109px;
-  height: 36px;
-  border: 2px solid #F5F5F5;
-  border-radius: 20px;
+  display: none;
+  width: 100px;
+  height: 30px;
   background-image: url('../../images/auth-btn.svg');
   background-repeat: no-repeat;
-  background-position: 14px 8px;
+  background-position: 68px;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  padding-left: 30px;
-  color: #FFFFFF;
+  color: #fff;
+  text-align: left;
 }
 
 .button__header-menu {
-  margin-right: 14px;
   width: 44px;
   height: 44px;
   background-image: url('../../images/header-menu-btn.svg');
   background-repeat: no-repeat;
+  margin-right: 14px;
 }
 
 /* Pixel Perfect */
@@ -60,7 +60,6 @@
   align-items: center;
   width: 100px;
   height: 30px;
-  margin-bottom: 48px;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -81,17 +80,22 @@
   }
 
   .button__header-menu {
-    margin-right: 30px;
+    margin-right: 0px;
   }
   .button__mobmenu-account {
-    margin-bottom: 92px;
+    margin-bottom: 0px;
   }
 }
-
+@media screen and (min-width: 320px) {
+  
+}
 
 @media screen and (min-width: 769px) {
   .button__header-menu {
     display: none;
+  }
+  .button__header-account {
+    display: block;
   }
 }
 
@@ -101,11 +105,3 @@
   }
 }
 
-/*
-
-.button__promo {
-  font-style: 12px;
-  font-weight: medium;
-  width: 76px;
-}
-*/

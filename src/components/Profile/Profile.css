@@ -1,0 +1,151 @@
+.profile {
+  height: calc(100vh - 74px);
+  max-width: 1280px;
+  min-width: 320px;
+  background-color: #202020;
+  box-sizing: border-box;
+  padding: 70px 30px 40px;
+  margin: 0 auto;
+}
+
+.profile-form {
+  height: 100%;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-rows: 1fr min-content;
+  gap: 0px 0px;
+  justify-items: center;
+}
+
+.profile-form__wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-form__title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+  margin-bottom: 80px;
+}
+
+.profile-form__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 260px;
+  border-bottom: 1px solid #424242;
+  padding: 16px 0;
+}
+
+.profile-form__label:last-child {
+  border-bottom: none;
+}
+
+.profile-form__text {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+}
+
+.profile-form__input {
+  width: 200px;
+  background: #202020;
+  border: none;
+
+  text-align: right;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+}
+
+.profile-form__input:active,
+.profile-form__input:hover,
+.profile-form__input:focus {
+  outline: none;
+}
+
+.profile-form__items {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+
+.profile-form__btn-edit {
+  width: 120px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #fff;
+}
+
+.profile-form__btn-logout {
+  width: 120px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #EE3465;
+}
+
+@media screen and (min-width: 768px) {
+  .profile {
+    padding: 236px 0px 0px;
+
+  }
+  .profile-form {
+    grid-template-rows: min-content 1fr;
+  }
+  .profile-form__wrap {
+    margin-bottom: 210px;
+  }
+
+  .profile-form__title {
+    margin-bottom: 96px;
+  }
+
+  .profile-form__label {
+    width: 410px;
+  }
+
+  .profile-form__input {
+    width: 350px;
+  }
+
+  .profile-form__item {
+    margin-bottom: 16px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .profile {
+    padding: 74px 0px 70px;
+
+  }
+  .profile-form {
+    grid-template-rows: 1fr  min-content;
+  }
+  .profile-form__wrap {
+    margin-bottom: 0;
+  }
+
+  .profile-form__title {
+    margin-bottom: 123px;
+  }
+
+  .profile-form__item {
+    margin-bottom: 16px;
+  }
+  .profile-form__btn-edit {
+    font-size: 13px;
+    line-height: 16px;
+  }
+  
+  .profile-form__btn-logout {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}

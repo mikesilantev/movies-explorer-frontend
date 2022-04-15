@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Button from "../Button/Button";
 import logo from "../../images/logo.svg";
 import "./Header.css";
@@ -38,17 +38,17 @@ export default function Header({ isLogged }) {
     <header className={'header ' + (loggedIn ? ('') : ('header__auth'))}>
       {/* // {loggedIn ? ('header') : ('hui')}> */}
 
-      <Link to="/" className="header__logo" onClick={headerClick}>
+      <NavLink to="/" className="header__logo" onClick={headerClick}>
         <img src={logo} alt="Mesto" />
-      </Link>
+      </NavLink>
 
       {
         loggedIn ? (
           <ul className="header__link-items">
             <li className="header__link-item">
-              <Link to="/signup" className="header__link">
+              <NavLink to="/signup" className="header__link">
                 Регистрация
-              </Link>
+              </NavLink>
             </li>
             <li className="header__link-item">
               <Button buttonText="Войти" buttonStyle="button__header" />
@@ -66,32 +66,40 @@ export default function Header({ isLogged }) {
               />
               <ul className="header__link-items header__link-items_auth">
                 <li className="header__link-item">
-                  <Link to="/movies" className="header__link">
+                  <NavLink
+                    to="/movies"
+                    className={({ isActive }) => isActive ? "header__link header__link_active" : "header__link"} >
                     Фильмы
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="header__link-item">
-                  <Link to="/saved-movies" className="header__link">
+                  <NavLink to="/saved-movies"
+                    className={({ isActive }) => isActive ? "header__link header__link_active" : "header__link"} >
                     Сохранённые фильмы
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
-              <Button buttonText="Аккаунт" buttonStyle="button__header-account" />
+              <NavLink to="/profile" className="header__link-button">
+                <Button buttonText="Аккаунт" buttonStyle="button__header-account" />
+              </NavLink>
+
 
               {openMenu ? (<div className="header__mobmenu">
                 <button className="button__default button__mobmenu-close" onClick={closeMobileMenu} />
                 <div className="header__mobmenu-wrap">
-                  <p className="header__mobmenu-title">
-                    Главная
-                  </p>
                   <nav className="header__mobmenu-items">
-                    <Link to="/" className="header__mobmenu-link">Главная</Link>
-                    <Link to="/movies" className="header__mobmenu-link">Фильмы</Link>
-                    <Link to="/saved-movies" className="header__mobmenu-link">Сохранённые фильмы</Link>
+                    <NavLink to="/"
+                      className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >
+
+                      Главная</NavLink>
+                    <NavLink to="/movies" className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >Фильмы</NavLink>
+                    <NavLink to="/saved-movies" className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >Сохранённые фильмы</NavLink>
                   </nav>
                 </div>
+                <NavLink to="/profile" className="header__link-button_mobile">
+                  <Button buttonText="Аккаунт" buttonStyle="button__mobmenu-account" />
+                </NavLink>
 
-                <Button buttonText="Аккаунт" buttonStyle="button__mobmenu-account" />
               </div>) : ('')}
 
             </>
