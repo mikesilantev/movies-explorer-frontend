@@ -75,6 +75,9 @@
   list-style-type: none;
 }
 
+.profile-form__link {
+  height: 45px;
+}
 
 .profile-form__btn-edit {
   width: 120px;
@@ -92,14 +95,40 @@
   color: #EE3465;
 }
 
+.profile-form__btn-save {
+  width: 260px;
+  height: 45px;
+  background-color: #3456f3;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #fff;
+}
+
+.profile-form__btn-save_disabled {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.profile-form__error {
+  font-size: 11px;
+  line-height: 13px;
+  color: #FF004C;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+}
+
 @media screen and (min-width: 768px) {
   .profile {
     padding: 236px 0px 0px;
 
   }
+
   .profile-form {
     grid-template-rows: min-content 1fr;
   }
+
   .profile-form__wrap {
     margin-bottom: 210px;
   }
@@ -119,15 +148,24 @@
   .profile-form__item {
     margin-bottom: 16px;
   }
+
+  .profile-form__btn-save {
+    width: 396px;
+    font-size: 14px;
+    line-height: 17px;
+  }
 }
+
 @media screen and (min-width: 1280px) {
   .profile {
     padding: 74px 0px 70px;
 
   }
+
   .profile-form {
-    grid-template-rows: 1fr  min-content;
+    grid-template-rows: 1fr min-content;
   }
+
   .profile-form__wrap {
     margin-bottom: 0;
   }
@@ -139,13 +177,15 @@
   .profile-form__item {
     margin-bottom: 16px;
   }
+
   .profile-form__btn-edit {
     font-size: 13px;
     line-height: 16px;
   }
-  
+
   .profile-form__btn-logout {
     font-size: 13px;
     line-height: 16px;
   }
+
 }

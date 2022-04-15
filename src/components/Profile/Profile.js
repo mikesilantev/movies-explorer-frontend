@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import './Profile.css';
 
 export function Profile() {
-  const [ editProfile, setEditProfile ] = useState();
+  const [editProfile, setEditProfile] = useState(false);
+
   return (
     <>
       <Header />
@@ -25,25 +26,43 @@ export function Profile() {
             </label>
           </div>
 
+
           <ul className="profile-form__items">
+            {
+              editProfile ?
+                (<>
+                  <li className="profile-form__item">
+                    <Link to="" className="profile-form__link">
+                      <Button
+                        buttonText='Редактировать'
+                        buttonStyle='profile-form__btn-edit'
+                      />
+                    </Link>
 
-            <li className="profile-form__item">
-              <Link to="" className="profile-form__link">
-                <Button
-                  buttonText='Редактировать'
-                  buttonStyle='profile-form__btn-edit'
-                />
-              </Link>
+                  </li>
+                  <li className="profile-form__item">
+                    <Link to="" className="profile-form__link">
+                      <Button
+                        buttonText='Выйти из аккаунта'
+                        buttonStyle='profile-form__btn-logout'
+                      /></Link>
+                  </li>
+                </>
+                ) : (
+                  <li className="profile-form__item">
+                    <span className="profile-form__error">При обновлении профиля произошла ошибка.</span>
+                    <Link to="" className="profile-form__link">
+                      <Button
+                        buttonText='Сохранить'
+                        buttonStyle='profile-form__btn-save profile-form__btn-save_disabled'
+                      /></Link>
+                  </li>
+              )
+            }
 
-            </li>
-            <li className="profile-form__item">
-              <Link to="" className="profile-form__link">
-                <Button
-                  buttonText='Выйти из аккаунта'
-                  buttonStyle='profile-form__btn-logout'
-                /></Link>
-            </li>
           </ul>
+
+
         </form>
       </section>
     </>

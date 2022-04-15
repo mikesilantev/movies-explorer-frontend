@@ -90,7 +90,6 @@ export default function Header({ isLogged }) {
                   <nav className="header__mobmenu-items">
                     <NavLink to="/"
                       className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >
-
                       Главная</NavLink>
                     <NavLink to="/movies" className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >Фильмы</NavLink>
                     <NavLink to="/saved-movies" className={({ isActive }) => isActive ? "header__mobmenu-link header__mobmenu-link_active" : "header__mobmenu-link"} >Сохранённые фильмы</NavLink>

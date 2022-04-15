@@ -106,13 +106,15 @@
   padding-bottom: 5px;
 }
 
+.header__mobmenu-link_active {
+  padding-bottom: 5px;
+  border-bottom: 2px solid #fff;
+}
+
 .header__auth {
   background-color: #202020;
 }
 
-.header__mobmenu-link_active {
-  text-decoration: underline;
-}
 .header__link-button_mobile {
   margin-bottom: 48px;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Routes, Route } from "react-router-dom";
+import {Routes, Route, } from "react-router-dom";
 
 import './App.css'
 import { AppLayout } from "../AppLayout/AppLayout";
@@ -11,7 +11,7 @@ export default function App() {
 const [auth, setAuth] = useState(false);
   return (       
     <Routes>
-       <Route path="/*" element={<AppLayout auth={auth}/>} />
+       <Route path='/*' element={<AppLayout auth={auth}/>} />
        <Route path="/signup" element={<Register/>} />
        <Route path="/signin" element={<Login/>} />
        <Route path="/profile" element={<Profile/>} />
