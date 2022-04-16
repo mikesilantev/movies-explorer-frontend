@@ -22,6 +22,10 @@
   color: #fff;
   margin: 50px auto 0px;
   display: block;
+  cursor: pointer;
+}
+.movies-list__btn:hover{
+ opacity: .8;
 }
 
 @media screen and (min-width: 768px) {

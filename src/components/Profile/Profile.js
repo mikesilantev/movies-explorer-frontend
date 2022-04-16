@@ -1,5 +1,4 @@
 import react, { useState } from "react";
-import Header from "../Header/Header";
 import Button from '../Button/Button';
 import { Link } from "react-router-dom";
 import './Profile.css';
@@ -8,8 +7,6 @@ export function Profile() {
   const [editProfile, setEditProfile] = useState(false);
 
   return (
-    <>
-      <Header />
       <section className="profile">
         <form className="profile-form">
           <div className="profile-form__wrap">
@@ -65,6 +62,5 @@ export function Profile() {
 
         </form>
       </section>
-    </>
   )
 }

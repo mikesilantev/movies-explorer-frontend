@@ -7,6 +7,9 @@
   border: none;
   background: none;
 }
+.button__default:hover {
+  opacity: .8;
+}
 
 .button__header {
   font-weight: 500;
