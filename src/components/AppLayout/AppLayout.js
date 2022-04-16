@@ -7,6 +7,7 @@ import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '..//SavedMovies/SavedMovies';
 import { PageNotFound } from "../PageNotFound/PageNotFound";
+import { Profile } from "../Profile/Profile";
 // import Profile from '../Profile/Profile';
 
 import Footer from "../Footer/Footer";
@@ -21,7 +22,7 @@ export function AppLayout(){
         <Route path='/' element={<Main />}></Route>
         <Route path='/movies' element={<Movies/>}></Route>
         <Route path='/saved-movies' element={<SavedMovies/>}></Route>
-        {/* <Route path='/profile' element={<Profile/>}></Route> */}
+        <Route path='/profile' element={<Profile/>}></Route>
       </Routes>
     <Footer />
 

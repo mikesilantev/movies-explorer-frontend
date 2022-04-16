@@ -11,10 +11,10 @@ export default function App() {
 const [auth, setAuth] = useState(false);
   return (       
     <Routes>
-       <Route path='/*' element={<AppLayout auth={auth}/>} />
+       <Route exact path='/*' element={<AppLayout auth={auth}/>} />
        <Route path="/signup" element={<Register/>} />
        <Route path="/signin" element={<Login/>} />
-       <Route path="/profile" element={<Profile/>} />
+       {/* <Route path="/profile" element={<Profile/>} /> */}
        <Route path="*" element={<PageNotFound/>} />
     </Routes>
   )
