@@ -4,7 +4,7 @@ import SectionTitle from "../SectionTitle/SectionTitle";
 
 export default function Techs() {
   return (
-    <section className="techs">
+    <section className="techs" id='techs-section'>
       <h2 className="techs__title">Технологии</h2>
       <h3 className="techs__subtitle">7 технологий</h3>
       <p className="tech__paragraph">

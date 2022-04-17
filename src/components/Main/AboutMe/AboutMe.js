@@ -1,34 +1,32 @@
 import React from "react";
-import "./AboutUs.css";
-import SectionTitle from "../SectionTitle/SectionTitle";
+import "./AboutMe.css";
+
 import profilePhoto from "../../../images/profile-photo.png";
 
-export default function AboutUs() {
+export default function AboutMe() {
   return (
-    <section className="about-us">
-      <h2 className="about-us__title">Студент</h2>
-      <article className="about-us__paragraph-wrap">
-      <img src={profilePhoto} alt="" className="about-us__photo-profile" />
-        <article className="about-us__paragraph-content">
-          <h3 className="about-us__paragraph-title">Виталий</h3>
-          <p className="about-us__paragraph-job">
+    <section className="about-me" id="about-me-section">
+      <h2 className="about-me__title">Студент</h2>
+      <article className="about-me__paragraph-wrap">
+        <img src={profilePhoto} alt="" className="about-me__photo-profile" />
+        <article className="about-me__paragraph-content">
+          <h3 className="about-me__paragraph-title">Виталий</h3>
+          <p className="about-me__paragraph-job">
             Фронтенд-разработчик, 30 лет
           </p>
-          <p className="about-us__paragraph-text">
+          <p className="about-me__paragraph-text">
             Я родился и живу в Саратове, закончил факультет экономики СГУ. У
             меня есть жена и дочь. Я люблю слушать музыку, а ещё увлекаюсь
             бегом. Недавно начал кодить. С 2015 года работал в компании «СКБ
             Контур». После того, как прошёл курс по веб-разработке, начал
             заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <ul className="about-us__paragraph-items">
+          <ul className="about-me__paragraph-items">
             {/* Вставить ссылки */}
-            <li className="about-us__paragraph-item">Fakebook</li>
-            <li className="about-us__paragraph-item">Github</li>
+            <li className="about-me__paragraph-item"><a href='https://facebook.com' className="aboute-me__link">Fakebook</a></li>
+            <li className="about-me__paragraph-item"><a href='https://github.com' className="aboute-me__link">Github</a></li>
           </ul>
         </article>
-
-
       </article>
     </section>
   );

@@ -81,6 +81,8 @@
     height: 34px;
     padding: 0;
     box-sizing: border-box;
+    padding-right: 19px;
+    border-right: 1px solid #505050;
   }
 
   .search-form__input {

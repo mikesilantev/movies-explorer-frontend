@@ -9,9 +9,9 @@ export default function Portfolio(){
     <section className="portfolio">
       <h3 className="portfolio__title">Портфолио</h3>
       <ul className="portfolio-items">
-        <PortfolioWorks text="Статичный сайт" link=""/>
-        <PortfolioWorks text="Адаптивный сайт" link=""/>
-        <PortfolioWorks text="Одностраничное приложение" link=""/>
+        <PortfolioWorks text="Статичный сайт" link="/"/>
+        <PortfolioWorks text="Адаптивный сайт" link="/"/>
+        <PortfolioWorks text="Одностраничное приложение" link="/"/>
       </ul>
     </section>
   )

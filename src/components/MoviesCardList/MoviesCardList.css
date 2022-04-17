@@ -28,7 +28,7 @@
  opacity: .8;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 620px) {
   .movies-list {
     max-width: calc(100% - 2*30px);
     padding-top: 80px;

@@ -43,37 +43,6 @@
   margin-right: 14px;
 }
 
-/* Pixel Perfect */
-.button__mobmenu-close {
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  right: 11px;
-  top: 11px;
-
-  background-image: url('../../images/exit-mobile-menu-btn.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-
-}
-
-
-.button__mobmenu-account {
-  display: flex;
-  align-items: center;
-  width: 100px;
-  height: 30px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-  color: #fff;
-
-  background-image: url('../../images/account_mob-menu.svg');
-  background-position: 70px;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
 @media screen and (min-width: 768px) {
   .button__header {
     width: 76px;
