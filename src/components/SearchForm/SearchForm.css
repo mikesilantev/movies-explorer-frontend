@@ -30,10 +30,12 @@
   line-height: 20px;
   color: #8B8B8B;
   border: none;
+
 }
 
 .search-form__input:focus {
-  outline: none;
+  outline: 1px solid #4285f4;
+  border-radius: 8px;
   background-color: rgb(47 47 47);
 }
 

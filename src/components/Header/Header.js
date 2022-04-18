@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import Button from "../Button/Button";
 import logo from "../../images/logo.svg";
@@ -8,6 +8,21 @@ import "./Header.css";
 // Заменить компонент Button на button
 export default function Header({ isLogged }) {
 
+  let { pathname } = useLocation()
+
+
+console.log(pathname)
+
+  function saveCurrentPatch(){
+    if (pathname !== '/'){
+      console.log('Не равно /')
+    } else {
+
+    }
+  }
+
+  saveCurrentPatch();
+ 
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [openMenu, setOpenMenu] = useState(false);
@@ -26,12 +41,13 @@ export default function Header({ isLogged }) {
   //   }
   // }
 
+  
+  // .header__no-index 
   return (
-    <header className={'header ' + (loggedIn ? ('') : ('header__auth'))}>
+    // <header className={'header'}>
+    <header className={ (pathname === '/') ? ('header') : ('header header_dark')}>
 
-      <NavLink to="/" className="header__logo"
-      //  onClick={}
-      >
+      <NavLink to="/" className="header__logo">
         <img src={logo} alt="Mesto" />
       </NavLink>
 

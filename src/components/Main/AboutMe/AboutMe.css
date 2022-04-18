@@ -54,7 +54,7 @@
 
 .about-me__paragraph-text {
   margin: 20px 0 0;
-  max-width: 292px;
+  min-width: 292px;
   font-weight: 400;
   font-size: 11px;
   line-height: 16px;

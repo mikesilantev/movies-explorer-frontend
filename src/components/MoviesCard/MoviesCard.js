@@ -2,7 +2,7 @@ import react, { useState } from 'react';
 
 import './MovieCard.css';
 
-export function MovieCard(props) {
+export function MovieCard(props, {savedMovies}) {
   const [savedMovie, setSavedMovie] = useState(false);
 
   function saveMovieClick(){
@@ -22,9 +22,12 @@ export function MovieCard(props) {
       <img src={props.cover} alt={props.title} className="movie-card__cover" />
 
       {
+
       !savedMovie ? 
       (
-        <button className="movie-card__save-btn" onClick={saveMovieClick}>Сохранить</button>
+        <button 
+          className="movie-card__save-btn movie-card__remove-btn" 
+          onClick={saveMovieClick}></button>
       ) :
         (
           <button className="movie-card__save-btn movie-card__saved" onClick={delSavedMovieClick}></button>

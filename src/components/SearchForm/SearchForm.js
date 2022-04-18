@@ -7,7 +7,7 @@ export function SearchForm() {
     <form className="search-form">
       <span className="search-form__search-icon"></span>
       <label htmlFor="search-input" className="search-form__input-wrap">
-        <input type="text" name="" id="search-input" className="search-form__input" placeholder="Фильм"/>
+        <input type="text" name="" id="search-input" className="search-form__input" placeholder="Фильм" required/>
         <button type="submit" className="search-form__button"></button>
       </label>
       <FilterCheckbox></FilterCheckbox>

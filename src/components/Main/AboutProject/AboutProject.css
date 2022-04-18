@@ -80,6 +80,8 @@
   color: #fff;
 }
 
+
+
 @media screen and (min-width: 768px) {
   .about-project {
     padding: 90px 50px;
@@ -128,6 +130,25 @@
   }
 }
 
+@media screen and (min-width: 818px) {
+
+  .about-project__articles {
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 70px;
+  }
+  .about-project__article {
+    max-width: 550px;
+  }
+  
+  .about-project__paragraph {
+    max-width: 550px;
+    margin: 26px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
 @media screen and (min-width: 1280px) {
   .about-project {
     padding: 110px 70px;
@@ -140,20 +161,13 @@
 }
   
   .about-project__articles {
-    display: flex;
+    /* display: flex; */
+    display: grid;
     margin-top: 70px;
   }
   
-  .about-project__article {
-    max-width: 550px;
-  }
-  
-  .about-project__paragraph {
-    width: 550px;
-    margin: 26px 0 0;
-    font-size: 14px;
-    line-height: 20px;
-  }
+
+
   
   .about-project__progress-bar {
     margin-top: 110px;
