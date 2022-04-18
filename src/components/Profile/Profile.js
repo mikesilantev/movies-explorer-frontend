@@ -3,8 +3,48 @@ import Button from '../Button/Button';
 import { Link } from "react-router-dom";
 import './Profile.css';
 
+// При переходе в профиль
+// Состояние - 
+// Изменение состояния при редактировании
+
+// Копка Сохранить
+// Активна сначала
+// Если ошибка не Активна
+
+
+
+
+
 export function Profile() {
   const [editProfile, setEditProfile] = useState(false);
+
+   //Состояния полей
+   const [ email, setEmail] = useState('')
+   const [ name, setName] = useState('')
+ 
+   // Изменение состояния инпута Email
+   function handleChangeEmail(evt){
+     setEmail(evt.target.value);
+     console.log(email);
+   }
+ 
+   // Изменение состояния инпута name
+   function handleChangeName(evt){
+     setName(evt.target.value);
+     console.log(name);
+   }
+ 
+   // Отправка данных в форме
+   function handleSubmitForm(evt){
+     evt.preventDefault();
+     // handleSignup({
+     //   email: email,
+     //   name: name,
+     //   password: password, 
+     // })
+     console.log('Клик')
+   }
+
 
   return (
       <section className="profile">
@@ -14,12 +54,29 @@ export function Profile() {
 
             <label className="profile-form__label">
               <span className="profile-form__text">Имя</span>
-              <input className="profile-form__input" disabled defaultValue="Виталий"></input>
+
+              {/* input 'name' */}
+              <input 
+                type='text'
+                className="profile-form__input"  defaultValue="Виталий"
+
+                onChange={handleChangeName}
+              />
+              {/* input 'name' */}
+
             </label>
 
             <label className="profile-form__label">
               <span className="profile-form__text">Email</span>
-              <input className="profile-form__input" disabled defaultValue="pochta@yandex.ru"></input>
+
+              {/* input 'email' */}
+              <input 
+                type='email'
+                className="profile-form__input"  defaultValue="pochta@yandex.ru"
+                onChange={handleChangeEmail}
+              />
+              {/* input 'email' */}
+
             </label>
           </div>
 
