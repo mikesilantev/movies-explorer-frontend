@@ -1,0 +1,282 @@
+
+.about-project {
+  min-width: 320px;
+  max-width: 1280px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 70px 18px;
+  background-color: #202020;
+  color: #fff;
+}
+
+.about-project_title {
+    color: #fff;
+    margin: 0;
+    padding-bottom: 28px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #dadada;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.04em;
+}
+
+.about-project__articles {
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+}
+
+.about-project__article {
+  max-width: 550px;
+  margin-top: 56px;
+}
+.about-project__article:first-child {
+  max-width: 550px;
+  margin-top: 0px;
+}
+
+.about-project__subtitle {
+  font-weight: 400;
+  margin: 0;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.about-project__paragraph {
+  margin: 16px 0 0;
+  font-style: normal;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.about-project__progress-bar {
+  margin-top: 60px;
+  display: grid;
+  grid-template: 35px 35px / 100px auto;
+}
+
+.about-project__bar-item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 14px;
+  color: #8B8B8B;
+}
+
+.about-project__bar-item_green {
+  background-color: #3DDC84;
+  color: #000;
+}
+
+.about-project__bar-item_gray {
+  background: #303030;
+  color: #fff;
+}
+
+
+
+@media screen and (min-width: 768px) {
+  .about-project {
+    padding: 90px 50px;
+  }
+  
+  .about-project_title {
+      padding-bottom: 23px;
+      font-size: 22px;
+      line-height: 27px;
+  }
+  
+  .about-project__articles {
+    flex-direction: row;
+    margin-top: 70px;
+  }
+  
+  .about-project__article {
+    max-width: 319px;
+    margin-top: 0px;
+    margin-right: 30px;
+  }
+  .about-project__article:last-child {
+    margin-right: 0px;
+  }
+  
+  .about-project__subtitle {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  
+  .about-project__paragraph {
+    width: 300px;
+    margin: 22px 0 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+  
+  .about-project__progress-bar {
+    margin-top: 93px;
+    grid-template: 36px 36px / 140px auto;
+  }
+  
+  .about-project__bar-item {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media screen and (min-width: 818px) {
+
+  .about-project__articles {
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 70px;
+  }
+  .about-project__article {
+    max-width: 550px;
+  }
+  
+  .about-project__paragraph {
+    max-width: 550px;
+    margin: 26px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .about-project {
+    padding: 110px 70px;
+  }
+  
+.about-project_title {
+    padding-bottom: 23px;
+    font-size: 22px;
+    line-height: 27px;
+}
+  
+  .about-project__articles {
+    /* display: flex; */
+    display: grid;
+    margin-top: 70px;
+  }
+  
+
+
+  
+  .about-project__progress-bar {
+    margin-top: 110px;
+    grid-template: 36px 36px / 228px auto;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .about-project__article:last-child {
+  margin-left: 40px;
+} */
+
+
+
+
+
+/* .about-project {
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 110px 70px;
+  background-color: #202020;
+  color: #fff;
+}
+
+
+
+.about-project__articles {
+  display: flex;
+  margin-top: 70px;
+}
+
+.about-project__article {
+  max-width: 550px;
+}
+
+.about-project__article:last-child {
+  margin-left: 40px;
+}
+
+.about-project__subtitle {
+  font-weight: 400;
+  margin: 0;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.about-project__paragraph {
+  margin: 26px 0 0;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  }
+
+.about-project__progress-bar {
+  margin-top: 110px;
+  display: grid;
+  grid-template: 36px 36px / 228px auto;
+
+}
+
+.about-project__bar-item {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+
+  color: #8B8B8B;
+}
+
+.about-project__bar-item_green {
+  background-color: #3DDC84;
+  color: #000;
+}
+
+.about-project__bar-item_gray {
+  background: #303030;
+  color: #fff;
+} */

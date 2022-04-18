@@ -1,0 +1,18 @@
+.login {
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: #202020;
+  padding: 56px 0 30px;
+  margin: 0 auto;  
+}
+
+@media screen and (min-width:768px) {
+  .login {
+    padding: 232px 0;
+  }
+@media screen and (min-width: 1280px ) {
+  .login {
+    padding: 70px 0;
+  }
+}
+}

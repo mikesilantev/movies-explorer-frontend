@@ -1,0 +1,94 @@
+.mobmenu {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #202020;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  transform: translate(100%);
+  transition: all .3s ease;
+}
+.mobmenu_active {
+  transform: translate(0);
+  transition: all .3s ease;
+}
+.mobmenu__items {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  list-style-type: none;
+  margin-top: 144px;
+}
+.mobmenu__link {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #fff;
+  text-decoration: none;
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+}
+.mobmenu__link:hover {
+  border-bottom: 2px solid #fff;
+  padding-bottom: 5px;
+}
+.mobmenu__link_active {
+  padding-bottom: 5px;
+  border-bottom: 2px solid #fff;
+}
+.mobmenu__btn-close {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 11px;
+  top: 11px;
+  z-index: 1;
+
+  background-image: url('../../images/exit-mobile-menu-btn.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.mobmenu__btn-account {
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+  padding-right: 43px;
+  background-image: url('../../images/account_mob-menu.svg');
+  background-position: 70px;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+}
+
+.mobmenu__link-account {
+  margin-bottom: 48px;
+  text-decoration: none;
+}
+
+.mobmenu__overlay {
+  position: fixed;
+  background-color: #000000c3;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 1s;
+}
+.mobmenu__overlay_active {
+  visibility: visible;
+  opacity: 1;
+  transition: all 1s;
+  z-index: 1;
+}
+

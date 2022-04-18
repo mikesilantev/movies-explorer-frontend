@@ -1,0 +1,79 @@
+.button__default {
+  padding: 0;
+  cursor: pointer;
+  width: 54px;
+  height: 26px;
+  border-radius: 3px;
+  border: none;
+  background: none;
+}
+.button__default:hover {
+  opacity: .8;
+}
+
+.button__header {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 16px;
+  color: #000;
+  background-color: #2BE080;
+
+}
+
+/* Pixel Perfect */
+.button__header-account {
+  display: none;
+  width: 100px;
+  height: 30px;
+  background-image: url('../../images/auth-btn.svg');
+  background-repeat: no-repeat;
+  background-position: 68px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+  text-align: left;
+}
+
+.button__header-menu {
+  width: 44px;
+  height: 44px;
+  background-image: url('../../images/header-menu-btn.svg');
+  background-repeat: no-repeat;
+  margin-right: 14px;
+}
+
+@media screen and (min-width: 768px) {
+  .button__header {
+    width: 76px;
+    height: 32px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .button__header-menu {
+    margin-right: 0px;
+  }
+  .button__mobmenu-account {
+    margin-bottom: 0px;
+  }
+}
+@media screen and (min-width: 320px) {
+  
+}
+
+@media screen and (min-width: 769px) {
+  .button__header-menu {
+    display: none;
+  }
+  .button__header-account {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .header {
+    max-width: 1280px;
+  }
+}
+

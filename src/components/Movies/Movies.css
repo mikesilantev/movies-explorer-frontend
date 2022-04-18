@@ -1,0 +1,8 @@
+.movies {
+  min-width: 320px;
+  max-width: 1280px;
+  margin: 0 auto;
+  background-color: #202020;
+  padding: 80px 0;
+  box-sizing: border-box;
+}
