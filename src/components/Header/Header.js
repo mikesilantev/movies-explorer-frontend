@@ -9,17 +9,14 @@ import "./Header.css";
 export default function Header({ isLogged }) {
 
   let { pathname } = useLocation()
-
-
-console.log(pathname)
-
   function saveCurrentPatch(){
     if (pathname !== '/'){
       console.log('Не равно /')
     } else {
-
     }
   }
+
+
 
   saveCurrentPatch();
  
@@ -52,7 +49,7 @@ console.log(pathname)
       </NavLink>
 
       {
-        loggedIn ? (
+        !loggedIn ? (
           <ul className="header__link-items">
             <li className="header__link-item">
               <NavLink to="/signup" className="header__link">

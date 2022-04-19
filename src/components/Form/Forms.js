@@ -10,10 +10,11 @@ export function Form({
   signMessage,
   signLinkMessage,
   signLink,
-  children
+  children,
+  onSubmit
 }) {
   return (
-    <form className='form'>
+    <form className='form' onSubmit={onSubmit}>
 
       <div className='form__wrap'>
         <Logo place='__form' />

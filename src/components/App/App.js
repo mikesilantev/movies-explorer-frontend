@@ -6,6 +6,8 @@ import { Routes, Route, } from "react-router-dom";
 
 import './App.css'
 
+import mainApi from "../../utils/MainApi";
+
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -13,12 +15,17 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { Profile } from "../Profile/Profile";
-
 import { PageNotFound } from "../PageNotFound/PageNotFound";
+
 export default function App() {
-
   const [auth, setAuth] = useState(false);
-
+  // Регистрация пользователя
+  
+  function handleSignup(data){
+    mainApi.testRegister({data})
+    // mainApi.testRegister(data)
+  }
+  
   return (
     <Routes>
       <Route path='/' element={<AppLayout auth={auth} />}>
@@ -29,7 +36,7 @@ export default function App() {
       <Route path='/profile' element={<ProfileLayout />}>
         <Route index element={<Profile />} />
       </Route>
-      <Route path="/signup" element={<Register />} />
+      <Route path="/signup" element={<Register handleSignup={handleSignup}/>} />
       <Route path="/signin" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

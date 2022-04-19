@@ -65,6 +65,7 @@ export function Register({handleSignup}) {
             placeholder='Виталий'
 
             onChange={handleChangeName}
+            
           />
           {/* input 'name' */}
 
@@ -82,6 +83,7 @@ export function Register({handleSignup}) {
             placeholder='pochta@yandex.ru'
 
             onChange={handleChangeEmail}
+            
           />
           {/* input 'email' */}
 
@@ -100,6 +102,7 @@ export function Register({handleSignup}) {
             placeholder='••••••••••••••'
 
             onChange={handleChangePassword}
+                        
           />
           {/* input 'password' */}
 
