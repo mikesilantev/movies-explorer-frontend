@@ -19,10 +19,11 @@ import { PageNotFound } from "../PageNotFound/PageNotFound";
 
 export default function App() {
   const [auth, setAuth] = useState(false);
-  // Регистрация пользователя
   
+  // Регистрация пользователя
   function handleSignup(data){
     mainApi.testRegister({data})
+    
     // mainApi.testRegister(data)
   }
   

@@ -21,15 +21,20 @@ class MainApi {
   testRegister({data}) {
     console.log(this._url);
     console.log(data);
+    console.log({data});
 
-    // return fetch (`${this._url}/signup`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application',
-    //   },
-    //   body: JSON.stringify({data}),
-    // }).then()
-
+    return fetch (`${this._url}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          'name' : data.name,
+          'email' : data.email,
+          'password' : data.password,
+        }),
+    }).then(res => this._checkResult(res));
   }
 }
 

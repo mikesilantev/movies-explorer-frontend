@@ -59,7 +59,8 @@ export function Register({handleSignup}) {
           <span className='form__input-name'>Имя</span>
 
           {/* input 'name' */}
-          <input 
+          <input
+            required
             type="text" 
             className='form__input form__input_type_name'
             placeholder='Виталий'
@@ -77,7 +78,8 @@ export function Register({handleSignup}) {
           <span className='form__input-name'>E-mail</span>
 
           {/* input 'email' */}
-          <input 
+          <input
+            required
             type="email" 
             className='form__input form__input_type_name'
             placeholder='pochta@yandex.ru'
@@ -96,7 +98,8 @@ export function Register({handleSignup}) {
           <span className='form__input-name'>Пароль</span>
 
           {/* input 'password' */}
-          <input 
+          <input
+            required
             type="password" 
             className='form__input form__input_type_name'
             placeholder='••••••••••••••'
