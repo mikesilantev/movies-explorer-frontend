@@ -11,7 +11,8 @@ export function Form({
   signLinkMessage,
   signLink,
   children,
-  onSubmit
+  onSubmit,
+  apiErrorText
 }) {
   return (
     <form className='form' onSubmit={onSubmit}>
@@ -24,9 +25,17 @@ export function Form({
         {children}
       </div>
       <div className='form__sign-wrap'>
+        <span className='form__errors'>{apiErrorText}</span>
+        {/* Кнопка */}
         <button
+          // disabled
           type='submit'
-          className='form__button'>{buttonText}</button>
+          className='
+          form__button 
+          '>
+          {buttonText}
+        </button>
+        {/* Кнопка */}
         <p className='form__sign-text'>
           {signMessage}
           <Link className='form__sign-link' to={signLink}>{signLinkMessage}</Link>

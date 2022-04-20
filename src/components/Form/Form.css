@@ -60,7 +60,7 @@
 }
 
 .form__input-error {
-  visibility: hidden;
+  visibility: visible;
   margin: 6px 0;
   font-weight: 400;
   font-size: 10px;
@@ -146,7 +146,26 @@ opacity: .7;
     line-height: 17px;
   }
 }
+.form__errors {
+  font-size: 11px;
+  line-height: 13px;
+  color: #FF004C;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+  max-width: 260px;
+}
 
+.form__button_disabled {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+  cursor: default;
+}
+@media screen and (min-width: 768px) {
+  .form__errors {
+    max-width: 410px;
+  }
+  }
 @media screen and (min-width: 1280px) {
   .form {
     justify-content: space-between;

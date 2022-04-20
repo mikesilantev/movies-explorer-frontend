@@ -1,29 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import Button from "../Button/Button";
 import logo from "../../images/logo.svg";
 import "./Header.css";
 // BACKLOG
 // Заменить компонент Button на button
-export default function Header({ isLogged }) {
+export default function Header({ loggedIn }) {
 
   let { pathname } = useLocation()
-  function saveCurrentPatch(){
-    if (pathname !== '/'){
-      console.log('Не равно /')
-    } else {
-    }
-  }
-
-
-
-  saveCurrentPatch();
- 
-  const [loggedIn, setLoggedIn] = useState(false);
-
   const [openMenu, setOpenMenu] = useState(false);
-
   // function testState() {
   //   console.log('rere')
   // }
@@ -41,9 +27,10 @@ export default function Header({ isLogged }) {
   
   // .header__no-index 
   return (
-    // <header className={'header'}>
-    <header className={ (pathname === '/') ? ('header') : ('header header_dark')}>
 
+    // <header className={'header'}>
+
+    <header className={ (pathname === '/') ? ('header') : ('header header_dark')}>
       <NavLink to="/" className="header__logo">
         <img src={logo} alt="Mesto" />
       </NavLink>
@@ -56,8 +43,11 @@ export default function Header({ isLogged }) {
                 Регистрация
               </NavLink>
             </li>
+
             <li className="header__link-item">
-              <Button buttonText="Войти" buttonStyle="button__header" />
+              <Link to='signin'><Button buttonText="Войти" buttonStyle="button__header" />
+              </Link>
+
             </li>
           </ul>
         )
@@ -89,10 +79,6 @@ export default function Header({ isLogged }) {
                 <Button buttonText="Аккаунт" buttonStyle="button__header-account" />
               </NavLink>
 
-              {/* {openMenu ? (<MobileMenu 
-                              status={openMenu} 
-                              setOpenMenu={setOpenMenu}
-                            />) : ('')} */}
             <MobileMenu 
                 status={openMenu} 
                 setOpenMenu={setOpenMenu}

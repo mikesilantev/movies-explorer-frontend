@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form } from '../Form/Forms';
 import './Register.css';
 
 
 export function Register({handleSignup}) {
-
+  const navigate = useNavigate();
   //Состояния полей
   const [ email, setEmail] = useState('')
   const [ name, setName] = useState('')
   const [ password, setPassword] = useState('')
+
+  const [ errorText, setErrorText ] =useState('errorText');
 
   // Изменение состояния инпута Email
   function handleChangeEmail(evt){
@@ -70,7 +73,7 @@ export function Register({handleSignup}) {
           />
           {/* input 'name' */}
 
-          <span className='form__input-error'>Что-то пошло не так...</span>
+          <span className='form__input-error'>{errorText}</span>
         </label>
 
 
@@ -90,7 +93,7 @@ export function Register({handleSignup}) {
           {/* input 'email' */}
 
         
-          <span className='form__input-error'>Что-то пошло не так...</span>
+          <span className='form__input-error'>{errorText}</span>
         </label>
 
 
@@ -109,7 +112,7 @@ export function Register({handleSignup}) {
           />
           {/* input 'password' */}
 
-          <span className='form__input-error'>Что-то пошло не так...</span>
+          <span className='form__input-error'>{errorText}</span>
         </label>
 
         </div>  

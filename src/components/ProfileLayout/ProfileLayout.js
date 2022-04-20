@@ -2,10 +2,10 @@ import React from 'react';
 import { Outlet } from "react-router-dom";
 import Header from '../Header/Header';
 
-const ProfileLayout = () => {
+const ProfileLayout = ({loggedIn}) => {
   return (
     <>
-    <Header />
+    <Header loggedIn={loggedIn}/>
     <Outlet />
     </>
   )

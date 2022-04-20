@@ -3,7 +3,10 @@ import { Form } from '../Form/Forms';
 
 import './Login.css';
 
-export function Login(){
+export function Login({handleSignin, apiErrorText}){
+
+
+  //Сбросить значение полей
 
     //Состояния полей
     const [ email, setEmail] = useState('');
@@ -24,15 +27,14 @@ export function Login(){
   // Отправка данных в форме
   function handleSubmitForm(evt){
     evt.preventDefault();
-    // handleSignup({
-    //   email: email,
-    //   name: name,
-    //   password: password, 
-    // })
+    handleSignin({
+      email: email,
+      password: password, 
+    })
     console.log('Клик - Login.js')
+    console.log(email)
+    console.log(password)
   }
-
-
 
   return (
     <section className="login">
@@ -43,6 +45,7 @@ export function Login(){
     signLinkMessage='Регистрация'
     signLink='/signup'
     onSubmit={handleSubmitForm}
+    apiErrorText={apiErrorText}
     >
       <div className="form__label-wrap">
       <label className='form__label'>

@@ -1,8 +1,11 @@
 import React from "react";
 import './Button.css';
-export default function Button({buttonText, buttonStyle }){
+export default function Button({buttonText, buttonStyle, handleClick}){
 
   return (
-    <button className={`button__default ${buttonStyle}`} >{buttonText}</button>
+    <button 
+      onClick={handleClick}
+      className={`button__default ${buttonStyle}`}
+    >{buttonText}</button>
   )
 }

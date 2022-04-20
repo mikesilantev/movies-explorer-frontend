@@ -1,6 +1,12 @@
-import react, { useState } from "react";
+import { useState, useContext} from "react";
+import { useNavigate, Link } from "react-router-dom";
+
+//
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+//
 import Button from '../Button/Button';
-import { Link } from "react-router-dom";
+
+//
 import './Profile.css';
 
 // При переходе в профиль
@@ -10,12 +16,10 @@ import './Profile.css';
 // Копка Сохранить
 // Активна сначала
 // Если ошибка не Активна
+export function Profile({handleSignOut}) {
+  const currentUser = useContext(CurrentUserContext);
+  const navigate = useNavigate();
 
-
-
-
-
-export function Profile() {
   const [editProfile, setEditProfile] = useState(false);
 
    //Состояния полей
@@ -33,33 +37,41 @@ export function Profile() {
      setName(evt.target.value);
      console.log(name);
    }
- 
-   // Отправка данных в форме
-   function handleSubmitForm(evt){
-     evt.preventDefault();
-     // handleSignup({
-     //   email: email,
-     //   name: name,
-     //   password: password, 
-     // })
-     console.log('Клик')
+
+   // Выход из аккаунта
+   function exitAccount(){
+    handleSignOut();
+    console.log('Клик')
    }
 
+  function editHandler(evt){
+    evt.preventDefault();
+    setEditProfile(true)
+    console.log('editHandler')
+  }
+  function closeEdit(evt){
+    evt.preventDefault();
+    setEditProfile(false)
+    console.log('closeEdit')
+  }
 
   return (
       <section className="profile">
         <form className="profile-form">
           <div className="profile-form__wrap">
-            <h1 className="profile-form__title">Привет, Виталий!</h1>
+            <h1 className="profile-form__title">Привет {currentUser.name}!</h1>
 
             <label className="profile-form__label">
               <span className="profile-form__text">Имя</span>
 
               {/* input 'name' */}
-              <input 
+              <input
+              
+                disabled={!editProfile ? true : false }
                 type='text'
-                className="profile-form__input"  defaultValue="Виталий"
-
+                className="profile-form__input"  
+                
+                defaultValue={!editProfile ? currentUser.name : ''}
                 onChange={handleChangeName}
               />
               {/* input 'name' */}
@@ -71,8 +83,10 @@ export function Profile() {
 
               {/* input 'email' */}
               <input 
+                disabled={!editProfile ? true : false }
                 type='email'
-                className="profile-form__input"  defaultValue="pochta@yandex.ru"
+                className="profile-form__input"  
+                defaultValue={!editProfile ? currentUser.email : ''}
                 onChange={handleChangeEmail}
               />
               {/* input 'email' */}
@@ -83,13 +97,14 @@ export function Profile() {
 
           <ul className="profile-form__items">
             {
-              editProfile ?
+              !editProfile ?
                 (<>
                   <li className="profile-form__item">
                     <Link to="" className="profile-form__link">
                       <Button
                         buttonText='Редактировать'
                         buttonStyle='profile-form__btn-edit'
+                        handleClick={editHandler}
                       />
                     </Link>
 
@@ -99,6 +114,9 @@ export function Profile() {
                       <Button
                         buttonText='Выйти из аккаунта'
                         buttonStyle='profile-form__btn-logout'
+                        // onClick={exitAccount}
+                        // onClick={console.log('click')}
+                        handleClick={exitAccount}
                       /></Link>
                   </li>
                 </>
@@ -107,6 +125,7 @@ export function Profile() {
                     <span className="profile-form__error">При обновлении профиля произошла ошибка.</span>
                     <Link to="" className="profile-form__link">
                       <Button
+                        handleClick={closeEdit}
                         buttonText='Сохранить'
                         buttonStyle='profile-form__btn-save profile-form__btn-save_disabled'
                       /></Link>

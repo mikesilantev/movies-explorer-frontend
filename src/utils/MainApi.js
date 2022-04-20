@@ -18,7 +18,8 @@ class MainApi {
   //   console.log(data);
   // }
 
-  testRegister({data}) {
+  // Register
+  signup({data}) {
     console.log(this._url);
     console.log(data);
     console.log({data});
@@ -36,6 +37,54 @@ class MainApi {
         }),
     }).then(res => this._checkResult(res));
   }
+  
+  // Login
+  signin({data}) {
+    return fetch (`${this._url}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          'email' : data.email,
+          'password' : data.password,
+        }),
+    }).then(res => this._checkResult(res));
+  }
+
+  getUser(token){
+    return fetch (`${this._url}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    .then(res => this._checkResult(res));
+  }
+
+
+
+  testApi({data}) {
+    console.log(this._url);
+    console.log(data);
+    console.log({data});
+
+    return fetch (`${this._url}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          'email' : data.email,
+          'password' : data.password,
+        }),
+    }).then(res => this._checkResult(res));
+  }
+
+  
 }
 
 const mainApi = new MainApi({
