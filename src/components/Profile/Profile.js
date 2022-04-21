@@ -1,63 +1,47 @@
-import { useState, useContext} from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect, useContext} from "react";
+import { useNavigate, Link} from "react-router-dom";
 
 //
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 //
 import Button from '../Button/Button';
 
 //
 import './Profile.css';
-
-// При переходе в профиль
-// Состояние - 
-// Изменение состояния при редактировании
-
-// Копка Сохранить
-// Активна сначала
-// Если ошибка не Активна
 export function Profile({handleSignOut}) {
-  const currentUser = useContext(CurrentUserContext);
-  const navigate = useNavigate();
 
-  const [editProfile, setEditProfile] = useState(false);
+  //Компонент используем для переадресации
+  const navigate = useNavigate();
+  
+  // Context
+  const currentUser = useContext(CurrentUserContext);
+  
+  // Form validation variables
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+
+  // Состояние формы - находится в редактировании или нет
+  const [isEdited, setIsEdited] = useState(false);
 
    //Состояния полей
    const [ email, setEmail] = useState('')
    const [ name, setName] = useState('')
- 
-   // Изменение состояния инпута Email
-   function handleChangeEmail(evt){
-     setEmail(evt.target.value);
-     console.log(email);
-   }
- 
-   // Изменение состояния инпута name
-   function handleChangeName(evt){
-     setName(evt.target.value);
-     console.log(name);
-   }
 
-   // Выход из аккаунта
-   function exitAccount(){
-    handleSignOut();
-    console.log('Клик')
-   }
 
-  function editHandler(evt){
-    evt.preventDefault();
-    setEditProfile(true)
-    console.log('editHandler')
-  }
   function closeEdit(evt){
     evt.preventDefault();
     setEditProfile(false)
-    console.log('closeEdit')
+
   }
 
   return (
       <section className="profile">
-        <form className="profile-form">
+        <form
+          onChange={handleSubmit}
+          className="profile-form"
+          action="#"
+          
+          >
           <div className="profile-form__wrap">
             <h1 className="profile-form__title">Привет {currentUser.name}!</h1>
 
@@ -66,12 +50,15 @@ export function Profile({handleSignOut}) {
 
               {/* input 'name' */}
               <input
-              
-                disabled={!editProfile ? true : false }
+                value={values.name || ''}
+                onChange={handleChange}
+                disabled={!editProfile}
                 type='text'
                 className="profile-form__input"  
                 
-                defaultValue={!editProfile ? currentUser.name : ''}
+                // defaultValue={!editProfile ? currentUser.name : ''}
+                value={values.name || ''}
+
                 onChange={handleChangeName}
               />
               {/* input 'name' */}
@@ -83,10 +70,11 @@ export function Profile({handleSignOut}) {
 
               {/* input 'email' */}
               <input 
-                disabled={!editProfile ? true : false }
+                disabled={!editProfile}
                 type='email'
                 className="profile-form__input"  
-                defaultValue={!editProfile ? currentUser.email : ''}
+                value={values.email || ''}
+                // defaultValue={!editProfile ? currentUser.email : ''}
                 onChange={handleChangeEmail}
               />
               {/* input 'email' */}
@@ -100,24 +88,19 @@ export function Profile({handleSignOut}) {
               !editProfile ?
                 (<>
                   <li className="profile-form__item">
-                    <Link to="" className="profile-form__link">
-                      <Button
-                        buttonText='Редактировать'
-                        buttonStyle='profile-form__btn-edit'
-                        handleClick={editHandler}
-                      />
-                    </Link>
+                  <button
+                    type="button"
+                    onClick={editHandler}
+                    className='profile-form__btn-edit'
+                    >Редактировать</button>
 
                   </li>
                   <li className="profile-form__item">
-                    <Link to="" className="profile-form__link">
-                      <Button
-                        buttonText='Выйти из аккаунта'
-                        buttonStyle='profile-form__btn-logout'
-                        // onClick={exitAccount}
-                        // onClick={console.log('click')}
-                        handleClick={exitAccount}
-                      /></Link>
+                    <button
+                    type="button"
+                    onClick={exitAccount}
+                    className='profile-form__btn-logout'
+                    >Выйти из аккаунта</button>
                   </li>
                 </>
                 ) : (
@@ -140,3 +123,42 @@ export function Profile({handleSignOut}) {
       </section>
   )
 }
+
+ 
+ 
+
+  //  // Изменение состояния инпута Email
+  //  function handleChangeEmail(evt){
+  //    setEmail(evt.target.value);
+  //    console.log(email);
+  //  }
+ 
+  //  // Изменение состояния инпута name
+  //  function handleChangeName(evt){
+  //    setName(evt.target.value);
+  //    console.log(name);
+  //  }
+
+  //  // Выход из аккаунта
+  //  function exitAccount(){
+  //   handleSignOut();
+  //  }
+
+
+  //  // Редактирование профиля
+  //  function editHandler(evt){
+  //   evt.preventDefault();
+
+    
+  //   setEditProfile(true)
+  //   console.log(currentUser)
+  // }
+
+
+  // useEffect(() => {
+  //   if (currentUser){
+  //     resetForm(currentUser, {}, false)
+  //   }
+  // }, [currentUser, resetForm]);
+
+

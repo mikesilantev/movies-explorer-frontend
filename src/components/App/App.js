@@ -1,13 +1,15 @@
+// Layout
 import { AppLayout } from "../AppLayout/AppLayout";
 import ProfileLayout from "../ProfileLayout/ProfileLayout";
-
+//
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation} from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, Navigate} from "react-router-dom";
 import './App.css'
-
+// API
 import mainApi from "../../utils/MainApi";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
+// Components
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -22,7 +24,7 @@ export default function App() {
 
   // Переменные состояния
   // Авторизован или нет
-  const [loggedIn, setLoggedIn] = useState('false');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   
   //Запись в контекст  
@@ -31,19 +33,17 @@ export default function App() {
   //Состояние ошибок из API
   const [apiErrorText, setApiErrorText] = useState('');
   let { pathname } = useLocation()
-
-
-
-  //del
+  // del
   console.log('======================================')
   console.log('Мы находимся: ' + pathname)
   console.log('Состояние авторизации: ' + loggedIn)
   console.log('Состояние CurrentUserContext: ')
   console.log(currentUser)
   console.log('======================================')
-  //del
+  // del
 
   // Проверка аутентификации
+  // и загрузка данных в контекст провайдер
   useEffect(() => {
     if (loggedIn){
       const token = localStorage.getItem('JWT_TOKEN');
@@ -79,7 +79,8 @@ export default function App() {
         localStorage.setItem('JWT_TOKEN', res.token);
         setCurrentUser(data)
         setLoggedIn(true)
-        navigate('/movies');
+        // navigate('/movies', {replace: true});
+        navigate('/profile', {replace: true});
       })
       .catch(err => {
         if (err === 'Ошибка: 400') {
@@ -104,24 +105,27 @@ export default function App() {
   }
   // Выйти из системы
   function handleSignOut() {
-    setLoggedIn(false)
-     console.log(localStorage.getItem('JWT_TOKEN'))
-    localStorage.removeItem('JWT_TOKEN')
-    navigate('/signin');
-    // console.log(loggedIn)
+    setLoggedIn(false);
+    localStorage.removeItem('JWT_TOKEN');
+    navigate('/', {replace: true});
+    console.log(navigate.name)
+    return console.error('Ну и на хуя ты вышел?');
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
+        
         <Route path='/' element={<AppLayout loggedIn={loggedIn} />}>
           <Route index element={<Main />} />
-          <Route path='/movies' element={<Movies />}></Route>
-          <Route path='/saved-movies' element={<SavedMovies />}></Route>
+          <Route path='movies' element={<Movies />}></Route>
+          <Route path='saved-movies' element={<SavedMovies />}></Route>
+          <Route path='profile' element={<Profile handleSignOut={handleSignOut} />} />
         </Route>
-        <Route path='/profile' element={<ProfileLayout loggedIn={loggedIn} />}>
+
+        {/* <Route path='/profile' element={<ProfileLayout loggedIn={loggedIn} />}>
           <Route index element={<Profile handleSignOut={handleSignOut} />} />
-        </Route>
+        </Route> */}
 
         <Route path="/signup"
           element=

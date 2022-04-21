@@ -88,11 +88,17 @@
 }
 
 .profile-form__btn-logout {
-  width: 120px;
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
   color: #EE3465;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-form__btn-logout:hover {
+  opacity: .8;
 }
 
 .profile-form__btn-save {
@@ -117,7 +123,16 @@
   text-align: center;
   display: block;
   margin-bottom: 20px;
-  
+  visibility: hidden;
+}
+
+.profile-form__btn-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.profile-form__btn-edit:hover {
+opacity: 0.8;
 }
 
 @media screen and (min-width: 768px) {
