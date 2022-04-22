@@ -64,17 +64,17 @@ class MainApi {
     .then(res => this._checkResult(res));
   }
 
-  patchUser({data, token}){
+  patchUser({ data, token }){
     return fetch (`${this._url}/users/me`, {
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: {
+      body: JSON.stringify({
         name: data.name,
         email: data.email,
-      }
+      })
     })
     .then(res => this._checkResult(res));
   }

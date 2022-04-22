@@ -75,6 +75,19 @@
   list-style-type: none;
 }
 
+.profile-form__input-error {
+  visibility: visible;
+  margin: 6px 0;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+}
+
+
+
+
+
 .profile-form__link {
   height: 45px;
 }
@@ -109,9 +122,10 @@
   font-size: 12px;
   line-height: 15px;
   color: #fff;
+  border: none;
 }
 
-.profile-form__btn-save_disabled {
+.profile-form__btn-save:disabled {
   background-color: #F8F8F8;
   color: #C2C2C2;
 }
@@ -123,7 +137,6 @@
   text-align: center;
   display: block;
   margin-bottom: 20px;
-  visibility: hidden;
 }
 
 .profile-form__btn-edit {

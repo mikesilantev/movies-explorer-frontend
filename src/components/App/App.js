@@ -7,6 +7,7 @@ import { Routes, Route, useNavigate, useLocation, Navigate} from "react-router-d
 import './App.css'
 // API
 import mainApi from "../../utils/MainApi";
+import movieApi from "../../utils/MovieApi";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 // Components
@@ -79,8 +80,7 @@ export default function App() {
         localStorage.setItem('JWT_TOKEN', res.token);
         setCurrentUser(data)
         setLoggedIn(true)
-        // navigate('/movies', {replace: true});
-        navigate('/profile', {replace: true});
+        navigate('/movies', {replace: true});
       })
       .catch(err => {
         if (err === 'Ошибка: 400') {
@@ -95,14 +95,32 @@ export default function App() {
         if (err === 'Ошибка: 429') {
           setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
         }
-        // else 
-        // {
-        //   setApiErrorText('Вы ввели неправильный логин или пароль. ')
-        //   console.log(apiErrorText)
-        // }
+        else 
+        {
+          setApiErrorText('Вы ввели неправильный логин или пароль. ')
+          console.log(apiErrorText)
+        }
 
       })
   }
+
+  function patchUser(data){
+    const token = localStorage.getItem('JWT_TOKEN');
+    mainApi.patchUser( {data, token} )
+    .then(
+      res => {
+        setCurrentUser(data);
+      }
+    ).catch(err => {
+      setApiErrorText(err)
+    })
+  }
+
+
+
+
+
+
   // Выйти из системы
   function handleSignOut() {
     setLoggedIn(false);
@@ -120,18 +138,21 @@ export default function App() {
           <Route index element={<Main />} />
           <Route path='movies' element={<Movies />}></Route>
           <Route path='saved-movies' element={<SavedMovies />}></Route>
-          <Route path='profile' element={<Profile handleSignOut={handleSignOut} />} />
         </Route>
 
-        {/* <Route path='/profile' element={<ProfileLayout loggedIn={loggedIn} />}>
-          <Route index element={<Profile handleSignOut={handleSignOut} />} />
-        </Route> */}
+        <Route path='/profile' element={<ProfileLayout loggedIn={loggedIn} />}>
+          <Route index element=
+          {<Profile 
+            handleSignOut={handleSignOut} 
+            patchUser={patchUser}
+            apiErrorText={apiErrorText}
+            />} />
+        </Route>
 
         <Route path="/signup"
           element=
           {<Register
             handleSignup={handleSignup}
-
           />} />
 
         <Route path="/signin"

@@ -1,87 +1,90 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Form } from '../Form/Forms';
+
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 
 import './Login.css';
 
-export function Login({handleSignin, apiErrorText}){
+export function Login({ handleSignin, apiErrorText }) {
 
+  // Form validation variables
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
-  //Сбросить значение полей
+  const isDisabled = !isValid;
 
-    //Состояния полей
-    const [ email, setEmail] = useState('');
-    const [ password, setPassword] = useState('');
-  
-    // Изменение состояния инпута Email
-    function handleChangeEmail(evt){
-      setEmail(evt.target.value);
-      console.log(email);
-    }
-  
-    // Изменение состояния инпута password
-    function handleChangePassword(evt){
-      setPassword(evt.target.value);
-      console.log(password);
-    }
-  
   // Отправка данных в форме
-  function handleSubmitForm(evt){
+  function handleSubmit(evt) {
     evt.preventDefault();
     handleSignin({
-      email: email,
-      password: password, 
+      email: values.email,
+      password: values.password,
     })
-    console.log('Клик - Login.js')
-    console.log(email)
-    console.log(password)
   }
 
+  useEffect(() => {
+    resetForm({}, {}, false);
+  }, [resetForm])
+
+
   return (
-    <section className="login">
-    <Form 
-    title='Рады видеть!'
-    buttonText='Войти'
-    signMessage='Ещё не зарегистрированы?'
-    signLinkMessage='Регистрация'
-    signLink='/signup'
-    onSubmit={handleSubmitForm}
-    apiErrorText={apiErrorText}
-    >
-      <div className="form__label-wrap">
-      <label className='form__label'>
-        <span className='form__input-name'>E-mail</span>
+    <section className='login'>
+      <Form
+        onSubmit={handleSubmit}
+        title='Рады видеть!'
+        buttonText='Войти'
+        isDisabled={isDisabled}
+        signMessage='Ещё не зарегистрированы?'
+        signLinkMessage='Регистрация'
+        signLink='/signup'
+        apiErrorText={apiErrorText}
+      >
+        <div className='form__label-wrap'>
+          <label className='form__label'>
+            <span className='form__input-name'>E-mail</span>
 
-        {/* input 'email' */}
-        <input 
-          type="email"
-          className='form__input form__input_type_name'
-          placeholder='pochta@yandex.ru'
-          
-          onChange={handleChangeEmail}
-          />
-        {/* input 'email' */}
+            {/* input 'email' */}
+            <input
+              onChange={handleChange}
+              value={values.email || ''}
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              required
 
-        <span className='form__input-error'>Что-то пошло не так...</span>
-      </label>
-      <label className='form__label'>
-        <span className='form__input-name'>Пароль</span>
+              name='email'
+              type='email'
+              className='form__input form__input_type_name'
+              placeholder='pochta@yandex.ru'
+            />
+            {/* input 'email' */}
 
-        {/* input 'password' */}
-        <input 
-          type="password" 
-          className='form__input form__input_type_name'
-          placeholder='••••••••••••••'
-          
-          onChange={handleChangePassword}
-          />
-        {/* input 'password' */}
+            <span className='form__input-error'>{errors.email || ''}</span>
+          </label>
 
-        <span className='form__input-error'>Что-то пошло не так...</span>
-      </label>
 
-      </div>  
+          <label className='form__label'>
+            <span className='form__input-name'>Пароль</span>
 
-    </Form> 
-  </section>
+            {/* input 'password' */}
+            <input
+              onChange={handleChange}
+              // value={values.password || ''}
+              required
+              pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])\S{8,30}$'
+
+              type='password'
+              name='password'
+              className={!errors.password ? 'form__input' : 'form__input form__input_error'}
+              placeholder='••••••••••••••'s
+            />
+
+            {/* input 'password' */}
+
+            <span className='form__input-error'>{errors.password || ''}</span>
+          </label>
+
+        </div>
+
+      </Form>
+    </section>
   )
 }

@@ -5,6 +5,8 @@ import { Logo } from '../Logo/Logo';
 import './Form.css';
 
 export function Form({
+  isDisabled,
+  onChange,
   title,
   buttonText,
   signMessage,
@@ -15,7 +17,7 @@ export function Form({
   apiErrorText
 }) {
   return (
-    <form className='form' onSubmit={onSubmit}>
+    <form className='form' onSubmit={onSubmit} onChange={onChange}>
 
       <div className='form__wrap'>
         <Logo place='__form' />
@@ -25,10 +27,10 @@ export function Form({
         {children}
       </div>
       <div className='form__sign-wrap'>
-        <span className='form__errors'>{apiErrorText}</span>
+        <span className='form__errors'>{apiErrorText || ''}</span>
         {/* Кнопка */}
         <button
-          // disabled
+          disabled={isDisabled}
           type='submit'
           className='
           form__button 
