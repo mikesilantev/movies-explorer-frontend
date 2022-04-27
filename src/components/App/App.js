@@ -1,6 +1,8 @@
 // Layout
 import { AppLayout } from "../AppLayout/AppLayout";
 import ProfileLayout from "../ProfileLayout/ProfileLayout";
+
+import Test from "../Test/Test";
 //
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation, Navigate} from "react-router-dom";
@@ -35,14 +37,14 @@ export default function App() {
   const [apiErrorText, setApiErrorText] = useState('');
   let { pathname } = useLocation()
   // del
-  console.log('======================================')
-  console.log('Мы находимся: ' + pathname)
-  console.log('Состояние авторизации: ' + loggedIn)
-  console.log('Состояние CurrentUserContext: ')
-  console.log(currentUser)
-  console.log('======================================')
-  // del
-
+  // console.log('======================================')
+  // console.log('Мы находимся: ' + pathname)
+  // console.log('Состояние авторизации: ' + loggedIn)
+  // console.log('Состояние CurrentUserContext: ')
+  // console.log(currentUser)
+  // console.log('======================================')
+  // // del
+  
   // Проверка аутентификации
   // и загрузка данных в контекст провайдер
   useEffect(() => {
@@ -115,12 +117,6 @@ export default function App() {
       setApiErrorText(err)
     })
   }
-
-
-
-
-
-
   // Выйти из системы
   function handleSignOut() {
     setLoggedIn(false);
@@ -130,8 +126,25 @@ export default function App() {
     return console.error('Ну и на хуя ты вышел?');
   }
 
+
+
+
+  useEffect(() => {
+    if(loggedIn){
+      
+      movieApi.getMovies()
+      .then((res) => {
+        localStorage.setItem('initMovies', JSON.stringify(res))
+      })
+      .then(console.log(localStorage))
+    }
+  },[loggedIn])
+
+
   return (
+
     <CurrentUserContext.Provider value={currentUser}>
+          <Test></Test>
       <Routes>
         
         <Route path='/' element={<AppLayout loggedIn={loggedIn} />}>

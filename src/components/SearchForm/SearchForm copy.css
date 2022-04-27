@@ -38,9 +38,10 @@
   background: url('../../images/search__arrow.svg');
   background-repeat: no-repeat;
   background-position: 15px;
-  background-color: #4285F4;
-  cursor: pointer;
+  /* background-color: #4285F4;
+  cursor: pointer; */
 }
+
 
 .search-form__button:hover {
   opacity: .7;
@@ -95,24 +96,11 @@
     outline: none;
     background-color: rgb(47 47 47);
   }
-  .search-form__button {
-    width: 34px;
-    height: 34px;
-  
-    border-radius: 50%;
-    border: none;
-    background: url('../../images/search__arrow.svg');
-    background-repeat: no-repeat;
-    background-position: 15px;
-    background-color: #4285F4;
-    cursor: pointer;
-  }
-  
-  .search-form__button:hover {
-    opacity: .7;
-  }
 }
-
+.search-form__button:disabled {
+  background-color: #A0A0A0;
+  cursor: auto;
+}
 /* .search-form__checkbox::before {
 content: '';
 display: block;

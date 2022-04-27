@@ -34,7 +34,7 @@
 
 
 
-.filter-checkbox__checkbox:checked + .filter-checkbox__label {
+.filter-checkbox__checkbox:disabled + .filter-checkbox__label {
   left: 2px;
   transition: all .4s ease;
   background-color: #A0A0A0;
