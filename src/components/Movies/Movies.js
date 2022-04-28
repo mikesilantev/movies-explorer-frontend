@@ -6,40 +6,16 @@ import './Movies.css';
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 import Preloader from '../Preloader/Preloader';
 
-export default function Movies(){
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [checkboxStatus, setCheckboxStatus] = useState(false);
-
-
-  function handleQueryChange(evt){
-    setSearchQuery(evt.target.value)
-    
-  }
- 
-  // // Загрузка фильмов
-  // function testClick(){
-  //   movieApi.getMovies()
-  //     .then(res => {
-  //       console.log(res)
-  //       //ФИЛЬМЫ В ЛОКАЛ СТОРЕЙДЖ
-  //       // Мы должны отправить запрос с фильтром поиска
-  //       localStorage.setItem('initialMovies', JSON.stringify(res))
-  //     })
-  //     .then(
-
-  //     )
-  //   }
-
-
+export default function Movies({searchQuery,setSearchQuery, checkboxStatus, setCheckboxStatus, searchByQuery}){
 
   return (
     <section className="movies">
-      {searchQuery}
-      <SearchForm 
-        checkboxStatus={checkboxStatus} 
+      <SearchForm         
         searchQuery={searchQuery}
-        handleQueryChange={handleQueryChange}
+        setSearchQuery={setSearchQuery}
+        checkboxStatus={checkboxStatus} 
+        setCheckboxStatus={setCheckboxStatus}
+        searchByQuery={searchByQuery}
         >
         
       </SearchForm>

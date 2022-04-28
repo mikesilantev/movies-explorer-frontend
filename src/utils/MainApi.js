@@ -13,17 +13,8 @@ class MainApi {
     }
   }
 
-  // testApi(data){
-  //   console.log(this._url);
-  //   console.log(data);
-  // }
-
-  // Register
+// User Zone
   signup({data}) {
-    console.log(this._url);
-    console.log(data);
-    console.log({data});
-
     return fetch (`${this._url}/signup`, {
       method: 'POST',
       headers: {
@@ -98,6 +89,9 @@ class MainApi {
     }).then(res => this._checkResult(res));
   }
 
+// Movies Zone
+
+  
   
 }
 

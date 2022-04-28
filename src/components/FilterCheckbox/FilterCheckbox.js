@@ -1,7 +1,13 @@
 import react from "react";
 import './FilterCheckbox.css'
 
-export function FilterCheckbox({checkboxStatus}) {
+export function FilterCheckbox({checkboxStatus, setCheckboxStatus}) {
+
+  // Переключатель чекбокса
+const handleCheckbox = () => {
+  setCheckboxStatus(!checkboxStatus);
+}
+
   return (
     <div className="filter-checkbox">
       {checkboxStatus}
@@ -11,7 +17,8 @@ export function FilterCheckbox({checkboxStatus}) {
           type="checkbox" 
           name="" 
           id="filter-checkbox" 
-          disabled={!checkboxStatus}
+          defaultChecked={!checkboxStatus}
+          onClick={handleCheckbox}
           />
         <label htmlFor="filter-checkbox" className="filter-checkbox__label"></label>
       </div>

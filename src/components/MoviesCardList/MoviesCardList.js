@@ -6,19 +6,7 @@ import './MoviesCardList.css';
 
 export function MoviesCardList() {
 
-  function savedMovies(evt) {
-    // // Добавить saved movies в loacl ыещкфпу
-    // localStorage.setItem('SavedMovies', JSON.stringify(evt))
-    // console.log(localStorage.getItem('SaveCard'))
-    console.log('MoviesCardList')
-    console.log(evt)
-
-  }
   let { pathname } = useLocation();
-
-  // function onLoadMovies(){
-  //   localStorage.setItem('SaveCard', JSON.stringify(moviesCards))
-  // }
 
   return (
     <section className='movies-list'>
@@ -33,7 +21,6 @@ export function MoviesCardList() {
                 cover={card.cover}
                 title={card.title}
                 duration={card.duration} 
-                savedMovies={savedMovies}
                 />
             ))
           ) : ('')

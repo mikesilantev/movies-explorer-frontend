@@ -4,29 +4,31 @@ import { FilterCheckbox } from "../FilterCheckbox/FilterCheckbox";
 
 import './SearchForm.css';
 
-export function SearchForm({checkboxStatus}) {
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
-  const isDisabled = !isValid;
+export function SearchForm({searchQuery, setSearchQuery, checkboxStatus,setCheckboxStatus, searchByQuery}) {
   
-  useEffect(() => {
-    console.log(values)
-  }, [values])
+  const handleQueryChange = (evt) => {
+    setSearchQuery(evt.target.value)
+    console.log(searchQuery)
+  }
 
-
-
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    console.log('first')
+    searchByQuery()
+  }
 
   return (
     <form 
       className="search-form"
-      
+      onSubmit={handleSubmit}
       >
    
       <span className="search-form__search-icon"></span>
       <label htmlFor="search-input" className="search-form__input-wrap">
 
         <input 
-          onChange={handleChange}
-          value={values.search || ''}
+          onChange={handleQueryChange}
+          value={searchQuery}
           type="text" 
           name="search" 
           id="search-input" 
@@ -36,12 +38,14 @@ export function SearchForm({checkboxStatus}) {
         />
 
         <button 
-          type="button" 
+          type="submit" 
           className="search-form__button"
-          disabled={isDisabled}
           ></button>
       </label>
-      <FilterCheckbox checkboxStatus={checkboxStatus}></FilterCheckbox>
+      <FilterCheckbox 
+      checkboxStatus={checkboxStatus}
+      setCheckboxStatus={setCheckboxStatus}
+      ></FilterCheckbox>
     </form>
   )
 }
