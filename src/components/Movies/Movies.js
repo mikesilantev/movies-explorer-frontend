@@ -6,8 +6,10 @@ import './Movies.css';
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 import Preloader from '../Preloader/Preloader';
 
-export default function Movies({searchQuery,setSearchQuery, checkboxStatus, setCheckboxStatus, searchByQuery}){
+export default function Movies({searchQuery,setSearchQuery, checkboxStatus, setCheckboxStatus, searchByQuery, filteredMovies}){
 
+
+  
   return (
     <section className="movies">
       <SearchForm         
@@ -19,9 +21,9 @@ export default function Movies({searchQuery,setSearchQuery, checkboxStatus, setC
         >
         
       </SearchForm>
-      <Suspense fallback={<Preloader></Preloader>}>
-         <MoviesCardList></MoviesCardList>
-      </Suspense>
+         <MoviesCardList
+         filteredMovies={filteredMovies}
+         ></MoviesCardList>
     </section>
   )
 }

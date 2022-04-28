@@ -13,10 +13,9 @@ export function SearchForm({searchQuery, setSearchQuery, checkboxStatus,setCheck
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log('first')
-    searchByQuery()
+    searchByQuery();
   }
-
+  
   return (
     <form 
       className="search-form"
