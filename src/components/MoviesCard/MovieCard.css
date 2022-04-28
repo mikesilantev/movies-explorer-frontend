@@ -8,6 +8,9 @@
 }
 .movie-card__cover {
   border-radius: 6px;
+  height: 168px;
+  object-fit: cover;
+  object-position: top;
 }
 .movie-card__save-btn {
 position: absolute;
@@ -74,9 +77,23 @@ cursor: pointer;
 }
 
 
-
-@media screen and (min-width: 1280px) {
-  .movie-card {
-/*  */
+@media screen and (min-width: 420px) {
+  .movie-card__cover {
+    height: 240px;
+  }
+}
+@media screen and (min-width: 600px) {
+  .movie-card__cover {
+    height: 300px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .movie-card__cover {
+    height: 190px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .movie-card__cover {
+    height: 201px;
   }
 }

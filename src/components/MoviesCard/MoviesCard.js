@@ -3,7 +3,6 @@ import react, { useState } from 'react';
 import './MovieCard.css';
 
 export function MovieCard({
-  key,
   cover,
   title,
   duration
@@ -22,7 +21,7 @@ export function MovieCard({
 
 
   return (
-    <article className='movie-card' key={key}>
+    <article className='movie-card'>
       <img src={cover} alt={title} className="movie-card__cover" />
 
       {

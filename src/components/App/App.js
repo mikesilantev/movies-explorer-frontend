@@ -99,8 +99,7 @@ export default function App() {
     // Поиск по массиву
   const searchByQuery = async () => {
     const performMovies = await initialMovies.filter(
-      movie => (searchQuery ? (movie.nameRU.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) :
-          (console.log('нет результатов')) && (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0)))
+      movie => (searchQuery ? movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true) && (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
     )
     saveToLocaleStorage(performMovies)
     setFilteredMovies(performMovies)

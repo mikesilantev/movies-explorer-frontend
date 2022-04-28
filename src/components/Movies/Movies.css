@@ -5,4 +5,11 @@
   background-color: #202020;
   padding: 80px 0;
   box-sizing: border-box;
+  min-height: calc(100vh - 74px - 280px);
 }
+
+@media screen and (min-width: 768px){
+  .movies {
+    min-height: calc(100vh - 74px - 174px);
+  }
+} 
