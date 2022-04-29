@@ -1,55 +1,80 @@
-import react, {useState, useEffect} from 'react';
+import react, { useState, useEffect } from 'react';
 import { MovieCard } from '../MoviesCard/MoviesCard';
 import { moviesCards } from '../../utils/moviesData';
 import { useLocation } from 'react-router-dom';
-import useChangeWindowWidth  from '../../hooks/useChangeWindowWidth';
+import useChangeWindowWidth from '../../hooks/useChangeWindowWidth';
 import './MoviesCardList.css';
 
-export function MoviesCardList({ filteredMovies }) {
+export function MoviesCardList({ 
+  filteredMovies,
+  setSavedMovie,
+  savedMovieBtnStatus,
+  setSavedMovieBtnStatus,
+ }) {
   let { pathname } = useLocation();
 
   const { width } = useChangeWindowWidth();
+  const [cardToRender, setCardToRender] = useState(0);
+  const [cardCount, setCardCount] = useState(0);
+  const moviesToAddMoreSizeS = 2;
+  const moviesToAddMoreSizeM = 3;
 
-  const {cardCount, setCardCount} = useState(0);
+  useEffect(() => {
+    if (width <= 480) {
+      setCardCount(5)
+      setCardToRender(moviesToAddMoreSizeS)
+    } 
+    if (width <= 768) {
+      setCardCount(8)
+      setCardToRender(moviesToAddMoreSizeS)
+    }  
+    if (width >= 1280){
+      setCardCount(12)
+      setCardToRender(moviesToAddMoreSizeM)
+    }
+    // console.log(width)
+  }, [width]);
 
+  function handleMoreBtn(evt) {
+    evt.preventDefault();
+    setCardCount(cardCount + cardToRender)
+  }
 
-
-
-
-  // useEffect(() => {
-  //   if (width <= 480) {
-  //     setCardCount('1')
-  //     console.log('OOOOOOOOO')
-  //   }
-  //   if (width <= 768) {
-  //     console.log('AAAAAAAAA')
-  //     setCardCount(1)
-  //   }
-  //   if (width <= 1280) {
-  //     console.log('QQQQQQQQQ')
-  //     setCardCount(1)
-  //   }
-  //   console.log(width)
-  // }, [setCardCount, width])
-
-
+  //5+2
   return (
     <section className='movies-list'>
       <div className={filteredMovies.length > 0 ? 'movie-list__card-wrap' : 'movie-list__card-error'}>
-    {filteredMovies.length > 0 ? (
-            filteredMovies.map((card) => (
-              <MovieCard
-                key={card.id}
-                cover={`https://api.nomoreparties.co/${card.image.url}`}
-                title={card.nameRU}
-                duration={card.duration} 
+        {filteredMovies.length > 0 ? (
+          // console.log(filteredMovies)
+          filteredMovies.reduce((cardAmount, card) => {
+            if (cardAmount.length < cardCount) {
+              cardAmount.push(
+                <MovieCard
+                  key={card.id}
+                  cover={`https://api.nomoreparties.co/${card.image.url}`}
+                  title={card.nameRU}
+                  duration={card.duration}
+                  trailerLink={card.trailerLink}
+                  savedMovieBtnStatus={savedMovieBtnStatus}
+                  setSavedMovieBtnStatus={setSavedMovieBtnStatus}
                 />
-            ))
-    ) : (<p className='movies-list__nulled-query'>Ничего не найдено { width }</p>)}
+              )
+            }
+
+            return cardAmount
+          }, [])
+        ) : (<p className='movies-list__nulled-query'>Ничего не найдено</p>)}
       </div>
+
+
       {
         (filteredMovies.length > cardCount)
-        && <button className='movies-list__btn'>Еще</button>
+        &&
+        <button
+          onClick={handleMoreBtn}
+          className='movies-list__btn'>
+          Еще
+        </button>
       }
 
     </section>

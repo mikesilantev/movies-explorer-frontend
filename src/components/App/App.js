@@ -49,6 +49,8 @@ export default function App() {
   const [initialMovies, setInitialMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
 
+  const [savedMovieBtnStatus, setSavedMovieBtnStatus] = useState(false);
+
   /////
   const [readyOnState, setReadyOnState] = useState(false);
 
@@ -111,140 +113,6 @@ export default function App() {
     localStorage.setItem('checkboxStatus', checkboxStatus)
     localStorage.setItem('searchQuery', searchQuery)
   }
-
-
-// const permormSearch = initialMovies.filter(
-    //   movie => (searchQuery ? (movie.nameRU.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) :
-    //     (console.log('нет результатов')) && (checkboxStatus ? (movie.durattion <= 40) : (movie.duration >= 0))))
-
-    // saveToLocaleStorage(permormSearch)
-  //   console.log('searchByQuery')
-  // }
-
-
-
-  // useEffect(() => {
-  //   const checkInitialMovies = async () => {
-  //     const localInitialMovies =  await localStorage.getItem('initialMovies')
-  //     try {
-  //       if (loggedIn && localInitialMovies === null){
-  //         const initMovie = await movieApi.getMovies()
-  //         localStorage.setItem('initialMovies', JSON.stringify(initMovie))
-
-  //       }
-  //     } 
-  //     catch (err) {
-  //       console.error(err)
-  //     }
-  //     finally {
-  //       setReadyOnState(true)
-  //     }
-  //   }
-  //   checkInitialMovies();
-  // }, [loggedIn])
-
-
-  // Поиск по массиву
-  // const searchByQuery = async () => {
-  //   try {
-  //     const localInitialMovies = localStorage.getItem('initialMovies')
-
-  //     if(!localInitialMovies){
-  //       const getMovies = await movieApi.getMovies();
-
-  //       localStorage.setItem('initialMovies', JSON.stringify(getMovies))
-  //       console.log(localStorage)
-  //     } else {
-  //       setInitialMovies(JSON.parse(setInitialMovies))
-  //     }
-  //   }
-  //   catch (err) {
-  //     console.error(err)
-  //   }
-  //   finally {
-  //     console.log(initialMovies)
-  //   }
-
-    // const localInitialMovies = localStorage.getItem('initialMovies')
-    // setInitialMovies(JSON.parse(localInitialMovies))
-    // console.log(initialMovies)
-
-
-    // const permormSearch = initialMovies.filter(
-    //   movie => (searchQuery ? (movie.nameRU.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) :
-    //     (console.log('нет результатов')) && (checkboxStatus ? (movie.durattion <= 40) : (movie.duration >= 0))))
-
-    // saveToLocaleStorage(permormSearch)
-  //   console.log('searchByQuery')
-  // }
-
-  // function saveToLocaleStorage(searh) {
-  //   localStorage.setItem('filteredMovies', JSON.stringify(searh))
-  //   localStorage.setItem('checkboxStatus', checkboxStatus)
-  //   localStorage.setItem('searchQuery', searchQuery)
-  // }
-
-
-
-  // useEffect(() => {
-  //   const checkToken = async () => {
-  //     const token = localStorage.getItem('JWT_TOKEN')
-  //     try {
-  //       console.log('1')
-  //       if (token) {
-  //         mainApi.getUser(token)
-  //           .then((userData) => {
-  //             setCurrentUser(userData)
-  //           })
-  //       }
-  //     }
-  //     catch (err) {
-  //       console.log(err)
-  //     }
-  //     finally {
-  //       setLoggedIn(true)
-  //       console.log(token)
-  //     }
-  //   }
-  //   checkToken();
-  // }, [])
-
-  // useEffect(() => {
-  //   const localInitialMovies = localStorage.getItem('initialMovies')
-  //   console.log("Изменения в loggedIn")
-  //   try {
-  //     if (loggedIn && localInitialMovies === null) {
-  //       movieApi.getMovies()
-  //         .then((res) => {
-  //           localStorage.setItem('initialMovies', JSON.stringify(res))
-  //         })
-  //     }
-  //   }
-  //   catch (err) {
-  //     console.err(err)
-  //   }
-  //   finally {
-  //     setInitialMovies(JSON.parse(localInitialMovies));
-  //   }
-  // }, [loggedIn])
-
-  // // Поиск по массиву
-  // function searchByQuery() {
-  //   const permormSearch = initialMovies.filter(
-  //     movie => (searchQuery ? (movie.nameRU.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) :
-  //       ('По запросу ничего не найдено') && (checkboxStatus ? (movie.durattion <= 40) : (movie.duration >= 0))))
-
-  //   saveToLocaleStorage(permormSearch)
-  // }
-
-  // function saveToLocaleStorage(searh) {
-  //   localStorage.setItem('filteredMovies', JSON.stringify(searh))
-  //   localStorage.setItem('checkboxStatus', checkboxStatus)
-  //   localStorage.setItem('searchQuery', searchQuery)
-  // }
-
-
-
 
 
 
@@ -439,6 +307,9 @@ export default function App() {
 
                 searchByQuery={searchByQuery}
                 filteredMovies={filteredMovies}
+
+                savedMovieBtnStatus={savedMovieBtnStatus}
+                setSavedMovieBtnStatus={setSavedMovieBtnStatus}
               />
             }></Route>
             <Route path='saved-movies' element={<SavedMovies />}></Route>

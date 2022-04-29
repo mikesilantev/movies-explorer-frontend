@@ -1,4 +1,5 @@
 // константы юрл и бестфильм
+const movieUrl = 'https://api.nomoreparties.co/'
 
 class MainApi {
   constructor({ url }) {
@@ -71,6 +72,32 @@ class MainApi {
   }
 
 
+  saveMovie({data, token}){
+    return fetch (`${this._url}/movies'`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        country: data.country,
+        director: data.director,
+        duration: data.duration,
+        year: data.year,
+        description: data.description,
+        image: data.image,
+        trailerLink: data.trailerLink,
+        nameRU: data.nameRU,
+        nameEN: data.nameEN,
+        thumbnail: `${movieUrl}/${data.image.thumbnail.url}`,
+        movieId: data.movieId,
+      })
+    })
+  }
+
+
+
+
   testApi({data}) {
     console.log(this._url);
     console.log(data);
@@ -101,17 +128,3 @@ const mainApi = new MainApi({
 
 
 export default mainApi;
-// кноструктор майн апи
-// Проверка ответа
-
-// Регистрация
-
-// Авторизация
-
-// Получение инфо от юзера
-
-// Обновление юзера
-// получение сохраненных фильмов
-
-// сохранить фильм
-// удалить фильм

@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useFormWithValidation } from "../../hooks/useFormWithValidation";
-import { FilterCheckbox } from "../FilterCheckbox/FilterCheckbox";
+import { useEffect } from 'react';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import { FilterCheckbox } from '../FilterCheckbox/FilterCheckbox';
 
 import './SearchForm.css';
 
@@ -18,27 +18,27 @@ export function SearchForm({searchQuery, setSearchQuery, checkboxStatus,setCheck
   
   return (
     <form 
-      className="search-form"
+      className='search-form'
       onSubmit={handleSubmit}
       >
    
-      <span className="search-form__search-icon"></span>
-      <label htmlFor="search-input" className="search-form__input-wrap">
+      <span className='search-form__search-icon'></span>
+      <label htmlFor='search-input' className='search-form__input-wrap'>
 
         <input 
           onChange={handleQueryChange}
           value={searchQuery}
-          type="text" 
-          name="search" 
-          id="search-input" 
-          className="search-form__input" 
-          placeholder="Фильм" 
+          type='text' 
+          name='search' 
+          id='search-input' 
+          className='search-form__input' 
+          placeholder='Фильм' 
           required
         />
 
         <button 
-          type="submit" 
-          className="search-form__button"
+          type='submit' 
+          className='search-form__button'
           ></button>
       </label>
       <FilterCheckbox 

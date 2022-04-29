@@ -6,6 +6,9 @@
 
   /* width: 300px; */
 }
+.movie-card__cover{
+width: 100%;
+}
 .movie-card__cover {
   border-radius: 6px;
   height: 168px;

@@ -5,42 +5,45 @@ import './MovieCard.css';
 export function MovieCard({
   cover,
   title,
-  duration
+  duration,
+  trailerLink,
+  savedMovieBtnStatus,
+  setSavedMovieBtnStatus,
 }) {
-  const [savedMovie, setSavedMovie] = useState(false);
 
+const [saveButtonStatus, setSaveButtonStatus] = useState(false);
+
+
+
+  //
   function saveMovieClick() {
-    setSavedMovie(true)
-    console.log(savedMovie)
+    console.log(saveButtonStatus)
+    setSaveButtonStatus(!saveButtonStatus)
   }
 
-  function delSavedMovieClick() {
-    setSavedMovie(false)
-    console.log(savedMovie)
-  }
+  //
 
+  function handleClick() {
+    console.log('SAVE')
+    console.log(trailerLink)
+  };
 
   return (
     <article className='movie-card'>
-      <img src={cover} alt={title} className="movie-card__cover" />
+      <a href={trailerLink} target="_blank" rel="noreferrer">
+        <img src={cover} alt={title} onClick={handleClick} className='movie-card__cover' />
+      </a>
 
-      {
+      {saveButtonStatus ? (
+      <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
+      ) : (
+      <button className='movie-card__save-btn movie-card__saved' onClick={saveMovieClick}></button>
+        )}
 
-        !savedMovie ?
-          (
-            <button
-              className="movie-card__save-btn movie-card__remove-btn"
-              onClick={saveMovieClick}></button>
-          ) :
-          (
-            <button className="movie-card__save-btn movie-card__saved" onClick={delSavedMovieClick}></button>
-          )
-      }
+      
 
 
-      {/* <button className={savedMovieClassName}>Сохранить</button> */}
-
-      <div className="movie-card__description">
+      <div className='movie-card__description'>
         <p className='movie-card__title'>{title}</p>
         <span className='movie-card__duration'>{duration}</span>
       </div>
@@ -48,3 +51,21 @@ export function MovieCard({
     </article>
   )
 }
+
+
+// {
+
+//   !savedMovie ?
+//     (
+//       <>
+//        <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
+//       <button
+//         className='movie-card__save-btn movie-card__remove-btn'
+//         onClick={saveMovieClick}></button>
+//       </>
+
+//     ) :
+//     (
+//       <button className='movie-card__save-btn movie-card__saved' onClick={delSavedMovieClick}></button>
+//     )
+// }
