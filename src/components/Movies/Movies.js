@@ -12,9 +12,8 @@ export default function Movies({
   checkboxStatus, 
   setCheckboxStatus, 
   searchByQuery, 
-  filteredMovies, 
-  savedMovieBtnStatus,
-  setSavedMovieBtnStatus,
+  filteredMovies,
+  saveMovieToDb,
 }){
 
 
@@ -31,8 +30,7 @@ export default function Movies({
       </SearchForm>
       <MoviesCardList
         filteredMovies={filteredMovies}
-        savedMovieBtnStatus={savedMovieBtnStatus}
-        setSavedMovieBtnStatus={setSavedMovieBtnStatus}
+        saveMovieToDb={saveMovieToDb}
       ></MoviesCardList>
     </section>
   )

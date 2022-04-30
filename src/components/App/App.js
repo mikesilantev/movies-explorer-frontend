@@ -49,8 +49,6 @@ export default function App() {
   const [initialMovies, setInitialMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
 
-  const [savedMovieBtnStatus, setSavedMovieBtnStatus] = useState(false);
-
   /////
   const [readyOnState, setReadyOnState] = useState(false);
 
@@ -115,6 +113,32 @@ export default function App() {
   }
 
 
+  const saveMovieToDb = async (data) => {
+    const token = localStorage.getItem('JWT_TOKEN');
+
+    console.log(data)
+    try {
+      const savedMovies = await mainApi.saveMovie(data)
+
+      // console.log(data.director)
+      // console.log(data.country)
+      // console.log(data.duration)
+      // console.log(data.year)
+      // console.log(data.description)
+      // console.log(data.image)
+      // console.log(data.trailerLink)
+      // console.log(data.thumbnail)
+      // console.log(data.movieId)
+      // console.log(data.nameRU)
+      // console.log(data.nameEN)
+
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+
+
 
 
   // Авторизация пользователя /signin
@@ -148,148 +172,6 @@ export default function App() {
       })
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // del
-  // console.log('======================================')
-  // console.log('Мы находимся: ' + pathname)
-  // console.log('Состояние авторизации: ' + loggedIn)
-  // console.log('Состояние CurrentUserContext: ')
-  // console.log(currentUser)
-  // console.log('======================================')
-  // // del
-
-  // Проверка аутентификации
-  // и загрузка данных в контекст провайдер
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     const token = localStorage.getItem('JWT_TOKEN');
-  //     mainApi.getUser(token)
-  //       .then((userData) => {
-  //         setCurrentUser(userData)
-  //       })
-  //       .catch(err => {
-  //         console.error(err);
-  //       })
-  //   } else {
-  //     console.log('Не авторизован')
-  //   }
-  // }, [loggedIn]);
-
-  // Проверка 
-  // Если авторизован и в localStorage нету массива с фильмами
-  // делаем запрос к апи и помещаем в localStorage весь список фильмов
-  // в initialMovies. Следом помещаем в стейт initialMovies распарсенные данные
-
-  // useEffect(() => {
-  //   const localInitialMovies = localStorage.getItem('initialMovies');
-  //   if (loggedIn && !localInitialMovies) {
-  //     movieApi.getMovies()
-  //       .then((res) => {
-  //         localStorage.setItem('initialMovies', JSON.stringify(res))
-  //       })
-  //   }
-  // }, [loggedIn])
-
-  // useEffect(() => {
-  //   const localInitialMovies = localStorage.getItem('initialMovies');
-  //   if (loggedIn && localInitialMovies) {
-  //     setInitialMovies(JSON.parse(localInitialMovies))
-  //   }
-  // }, [loggedIn])
-
-  // // Поиск по массиву
-  // function searchByQuery(){
-  //   const permormSearch = initialMovies.filter(
-  //     movie => (searchQuery ? (movie.nameRU.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())) : 
-  //     ('По запросу ничего не найдено') && (checkboxStatus ? (movie.durattion <= 40): (movie.duration >= 0)))
-  //   )
-  //   saveToLocaleStorage(permormSearch)
-
-  // }
-
-  // function saveToLocaleStorage(searh){
-  //     localStorage.setItem('filteredMovies', JSON.stringify(searh))
-  //     localStorage.setItem('checkboxStatus', checkboxStatus)
-  //     localStorage.setItem('searchQuery', searchQuery)
-  // }
-
-
-
-  // // Регистрация пользователя /signup
-  // function handleSignup(data) {
-  //   mainApi.signup({ data })
-  //     .then(res => {
-  //       navigate('/movies');
-  //     })
-  // }
-
-
-  // // Авторизация пользователя /signin
-  // function handleSignin(data) {
-  //   mainApi.signin({ data })
-  //     //Получаем в ответ токен
-  //     .then((res) => {
-  //       localStorage.setItem('JWT_TOKEN', res.token);
-  //       setCurrentUser(data)
-  //       setLoggedIn(true)
-  //       navigate('/movies', { replace: true });
-  //     })
-  //     .catch(err => {
-  //       if (err === 'Ошибка: 400') {
-  //         setApiErrorText('Вы ввели неправильный логин или пароль.')
-  //       }
-  //       if (err === 'Ошибка: 401') {
-  //         setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
-  //       }
-  //       if (err === 'Ошибка: 409') {
-  //         setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
-  //       }
-  //       if (err === 'Ошибка: 429') {
-  //         setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
-  //       }
-  //       else {
-  //         setApiErrorText('Вы ввели неправильный логин или пароль. ')
-  //         console.log(apiErrorText)
-  //       }
-
-  //     })
-  // }
-
-  // function patchUser(data) {
-  //   const token = localStorage.getItem('JWT_TOKEN');
-  //   mainApi.patchUser({ data, token })
-  //     .then(
-  //       res => {
-  //         setCurrentUser(data);
-  //       }
-  //     ).catch(err => {
-  //       setApiErrorText(err)
-  //     })
-  // }
-  // // Выйти из системы
-  // function handleSignOut() {
-  //   setLoggedIn(false);
-  //   localStorage.removeItem('JWT_TOKEN');
-  //   navigate('/', { replace: true });
-  //   console.log(navigate.name)
-  //   return console.error('Ну и на хуя ты вышел?');
-  // }
-
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
@@ -307,9 +189,7 @@ export default function App() {
 
                 searchByQuery={searchByQuery}
                 filteredMovies={filteredMovies}
-
-                savedMovieBtnStatus={savedMovieBtnStatus}
-                setSavedMovieBtnStatus={setSavedMovieBtnStatus}
+                saveMovieToDb={saveMovieToDb}
               />
             }></Route>
             <Route path='saved-movies' element={<SavedMovies />}></Route>
@@ -346,3 +226,23 @@ export default function App() {
     </CurrentUserContext.Provider>
   )
 }
+
+
+
+  // del
+  // console.log('======================================')
+  // console.log('Мы находимся: ' + pathname)
+  // console.log('Состояние авторизации: ' + loggedIn)
+  // console.log('Состояние CurrentUserContext: ')
+  // console.log(currentUser)
+  // console.log('======================================')
+  // // del
+
+  // // Выйти из системы
+  // function handleSignOut() {
+  //   setLoggedIn(false);
+  //   localStorage.removeItem('JWT_TOKEN');
+  //   navigate('/', { replace: true });
+  //   console.log(navigate.name)
+  //   return console.error('Ну и на хуя ты вышел?');
+  // }

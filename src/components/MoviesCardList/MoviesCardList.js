@@ -1,15 +1,12 @@
 import react, { useState, useEffect } from 'react';
 import { MovieCard } from '../MoviesCard/MoviesCard';
-import { moviesCards } from '../../utils/moviesData';
 import { useLocation } from 'react-router-dom';
 import useChangeWindowWidth from '../../hooks/useChangeWindowWidth';
 import './MoviesCardList.css';
 
 export function MoviesCardList({ 
   filteredMovies,
-  setSavedMovie,
-  savedMovieBtnStatus,
-  setSavedMovieBtnStatus,
+  saveMovieToDb,
  }) {
   let { pathname } = useLocation();
 
@@ -53,10 +50,11 @@ export function MoviesCardList({
                   key={card.id}
                   cover={`https://api.nomoreparties.co/${card.image.url}`}
                   title={card.nameRU}
-                  duration={card.duration}
+                  durationMovie={card.duration}
                   trailerLink={card.trailerLink}
-                  savedMovieBtnStatus={savedMovieBtnStatus}
-                  setSavedMovieBtnStatus={setSavedMovieBtnStatus}
+                  filteredMovies={filteredMovies}
+                  movie={card}
+                  saveMovieToDb={saveMovieToDb}
                 />
               )
             }

@@ -1,6 +1,7 @@
 // константы юрл и бестфильм
 const movieUrl = 'https://api.nomoreparties.co/'
 
+
 class MainApi {
   constructor({ url }) {
     this._url = url;
@@ -72,27 +73,43 @@ class MainApi {
   }
 
 
-  saveMovie({data, token}){
-    return fetch (`${this._url}/movies'`, {
+  // saveMovie({data, token}){
+  saveMovie(movieData){
+    console.log( JSON.stringify({
+      country: movieData.country,
+      director: movieData.director,
+      duration: movieData.duration,
+      year: movieData.year,
+      description: movieData.description,
+      image: `${movieUrl}${movieData.image.url}`,
+      trailerLink: movieData.trailerLink,
+      thumbnail: `${movieUrl}${movieData.thumbnail}`,
+      movieId: movieData.id,
+      nameRU: movieData.nameRU,
+      nameEN: movieData.nameEN,
+    }))
+    // console.log(token)
+    return fetch (`${this._url}/movies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        // 'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
-        country: data.country,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
-        image: data.image,
-        trailerLink: data.trailerLink,
-        nameRU: data.nameRU,
-        nameEN: data.nameEN,
-        thumbnail: `${movieUrl}/${data.image.thumbnail.url}`,
-        movieId: data.movieId,
+        country: movieData.country,
+        director: movieData.director,
+        duration: movieData.duration,
+        year: movieData.year,
+        description: movieData.description,
+        image: `${movieUrl}${movieData.image.url}`,
+        trailerLink: movieData.trailerLink,
+        thumbnail: `${movieUrl}${movieData.thumbnail}`,
+        movieId: movieData.id,
+        nameRU: movieData.nameRU,
+        nameEN: movieData.nameEN,
       })
     })
+    .then(res => this._checkResult(res))
   }
 
 
