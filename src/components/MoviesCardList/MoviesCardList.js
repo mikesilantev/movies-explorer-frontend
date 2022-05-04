@@ -12,7 +12,7 @@ export function MoviesCardList({
   // del?
   searchByQuery,
   checkboxStatus,
-  // saveMovieToDb,
+  saveMovieToDb,
 }) {
 
   let { pathname } = useLocation();
@@ -79,6 +79,7 @@ export function MoviesCardList({
                       durationMovie={card.duration}
                       trailerLink={card.trailerLink}
                       movie={card}
+                      saveMovieToDb={saveMovieToDb}
                     />
                   )
                 }
@@ -90,7 +91,7 @@ export function MoviesCardList({
         }
       </div>
       {
-        (filteredMovies.length > cardCount)
+        (renderMovies.length > cardCount)
         &&
         <button
           onClick={handleMoreBtn}

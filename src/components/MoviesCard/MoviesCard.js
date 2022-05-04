@@ -32,17 +32,9 @@ export function MovieCard({
 
 const [saveButtonStatus, setSaveButtonStatus] = useState(false);
 
-console.log(movie)
-
   //
-  function saveMovieClick() {
-    // console.log('Кнопка сохранить')
-    // console.log(movie)
-    // console.log(movie.country)
-    // console.log(movie.description)
-
+  function saveMovieClick(evt) {
     saveMovieToDb({
-      // movie
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',
       duration: movie.duration || 0,
@@ -53,8 +45,35 @@ console.log(movie)
       thumbnail: movie.image.formats.thumbnail.url,
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
-    })
+      nameEN: movie.nameEN, 
+    });
+    console.log('КНОПКА ИЗ MOVIES.JS')
+    console.log(movie);
+  
+  }
+
+
+
+
+    // console.log('Кнопка сохранить')
+    // console.log(movie)
+    // console.log(movie.country)
+    // console.log(movie.description)
+
+    // saveMovieToDb({
+    //   // movie
+    //   country: movie.country || 'пусто',
+    //   director: movie.director || 'пусто',
+    //   duration: movie.duration || 0,
+    //   year: movie.year || 'пусто',
+    //   description: movie.description || 'пусто',
+    //   image: movie.image.url,
+    //   trailerLink: movie.trailerLink,
+    //   thumbnail: movie.image.formats.thumbnail.url,
+    //   movieId: movie.id,
+    //   nameRU: movie.nameRU,
+    //   nameEN: movie.nameEN,
+    // })
 
     // console.log(saveButtonStatus)
     // setSaveButtonStatus(!saveButtonStatus)
@@ -73,7 +92,7 @@ console.log(movie)
     // });
     
 // console.log(movie)
-  }
+
 
   //
 

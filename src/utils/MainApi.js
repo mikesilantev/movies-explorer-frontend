@@ -74,29 +74,32 @@ class MainApi {
 
 
   // saveMovie({data, token}){
-  saveMovie({movieData , token}){
-    console.log(movieData)
-    console.log(token)
+  saveMovie(data , token){
+
+    // console.log(data, token)
+    console.log(data.image)
     // console.log(token)
     return fetch (`${this._url}/movies`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        // 'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
-        // country: movieData.country,
-        // director: movieData.director,
-        // duration: movieData.duration,
-        // year: movieData.year,
-        // description: movieData.description,
-        // image: `${movieUrl}${movieData.image}`,
-        // trailerLink: movieData.trailerLink,
-        // thumbnail: `${movieUrl}${movieData.thumbnail}`,
-        // movieId: movieData.movieId,
-        // nameRU: movieData.nameRU,
-        // nameEN: movieData.nameEN,
-      })
+        country: data.country,
+        director: data.director,
+        duration: data.duration,
+        year: data.year,
+        description: data.description,
+        image: `${movieUrl}${data.image}`,
+        trailerLink: data.trailerLink,
+        nameRU: data.nameRU,
+        nameEN: data.nameEN,
+        thumbnail: `${movieUrl}${data.thumbnail}`,
+        movieId: data.movieId,
+      }
+      )
     })
     .then(res => this._checkResult(res))
   }
@@ -104,12 +107,14 @@ class MainApi {
 
 
 
+  
+
   testApi({data}) {
     console.log(this._url);
     console.log(data);
     console.log({data});
 
-    return fetch (`${this._url}/signin`, {
+    return fetch (`${this._url}/movies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
