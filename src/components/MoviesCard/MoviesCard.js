@@ -47,9 +47,6 @@ const [saveButtonStatus, setSaveButtonStatus] = useState(false);
       nameRU: movie.nameRU,
       nameEN: movie.nameEN, 
     });
-    console.log('КНОПКА ИЗ MOVIES.JS')
-    console.log(movie);
-  
   }
 
 
