@@ -1,16 +1,14 @@
 // Layout
-import { AppLayout } from "../AppLayout/AppLayout";
-import ProfileLayout from "../ProfileLayout/ProfileLayout";
-
-import Test from "../Test/Test";
+import { AppLayout } from '../AppLayout/AppLayout';
+import ProfileLayout from '../ProfileLayout/ProfileLayout';
 //
-import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import { useState, useCallback, Suspense, useEffect, Children } from 'react';
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import './App.css'
 // API
-import mainApi from "../../utils/MainApi";
-import movieApi from "../../utils/MovieApi";
+import mainApi from '../../utils/MainApi';
+import movieApi from '../../utils/MovieApi';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
@@ -18,137 +16,116 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
-
-import { Register } from "../Register/Register";
-import { Login } from "../Login/Login";
-import { Profile } from "../Profile/Profile";
-import { PageNotFound } from "../PageNotFound/PageNotFound";
+import { Register } from '../Register/Register';
+import { Login } from '../Login/Login';
+import { Profile } from '../Profile/Profile';
+import { PageNotFound } from '../PageNotFound/PageNotFound';
 
 export default function App() {
   const navigate = useNavigate();
-
-  // Переменные состояния
-  // Авторизован или нет
+  
   const [loggedIn, setLoggedIn] = useState(false);
-
-  //Запись в контекст  
   const [currentUser, setCurrentUser] = useState({});
-
-  //Состояние ошибок из API
-  const [apiErrorText, setApiErrorText] = useState('');
-  let { pathname } = useLocation()
-
-  // Фильмы
-  // initialMovies - стейт с со всеми фильмами, который берется
-  // из localStorage
-  // filteredMovies - стейт с фильмами после searchQuery запроса
-
-
-  const [localInitialMovies, setLocalInitialMovies] = useState(localStorage.getItem('initialMovies'))
-
   const [initialMovies, setInitialMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-
-  /////
-  const [readyOnState, setReadyOnState] = useState(false);
-
-
-
-  // Поиск
-  // searchQuery - стейт с запросом для поиска
-  // checkboxStatus - стейт с состоянием чекбокса короткометражка
   // handleSearch - нажатие на кнопку поиска состояние
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+ 
+  
+  const [moviesBySearch, setMoviesBySearch] = useState([]);
 
-  // Заходим в приложение
-  // Проверка токена
-  // Если все в порядке loggedIn true
+  // unuse
+  // const [isLoadingMovies, setIsLoadingMovies] = useState(false);
+  // const [preloader, setPreloader] = useState(false);
 
+  // loggedIn
   useEffect(() => {
-    const checkToken = async () => {
-      const token = localStorage.getItem('JWT_TOKEN')
-      try {
+    const token = localStorage.getItem('JWT_TOKEN')
+    return () => {
+      async function checkTokenAndCurrentUser() {
         if (token) {
-          const userData =  await mainApi.getUser(token)
-          setCurrentUser(userData)
+          const getUser = await mainApi.getUser(token)
+          setCurrentUser(getUser)
           setLoggedIn(true)
+          console.log(token)
         }
       }
-      catch (err) {console.log(err)}
-      finally {console.log(token)}
-    }
-    checkToken();
-  }, [])
+      checkTokenAndCurrentUser();
+    };
+  }, []);
+
 
   useEffect(() => {
-    let localInitialMovies = localStorage.getItem('initialMovies')
-    const getInitialMovies = async () => {
-      if (loggedIn && !localInitialMovies) {
-        const getMovies = await movieApi.getMovies()
-        localInitialMovies = localStorage.setItem('initialMovies', JSON.stringify(getMovies))
-      } else {
-        // const setMovies = await setInitialMovies(JSON.parse(localInitialMovies))
-        setInitialMovies(JSON.parse(localInitialMovies))
-        console.log(initialMovies)
+    let moviesToLocalStorage = localStorage.getItem('initialMovies')
+
+    if (loggedIn && !moviesToLocalStorage) {
+      try {
+        console.log('first')
+        async function getMovies() {
+          const getMovies = await movieApi.getMovies()
+          moviesToLocalStorage = await localStorage.setItem('initialMovies', JSON.stringify(getMovies))
+          const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'))
+          setInitialMovies(getLocalMovies)
+        }
+        getMovies();
       }
+      catch (err) {
+        console.log(err)
+      }
+      finally {
+        console.log('Закрывай прелоадер')
+      }
+    } else {
+      console.log('НИЧЕГО НЕ ДЕЛАЕМ')
+      async function saveMoveToState() {
+        const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'))
+        setInitialMovies(getLocalMovies)
+        // console.log(initialMovies)
+      }
+      saveMoveToState();
     }
-    getInitialMovies()
   }, [loggedIn])
 
-    // Поиск по массиву
-  const searchByQuery = async () => {
-    const performMovies = await initialMovies.filter(
-      movie => (searchQuery ? movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true) && (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
-    )
-    saveToLocaleStorage(performMovies)
-    setFilteredMovies(performMovies)
-    // console.log('filteredMovies' + performMovies)
+
+  
+  useEffect(() =>{
+    // console.log(initialMovies)
+    // console.log(searchQuery)
+    async function filterMovie(){
+       const perfomMovies = await initialMovies.filter(
+        movie => (
+          searchQuery ? 
+          movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true) 
+          && 
+          (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
+      )
+      // console.log(perfomMovies)
+      setFilteredMovies(perfomMovies)
+    }
+    filterMovie();
+  }, [searchQuery])
+  async function searchByQuery() {
+    // console.log('searchByQuery')
     // console.log(filteredMovies)
+    saveToLocaleStorage(filteredMovies)
+    setSearchResult(filteredMovies)
   }
-    function saveToLocaleStorage(searh) {
-    localStorage.setItem('filteredMovies', JSON.stringify(searh))
+
+  function saveToLocaleStorage(searсh) {
+    localStorage.setItem('filteredMovies', JSON.stringify(searсh))
     localStorage.setItem('checkboxStatus', checkboxStatus)
     localStorage.setItem('searchQuery', searchQuery)
   }
 
 
-  // const saveMovieToDb = async (data) => {
-  //   const token = localStorage.getItem('JWT_TOKEN');
-
-  //   console.log(data)
-  //   try {
-  //     const savedMovies = await mainApi.saveMovie(data)
-
-  //     // console.log(data.director)
-  //     // console.log(data.country)
-  //     // console.log(data.duration)
-  //     // console.log(data.year)
-  //     // console.log(data.description)
-  //     // console.log(data.image)
-  //     // console.log(data.trailerLink)
-  //     // console.log(data.thumbnail)
-  //     // console.log(data.movieId)
-  //     // console.log(data.nameRU)
-  //     // console.log(data.nameEN)
-
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
-
-  function saveMovieToDb(data) {
-    const token = localStorage.getItem('JWT_TOKEN');
 
 
-    mainApi
-      .saveMovie(data, token)
-    .then((card) => {
-      console.log(card)
-    })
-  }
 
-
+  //Состояние ошибок из API
+  const [apiErrorText, setApiErrorText] = useState('');
+  let { pathname } = useLocation()
 
 
   // Авторизация пользователя /signin
@@ -186,7 +163,6 @@ export default function App() {
 
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-
         <Route path='/' element={<AppLayout loggedIn={loggedIn} />}>
           <Route index element={<Main />} />
           <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
@@ -196,10 +172,12 @@ export default function App() {
                 setSearchQuery={setSearchQuery}
                 checkboxStatus={checkboxStatus}
                 setCheckboxStatus={setCheckboxStatus}
-
                 searchByQuery={searchByQuery}
+                initialMovies={initialMovies}
+
+                searchResult={searchResult}
                 filteredMovies={filteredMovies}
-                saveMovieToDb={saveMovieToDb}
+              // saveMovieToDb={saveMovieToDb}
               />
             }></Route>
             <Route path='saved-movies' element={<SavedMovies />}></Route>
@@ -218,41 +196,21 @@ export default function App() {
         </Route>
 
 
-        <Route path="/signup"
+        <Route path='/signup'
           element=
           {<Register
           // handleSignup={handleSignup}
           />} />
 
-        <Route path="/signin"
+        <Route path='/signin'
           element=
           {<Login
             handleSignin={handleSignin}
             apiErrorText={apiErrorText}
           />}
         />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
     </CurrentUserContext.Provider>
   )
 }
-
-
-
-  // del
-  // console.log('======================================')
-  // console.log('Мы находимся: ' + pathname)
-  // console.log('Состояние авторизации: ' + loggedIn)
-  // console.log('Состояние CurrentUserContext: ')
-  // console.log(currentUser)
-  // console.log('======================================')
-  // // del
-
-  // // Выйти из системы
-  // function handleSignOut() {
-  //   setLoggedIn(false);
-  //   localStorage.removeItem('JWT_TOKEN');
-  //   navigate('/', { replace: true });
-  //   console.log(navigate.name)
-  //   return console.error('Ну и на хуя ты вышел?');
-  // }

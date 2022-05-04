@@ -14,8 +14,9 @@ export default function Movies({
   searchByQuery, 
   filteredMovies,
   saveMovieToDb,
+  searchResult,
+  initialMovies,
 }){
-
 
   return (
     <section className='movies'>
@@ -25,12 +26,16 @@ export default function Movies({
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
         searchByQuery={searchByQuery}
+
+        initialMovies={initialMovies}
       >
 
       </SearchForm>
       <MoviesCardList
         filteredMovies={filteredMovies}
         saveMovieToDb={saveMovieToDb}
+        searchResult={searchResult}
+        searchByQuery={searchByQuery}
       ></MoviesCardList>
     </section>
   )
