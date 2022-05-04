@@ -24,7 +24,7 @@ import { PageNotFound } from '../PageNotFound/PageNotFound';
 export default function App() {
   const navigate = useNavigate();
   
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [initialMovies, setInitialMovies] = useState([]);
   // handleSearch - нажатие на кнопку поиска состояние
@@ -105,8 +105,10 @@ export default function App() {
       setFilteredMovies(perfomMovies)
     }
     filterMovie();
-  }, [searchQuery])
+  }, [searchQuery, searchResult, checkboxStatus])
+
   async function searchByQuery() {
+    console.log('кнопка поиска')
     // console.log('searchByQuery')
     // console.log(filteredMovies)
     saveToLocaleStorage(filteredMovies)

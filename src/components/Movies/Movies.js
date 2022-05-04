@@ -36,6 +36,8 @@ export default function Movies({
         saveMovieToDb={saveMovieToDb}
         searchResult={searchResult}
         searchByQuery={searchByQuery}
+
+        checkboxStatus={checkboxStatus}
       ></MoviesCardList>
     </section>
   )
