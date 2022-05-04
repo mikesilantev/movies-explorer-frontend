@@ -1,5 +1,5 @@
 // константы юрл и бестфильм
-const movieUrl = 'https://api.nomoreparties.co/'
+const movieUrl = 'https://api.nomoreparties.co'
 
 
 class MainApi {
@@ -74,39 +74,28 @@ class MainApi {
 
 
   // saveMovie({data, token}){
-  saveMovie(movieData){
-    console.log( JSON.stringify({
-      country: movieData.country,
-      director: movieData.director,
-      duration: movieData.duration,
-      year: movieData.year,
-      description: movieData.description,
-      image: `${movieUrl}${movieData.image.url}`,
-      trailerLink: movieData.trailerLink,
-      thumbnail: `${movieUrl}${movieData.thumbnail}`,
-      movieId: movieData.id,
-      nameRU: movieData.nameRU,
-      nameEN: movieData.nameEN,
-    }))
+  saveMovie({movieData , token}){
+    console.log(movieData)
+    console.log(token)
     // console.log(token)
     return fetch (`${this._url}/movies`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
         // 'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
-        country: movieData.country,
-        director: movieData.director,
-        duration: movieData.duration,
-        year: movieData.year,
-        description: movieData.description,
-        image: `${movieUrl}${movieData.image.url}`,
-        trailerLink: movieData.trailerLink,
-        thumbnail: `${movieUrl}${movieData.thumbnail}`,
-        movieId: movieData.id,
-        nameRU: movieData.nameRU,
-        nameEN: movieData.nameEN,
+        // country: movieData.country,
+        // director: movieData.director,
+        // duration: movieData.duration,
+        // year: movieData.year,
+        // description: movieData.description,
+        // image: `${movieUrl}${movieData.image}`,
+        // trailerLink: movieData.trailerLink,
+        // thumbnail: `${movieUrl}${movieData.thumbnail}`,
+        // movieId: movieData.movieId,
+        // nameRU: movieData.nameRU,
+        // nameEN: movieData.nameEN,
       })
     })
     .then(res => this._checkResult(res))

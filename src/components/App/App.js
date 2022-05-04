@@ -113,30 +113,40 @@ export default function App() {
   }
 
 
-  const saveMovieToDb = async (data) => {
+  // const saveMovieToDb = async (data) => {
+  //   const token = localStorage.getItem('JWT_TOKEN');
+
+  //   console.log(data)
+  //   try {
+  //     const savedMovies = await mainApi.saveMovie(data)
+
+  //     // console.log(data.director)
+  //     // console.log(data.country)
+  //     // console.log(data.duration)
+  //     // console.log(data.year)
+  //     // console.log(data.description)
+  //     // console.log(data.image)
+  //     // console.log(data.trailerLink)
+  //     // console.log(data.thumbnail)
+  //     // console.log(data.movieId)
+  //     // console.log(data.nameRU)
+  //     // console.log(data.nameEN)
+
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
+
+  function saveMovieToDb(data) {
     const token = localStorage.getItem('JWT_TOKEN');
 
-    console.log(data)
-    try {
-      const savedMovies = await mainApi.saveMovie(data)
 
-      // console.log(data.director)
-      // console.log(data.country)
-      // console.log(data.duration)
-      // console.log(data.year)
-      // console.log(data.description)
-      // console.log(data.image)
-      // console.log(data.trailerLink)
-      // console.log(data.thumbnail)
-      // console.log(data.movieId)
-      // console.log(data.nameRU)
-      // console.log(data.nameEN)
-
-    } catch (err) {
-      console.error(err)
-    }
+    mainApi
+      .saveMovie(data, token)
+    .then((card) => {
+      console.log(card)
+    })
   }
-
 
 
 

@@ -32,7 +32,20 @@ export function MovieCard({
 
 const [saveButtonStatus, setSaveButtonStatus] = useState(false);
 
-console.log(movie)
+console.log({
+  // movie
+  country: movie.country || 'пусто',
+  director: movie.director || 'пусто',
+  duration: movie.duration || 0,
+  year: movie.year || 'пусто',
+  description: movie.description || 'пусто',
+  image: movie.image.url,
+  trailerLink: movie.trailerLink,
+  thumbnail: movie.image.formats.thumbnail.url,
+  movieId: movie.id,
+  nameRU: movie.nameRU,
+  nameEN: movie.nameEN,
+})
 
   //
   function saveMovieClick() {
