@@ -18,8 +18,9 @@ export default function SavedMovies({
   return (
     <section className='movies'>
       <SearchForm
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
       >
-
       </SearchForm>
       <MoviesCardList
       ></MoviesCardList>

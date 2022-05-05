@@ -1,4 +1,5 @@
 import { useEffect, useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import { FilterCheckbox } from '../FilterCheckbox/FilterCheckbox';
 
@@ -13,9 +14,15 @@ export function SearchForm({
   initialMovies
 }) {
 
+  let {pathname} = useLocation();
+
   //Чистим строку поиска
+  
   useEffect(() => {
-    setSearchQuery('');
+    if (pathname === '/saved-movies'){
+      setSearchQuery('');
+    }
+    console.log(pathname)
   }, [])
 
 
