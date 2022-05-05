@@ -71,14 +71,9 @@ class MainApi {
     })
     .then(res => this._checkResult(res));
   }
-
-
-  // saveMovie({data, token}){
+  
   saveMovie(data , token){
-
-    // console.log(data, token)
-    console.log(data.image)
-    // console.log(token)
+    console.log(data)
     return fetch (`${this._url}/movies`, {
       method: 'POST',
       headers: {
@@ -104,10 +99,18 @@ class MainApi {
     .then(res => this._checkResult(res))
   }
 
-
-
-
-  
+  removeMovie(data , token){
+    // console.log(data)
+    return fetch (`${this._url}/movies/${data}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    .then(res => this._checkResult(res))
+  }
 
   testApi({data}) {
     console.log(this._url);

@@ -35,7 +35,7 @@ export default function App() {
   const [checkboxStatus, setCheckboxStatus] = useState(false);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
- 
+
   //Состояние ошибок из API
   const [apiErrorText, setApiErrorText] = useState('');
 
@@ -96,22 +96,22 @@ export default function App() {
 
 
   // Поведение поля поиска при вводе 
-  useEffect(() =>{
+  useEffect(() => {
     // console.log(initialMovies)
     // console.log(searchQuery)
-    async function filterMovie(){
-       const perfomMovies = await initialMovies.filter(
+    async function filterMovie() {
+      const perfomMovies = await initialMovies.filter(
         movie => (
-          searchQuery ? 
-          movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true) 
-          && 
+          searchQuery ?
+            movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true)
+          &&
           (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
       )
       // console.log(perfomMovies)
       setFilteredMovies(perfomMovies);
     }
     filterMovie();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, searchResult, checkboxStatus]);
 
 
@@ -134,13 +134,15 @@ export default function App() {
     localStorage.setItem('searchQuery', searchQuery)
   }
 
-  function saveMovieToDb(item){
+  function saveMovieToDb(item) {
     const token = localStorage.getItem('JWT_TOKEN');
-    console.log('SAVE')
-    console.log(item)
     mainApi.saveMovie(item, token)
   }
 
+  function removeMovieFromDb(id) {
+    const token = localStorage.getItem('JWT_TOKEN');
+    mainApi.removeMovie(id, token)
+  }
 
   // Авторизация пользователя /signin
   function handleSignin(data) {
@@ -188,13 +190,25 @@ export default function App() {
                 setCheckboxStatus={setCheckboxStatus}
                 searchByQuery={searchByQuery}
                 initialMovies={initialMovies}
-
                 searchResult={searchResult}
                 filteredMovies={filteredMovies}
-              saveMovieToDb={saveMovieToDb}
+                saveMovieToDb={saveMovieToDb}
+                removeMovieFromDb={removeMovieFromDb}
               />
             }></Route>
-            <Route path='saved-movies' element={<SavedMovies />}></Route>
+            <Route path='saved-movies' element={
+              <SavedMovies
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              checkboxStatus={checkboxStatus}
+              setCheckboxStatus={setCheckboxStatus}
+              searchByQuery={searchByQuery}
+              initialMovies={initialMovies}
+              searchResult={searchResult}
+              filteredMovies={filteredMovies}
+              saveMovieToDb={saveMovieToDb}
+              removeMovieFromDb={removeMovieFromDb}
+              />}></Route>
           </Route>
         </Route>
 

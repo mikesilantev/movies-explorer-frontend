@@ -13,6 +13,9 @@ export function MoviesCardList({
   searchByQuery,
   checkboxStatus,
   saveMovieToDb,
+  searchQuery,
+  setSearchQuery,
+  removeMovieFromDb,
 }) {
 
   let { pathname } = useLocation();
@@ -27,6 +30,7 @@ export function MoviesCardList({
 
   // Эффект на измененние ширины экрана
   useEffect(() => {
+    // if (pathname === '/movies')
     if (width <= 480) {
       setCardCount(5)
       setCardToRender(moviesToAddMoreSizeS)
@@ -48,12 +52,15 @@ export function MoviesCardList({
 
   // Конста с распарсенными данными с результатами поиска
   const getLocalFilteredMovie = JSON.parse(localStorage.getItem('filteredMovies'));
+  const getLastQuery = localStorage.getItem('searchQuery')
 
   // Загрузка страницы
   useEffect(() => {
+   console.log(pathname)
     if (getLocalFilteredMovie) {
       // console.log(getLocalFilteredMovie)
       setRenderMovies(getLocalFilteredMovie)
+      setSearchQuery(getLastQuery)
     }
   }, [searchResult])
 
@@ -80,6 +87,7 @@ export function MoviesCardList({
                       trailerLink={card.trailerLink}
                       movie={card}
                       saveMovieToDb={saveMovieToDb}
+                      removeMovieFromDb={removeMovieFromDb}
                     />
                   )
                 }

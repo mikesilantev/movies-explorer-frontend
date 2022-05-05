@@ -1,10 +1,7 @@
-import { Suspense, useState, useEffect } from 'react';
-import movieApi from '../../utils/MovieApi';
-
 import { SearchForm } from '../SearchForm/SearchForm';
-import './Movies.css';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader';
+import './Movies.css';
+
 
 export default function Movies({ 
   searchQuery, 
@@ -16,6 +13,7 @@ export default function Movies({
   saveMovieToDb,
   searchResult,
   initialMovies,
+  removeMovieFromDb,
 }){
 
   return (
@@ -26,7 +24,6 @@ export default function Movies({
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
         searchByQuery={searchByQuery}
-
         initialMovies={initialMovies}
       >
 
@@ -36,8 +33,11 @@ export default function Movies({
         saveMovieToDb={saveMovieToDb}
         searchResult={searchResult}
         searchByQuery={searchByQuery}
-
         checkboxStatus={checkboxStatus}
+
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        removeMovieFromDb={removeMovieFromDb}
       ></MoviesCardList>
     </section>
   )
