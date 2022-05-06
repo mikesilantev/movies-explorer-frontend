@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../Form/Forms';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+
 import './Register.css';
 
 
@@ -11,7 +13,7 @@ export function Register({handleSignup}) {
   const [ name, setName] = useState('')
   const [ password, setPassword] = useState('')
 
-  const [ errorText, setErrorText ] =useState('errorText');
+  const [ errorText, setErrorText ] = useState('');
 
   // Изменение состояния инпута Email
   function handleChangeEmail(evt){
@@ -103,7 +105,10 @@ export function Register({handleSignup}) {
           {/* input 'password' */}
           <input
             required
-            type="password" 
+            pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])\S{8,30}$'
+            autoComplete="on"
+            type="password"
+            name='password'
             className='form__input form__input_type_name'
             placeholder='••••••••••••••'
 
