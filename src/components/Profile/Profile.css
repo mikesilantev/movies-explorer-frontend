@@ -176,6 +176,7 @@ opacity: 0.8;
 
   .profile-form__item {
     margin-bottom: 16px;
+    text-align: center;
   }
 
   .profile-form__btn-save {

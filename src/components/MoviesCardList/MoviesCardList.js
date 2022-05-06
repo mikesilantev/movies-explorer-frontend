@@ -69,16 +69,20 @@ export function MoviesCardList({
     } else {
       console.log('СОХРАНЕННЫЕ ФИЛЬМЫ')
       getSavedMoviesFromApi()
+
     }
   }, [searchResult])
 
   function getSavedMoviesFromApi (){
     const token = localStorage.getItem('JWT_TOKEN');
     let saveMovies = JSON.parse(localStorage.getItem('savedMovies'))
+    console.log(saveMovies)
     mainApi
       .getSavedMovie(token)
       .then((res) => {
         localStorage.setItem('savedMovies', JSON.stringify(res))
+        console.log('LOCAL')
+        console.log(saveMovies)
       })
       .then(
         setRenderMovies(saveMovies)
@@ -93,7 +97,10 @@ export function MoviesCardList({
 
   return (
     <section className='movies-list'>
-      <div className={renderMovies.length > 0 ? 'movie-list__card-wrap' : 'movie-list__card-error'}>
+      {console.log(renderMovies)}
+      <div className='movie-list__card-wrap'>
+        {/* // renderMovies.length ? 'movie-list__card-wrap' : 'movie-list__card-error' */}
+
         {
           renderMovies.length > 0 && pathname === '/movies' ?
             (

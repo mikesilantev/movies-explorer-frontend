@@ -57,7 +57,7 @@ class MainApi {
     .then(res => this._checkResult(res));
   }
 
-  patchUser({ data, token }){
+  patchUser(data, token ){
     return fetch (`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -112,7 +112,7 @@ class MainApi {
   }
 
 
-  removeMovie(data , token){
+  removeMovie(data, token){
     // console.log(data)
     return fetch (`${this._url}/movies/${data}`, {
       method: 'DELETE',

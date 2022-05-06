@@ -8,7 +8,9 @@ export function AppLayout({loggedIn}){
 
   return (
     <>
-    <Header loggedIn={loggedIn}/>
+    <Header 
+      loggedIn={loggedIn}
+      />
     <Outlet />
     <Footer />
     </>

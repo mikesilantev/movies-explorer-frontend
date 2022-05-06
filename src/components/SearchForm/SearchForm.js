@@ -17,12 +17,13 @@ export function SearchForm({
   let {pathname} = useLocation();
 
   //Чистим строку поиска
-  
   useEffect(() => {
     if (pathname === '/saved-movies'){
       setSearchQuery('');
     }
+    //  else if (pathname === '/movies' && )
     console.log(pathname)
+    console.log(searchQuery)
   }, [])
 
 

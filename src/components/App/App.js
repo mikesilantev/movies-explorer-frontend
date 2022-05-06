@@ -28,7 +28,7 @@ export default function App() {
   let { pathname } = useLocation();
 
   // STATE
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [initialMovies, setInitialMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,12 +43,11 @@ export default function App() {
   // unuse
   // const [isLoadingMovies, setIsLoadingMovies] = useState(false);
   // const [preloader, setPreloader] = useState(false);
-
-
+  
   // loggedIn
   useEffect(() => {
     const token = localStorage.getItem('JWT_TOKEN')
-    return () => {
+
       async function checkTokenAndCurrentUser() {
         if (token) {
           const getUser = await mainApi.getUser(token)
@@ -58,7 +57,6 @@ export default function App() {
         }
       }
       checkTokenAndCurrentUser();
-    };
   }, []);
 
 
@@ -175,11 +173,40 @@ export default function App() {
       })
   }
 
+  function patchUser(data){
+    let token = localStorage.getItem('JWT_TOKEN');
+    mainApi.patchUser(data, token)
+      .then((res) => console.log(res))
+  }
+
+
+  // logout
+  function handleLogout() {
+    setLoggedIn(false);
+    setSearchQuery('');
+    removeLocalStorageOnExit();
+    navigate('/', { replace: true });
+  }
+
+  function removeLocalStorageOnExit(){
+    localStorage.removeItem('JWT_TOKEN')
+    localStorage.removeItem('checkboxStatus')
+    localStorage.removeItem('initialMovies')
+    localStorage.removeItem('savedMovies')
+    localStorage.removeItem('searchQuery')
+    localStorage.removeItem('filteredMovies')  
+  }
+
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
-        <Route path='/' element={<AppLayout loggedIn={loggedIn} />}>
+        <Route path='/' element={
+        <AppLayout 
+
+        loggedIn={loggedIn} 
+        
+        />}>
           <Route index element={<Main />} />
           <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
             <Route path='movies' element={
@@ -213,12 +240,16 @@ export default function App() {
         </Route>
 
         <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
-          <Route path='/profile' element={<ProfileLayout loggedIn={loggedIn} />}>
+          <Route path='/profile' element=
+          {<ProfileLayout 
+          loggedIn={loggedIn}
+
+          />}>
             <Route index element=
               {<Profile
-                // handleSignOut={handleSignOut}
-                // patchUser={patchUser}
+                patchUser={patchUser}
                 apiErrorText={apiErrorText}
+                handleLogout={handleLogout}
               />} />
           </Route>
         </Route>

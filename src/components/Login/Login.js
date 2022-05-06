@@ -70,11 +70,11 @@ export function Login({ handleSignin, apiErrorText }) {
               // value={values.password || ''}
               required
               pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])\S{8,30}$'
-
+              autoComplete="on"
               type='password'
               name='password'
               className={!errors.password ? 'form__input' : 'form__input form__input_error'}
-              placeholder='••••••••••••••'s
+              placeholder='••••••••••••••'
             />
 
             {/* input 'password' */}

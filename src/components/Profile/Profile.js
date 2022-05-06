@@ -10,16 +10,14 @@ import Button from '../Button/Button';
 
 //
 import './Profile.css';
-export function Profile({handleSignOut, patchUser, apiErrorText}) {
-
-  //Компонент используем для переадресации
-  const navigate = useNavigate();
+export function Profile({handleLogout, patchUser, apiErrorText}) {
   
   // Context
   const currentUser = useContext(CurrentUserContext);
   
   // Form validation variables
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+  
   const isDisabled =!isValid;
   // Состояние формы - находится в редактировании или нет
   const [ isEdited, setIsEdited ] = useState(false);
@@ -39,11 +37,20 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
     setIsEdited(false)
   }
 
+  function handleExitProfile(){
+    console.log('handleExitProfile');
+    handleLogout();
+  }
+
   useEffect(() => {
     if(textError) {
       console.log(textError)
     }
   },[textError]);
+
+  useEffect(() => {
+    console.log(currentUser)
+  }, [currentUser])
 
 
   return (
@@ -61,7 +68,7 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
 
               {/* input 'name' */}
               <input
-                value={!isEdited ? currentUser.name : values.name || '' }
+                value={ values.name || '' }
                 name='name'
                 onChange={handleChange}
                 // disabled={!editProfile}
@@ -88,7 +95,7 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
 
               {/* input 'email' */}
               <input 
-                 value={!isEdited ? currentUser.email : values.email || '' }
+                value={values.email || '' }
                 name='email'
                 onChange={handleChange}
 
@@ -125,7 +132,7 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
                   <li className='profile-form__item'>
                     <button
                     type='button'
-                    // onClick={exitAccount}
+                    onClick={handleExitProfile}
                     className='profile-form__btn-logout'
                     >Выйти из аккаунта</button>
                   </li>
@@ -138,9 +145,7 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
                       disabled={isDisabled}
                       type='button'
                       className='profile-form__btn-save'>
-
                       Сохранить
-
                     </button>
 
                   </li>
@@ -154,47 +159,3 @@ export function Profile({handleSignOut, patchUser, apiErrorText}) {
       </section>
   )
 }
-
- 
-   // function closeEdit(evt){
-  //   evt.preventDefault();
-  //   setEditProfile(false)
-
-  // }
-
-
-  //  // Изменение состояния инпута Email
-  //  function handleChangeEmail(evt){
-  //    setEmail(evt.target.value);
-  //    console.log(email);
-  //  }
- 
-  //  // Изменение состояния инпута name
-  //  function handleChangeName(evt){
-  //    setName(evt.target.value);
-  //    console.log(name);
-  //  }
-
-  //  // Выход из аккаунта
-  //  function exitAccount(){
-  //   handleSignOut();
-  //  }
-
-
-  //  // Редактирование профиля
-  //  function editHandler(evt){
-  //   evt.preventDefault();
-
-    
-  //   setEditProfile(true)
-  //   console.log(currentUser)
-  // }
-
-
-  // useEffect(() => {
-  //   if (currentUser){
-  //     resetForm(currentUser, {}, false)
-  //   }
-  // }, [currentUser, resetForm]);
-
-
