@@ -173,6 +173,14 @@ export default function App() {
       })
   }
 
+  // Регистрация пользователя /signup
+  function handleSignup(data) {
+    mainApi.signup({ data })
+      .then(res => {
+        navigate('/movies');
+      })
+  }
+
   function patchUser(data){
     let token = localStorage.getItem('JWT_TOKEN');
     mainApi.patchUser(data, token)
@@ -258,7 +266,7 @@ export default function App() {
         <Route path='/signup'
           element=
           {<Register
-          // handleSignup={handleSignup}
+          handleSignup={handleSignup}
           />} />
 
         <Route path='/signin'
