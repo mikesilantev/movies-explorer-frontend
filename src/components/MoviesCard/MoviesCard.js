@@ -12,10 +12,6 @@ export function MovieCard({
   saveMovieToDb,
   removeMovieFromDb,
 }) {
-  const {
-    country, director, year, description, image, thumbnail,
-    nameRU, nameEN, duration, trailer, movieId,
-  } = movie;
 
 const [saveButtonStatus, setSaveButtonStatus] = useState(false);
 
@@ -51,9 +47,14 @@ const [saveButtonStatus, setSaveButtonStatus] = useState(false);
       </a>
 
       {!saveButtonStatus ? (
-      <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
-      ) : (
-      <button className='movie-card__save-btn movie-card__saved' onClick={removieMovieClick}></button>
+        <button className='movie-card__save-btn'
+          onClick={saveMovieClick}>
+          Сохранить</button>
+      ) :
+        (
+          <button className='movie-card__save-btn movie-card__saved'
+            onClick={removieMovieClick}>
+          </button>
         )}
 
       

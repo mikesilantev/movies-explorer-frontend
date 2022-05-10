@@ -19,7 +19,7 @@ export function MoviesCardList({
   removeMovieFromDb,
 }) {
 
-  
+
   let { pathname } = useLocation();
   const [renderMovies, setRenderMovies] = useState([]);
 
@@ -32,7 +32,7 @@ export function MoviesCardList({
 
   // Эффект на измененние ширины экрана
   useEffect(() => {
-    if (pathname === '/movies'){
+    if (pathname === '/movies') {
       if (width <= 480) {
         setCardCount(5)
         setCardToRender(moviesToAddMoreSizeS)
@@ -73,7 +73,7 @@ export function MoviesCardList({
     }
   }, [searchResult])
 
-  function getSavedMoviesFromApi (){
+  function getSavedMoviesFromApi() {
     const token = localStorage.getItem('JWT_TOKEN');
     let saveMovies = JSON.parse(localStorage.getItem('savedMovies'))
     console.log(saveMovies)
@@ -102,7 +102,7 @@ export function MoviesCardList({
         {/* // renderMovies.length ? 'movie-list__card-wrap' : 'movie-list__card-error' */}
 
         {
-          renderMovies.length > 0 && pathname === '/movies' ?
+          renderMovies && pathname === '/movies' ?
             (
               // console.log('ВЫДАЧА'),
               // console.log(renderMovies),
@@ -126,25 +126,27 @@ export function MoviesCardList({
               }, [])
             )
             :
-            renderMovies.length > 0 && pathname === '/saved-movies' ?
-            (
+            renderMovies && pathname === '/saved-movies' ?
+              (
 
-              renderMovies.map((card) => {
-                
-                return <MovieCard
-                key={card.id}
-                cover={card.image}
-                title={card.nameRU}
-                durationMovie={card.duration}
-                trailerLink={card.trailerLink}
-                movie={card}
-                saveMovieToDb={saveMovieToDb}
-                removeMovieFromDb={removeMovieFromDb}
-              />  
-            })
+                renderMovies.map((card) => {
+                  console.log(card._id)
+                  return (
+                    <MovieCard
+                      key={card.id}
+                      cover={card.image}
+                      title={card.nameRU}
+                      durationMovie={card.duration}
+                      trailerLink={card.trailerLink}
+                      movie={card}
+                      saveMovieToDb={saveMovieToDb}
+                      removeMovieFromDb={removeMovieFromDb}
+                    />
+                  )
+                })
 
-            ) :
-            (<p className='movies-list__nulled-query'>Ничего не найдено</p>)
+              ) :
+              (<p className='movies-list__nulled-query'>Ничего не найдено</p>)
         }
       </div>
       {
@@ -160,4 +162,3 @@ export function MoviesCardList({
 
   )
 }
- 

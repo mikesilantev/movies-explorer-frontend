@@ -45,20 +45,32 @@ export default function App() {
   // const [preloader, setPreloader] = useState(false);
   
   // loggedIn
+
+  //~~prod~~~~~~~~~~~~~~~~~~~~~~//
   useEffect(() => {
-    const token = localStorage.getItem('JWT_TOKEN')
+    checkToken();
+  },[])
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-      async function checkTokenAndCurrentUser() {
-        if (token) {
-          const getUser = await mainApi.getUser(token)
-          setCurrentUser(getUser)
+  //~~del~~~~~~~~~~~~~~~~~~~~~~~//
+  useEffect(() => {
+    console.log(loggedIn);
+  },[loggedIn])
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+  function checkToken(){
+    let token = localStorage.getItem('JWT_TOKEN');
+    if (token) {
+      mainApi.getUser(token)
+        .then((userData) => {
+          setCurrentUser(userData);
           setLoggedIn(true)
-          console.log(token)
-        }
+        })
+        .catch(
+          err => console.log(err)
+      )
       }
-      checkTokenAndCurrentUser();
-  }, []);
-
+  }
 
   // Загрузка в локал файла с фильмами
   useEffect(() => {
