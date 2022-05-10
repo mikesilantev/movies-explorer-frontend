@@ -18,7 +18,7 @@ export function Profile({handleLogout, patchUser, apiErrorText}) {
   // Form validation variables
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
   
-  const isDisabled =!isValid;
+  const isDisabled =! isValid;
   // Состояние формы - находится в редактировании или нет
   const [ isEdited, setIsEdited ] = useState(false);
 
