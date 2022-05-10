@@ -45,15 +45,14 @@ export function Login({ handleSignin, apiErrorText }) {
 
             {/* input 'email' */}
             <input
-              onChange={handleChange}
-              value={values.email || ''}
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               required
-
-              name='email'
-              type='email'
               className='form__input form__input_type_name'
+              onChange={handleChange}
+              type='email'
+              name='email'
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               placeholder='pochta@yandex.ru'
+              value={values.email || ''}
             />
             {/* input 'email' */}
 
@@ -63,11 +62,8 @@ export function Login({ handleSignin, apiErrorText }) {
 
           <label className='form__label'>
             <span className='form__input-name'>Пароль</span>
-
-            {/* input 'password' */}
             <input
               onChange={handleChange}
-              // value={values.password || ''}
               required
               pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])\S{8,30}$'
               autoComplete="on"

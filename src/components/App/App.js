@@ -43,22 +43,25 @@ export default function App() {
   // unuse
   // const [isLoadingMovies, setIsLoadingMovies] = useState(false);
   // const [preloader, setPreloader] = useState(false);
-  
+
   // loggedIn
 
   //~~prod~~~~~~~~~~~~~~~~~~~~~~//
   useEffect(() => {
     checkToken();
-  },[])
+  }, [])
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
   //~~del~~~~~~~~~~~~~~~~~~~~~~~//
   useEffect(() => {
     console.log(loggedIn);
-  },[loggedIn])
+  }, [loggedIn])
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-  function checkToken(){
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~Проверка токена~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  function checkToken() {
     let token = localStorage.getItem('JWT_TOKEN');
     if (token) {
       mainApi.getUser(token)
@@ -68,9 +71,30 @@ export default function App() {
         })
         .catch(
           err => console.log(err)
-      )
-      }
+        )
+    }
   }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~Регистрация~~/signup~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  function handleSignup(data) {
+    mainApi.signup({ data })
+      .then(res => {
+        navigate('/movies');
+      })
+      .catch(
+        err => console.log(err)
+      )
+  }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
 
   // Загрузка в локал файла с фильмами
   useEffect(() => {
@@ -185,15 +209,9 @@ export default function App() {
       })
   }
 
-  // Регистрация пользователя /signup
-  function handleSignup(data) {
-    mainApi.signup({ data })
-      .then(res => {
-        navigate('/movies');
-      })
-  }
 
-  function patchUser(data){
+
+  function patchUser(data) {
     let token = localStorage.getItem('JWT_TOKEN');
     mainApi.patchUser(data, token)
       .then((res) => console.log(res))
@@ -208,13 +226,13 @@ export default function App() {
     navigate('/', { replace: true });
   }
 
-  function removeLocalStorageOnExit(){
+  function removeLocalStorageOnExit() {
     localStorage.removeItem('JWT_TOKEN')
     localStorage.removeItem('checkboxStatus')
     localStorage.removeItem('initialMovies')
     localStorage.removeItem('savedMovies')
     localStorage.removeItem('searchQuery')
-    localStorage.removeItem('filteredMovies')  
+    localStorage.removeItem('filteredMovies')
   }
 
   return (
@@ -222,11 +240,11 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path='/' element={
-        <AppLayout 
+          <AppLayout
 
-        loggedIn={loggedIn} 
-        
-        />}>
+            loggedIn={loggedIn}
+
+          />}>
           <Route index element={<Main />} />
           <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
             <Route path='movies' element={
@@ -245,26 +263,26 @@ export default function App() {
             }></Route>
             <Route path='saved-movies' element={
               <SavedMovies
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              checkboxStatus={checkboxStatus}
-              setCheckboxStatus={setCheckboxStatus}
-              searchByQuery={searchByQuery}
-              initialMovies={initialMovies}
-              searchResult={searchResult}
-              filteredMovies={filteredMovies}
-              saveMovieToDb={saveMovieToDb}
-              removeMovieFromDb={removeMovieFromDb}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                checkboxStatus={checkboxStatus}
+                setCheckboxStatus={setCheckboxStatus}
+                searchByQuery={searchByQuery}
+                initialMovies={initialMovies}
+                searchResult={searchResult}
+                filteredMovies={filteredMovies}
+                saveMovieToDb={saveMovieToDb}
+                removeMovieFromDb={removeMovieFromDb}
               />}></Route>
           </Route>
         </Route>
 
         <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
           <Route path='/profile' element=
-          {<ProfileLayout 
-          loggedIn={loggedIn}
+            {<ProfileLayout
+              loggedIn={loggedIn}
 
-          />}>
+            />}>
             <Route index element=
               {<Profile
                 patchUser={patchUser}
@@ -278,7 +296,7 @@ export default function App() {
         <Route path='/signup'
           element=
           {<Register
-          handleSignup={handleSignup}
+            handleSignup={handleSignup}
           />} />
 
         <Route path='/signin'

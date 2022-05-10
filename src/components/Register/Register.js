@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from '../Form/Forms';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
@@ -6,46 +6,29 @@ import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import './Register.css';
 
 
-export function Register({handleSignup}) {
+export function Register({handleSignup, apiErrorText}) {
   const navigate = useNavigate();
-  //Состояния полей
-  const [ email, setEmail] = useState('')
-  const [ name, setName] = useState('')
-  const [ password, setPassword] = useState('')
 
-  const [ errorText, setErrorText ] = useState('');
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
-  // Изменение состояния инпута Email
-  function handleChangeEmail(evt){
-    setEmail(evt.target.value);
-    console.log(email);
-  }
-
-  // Изменение состояния инпута name
-  function handleChangeName(evt){
-    setName(evt.target.value);
-    console.log(name);
-  }
-
-  // Изменение состояния инпута password
-  function handleChangePassword(evt){
-    setPassword(evt.target.value);
-    console.log(password);
-  }
+  const isDisabled = !isValid;
 
   // Отправка данных в форме
-  function handleSubmitForm(evt){
+  function handleSubmit(evt){
     evt.preventDefault();
     handleSignup({
-      email,
-      name,
-      password,
+      email: values.email,
+      name: values.ename,
+      password: values.password,
     })
   }
 
+  useEffect(() => {
+    resetForm({}, {}, false);
+  }, [resetForm])
 
   return (
-    <section className="register">
+    <section className='register'>
 
     {/* Прочитать заполненые пользователя
     Проверить валидатором
@@ -56,26 +39,26 @@ export function Register({handleSignup}) {
             signMessage='Уже зарегистрированы?'
             signLinkMessage='Войти'
             signLink='/signin'
-            onSubmit={handleSubmitForm}
+            onSubmit={handleSubmit}
+            isDisabled={isDisabled}
             >
 
-        <div className="form__label-wrap">
+        <div className='form__label-wrap'>
         <label className='form__label'>
           <span className='form__input-name'>Имя</span>
 
           {/* input 'name' */}
           <input
             required
-            type="text" 
             className='form__input form__input_type_name'
-            placeholder='Виталий'
-
-            onChange={handleChangeName}
-            
+            onChange={handleChange}
+            type='text' 
+            name='name'
+            placeholder=''
           />
           {/* input 'name' */}
 
-          <span className='form__input-error'>{errorText}</span>
+          <span className='form__input-error'>{errors.name || ''}</span>
         </label>
 
 
@@ -85,17 +68,19 @@ export function Register({handleSignup}) {
           {/* input 'email' */}
           <input
             required
-            type="email" 
+            type='email'
+            name='email'
             className='form__input form__input_type_name'
+            pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
             placeholder='pochta@yandex.ru'
-
-            onChange={handleChangeEmail}
+            onChange={handleChange}
+            value={values.email || ''}
             
           />
           {/* input 'email' */}
 
         
-          <span className='form__input-error'>{errorText}</span>
+          <span className='form__input-error'>{errors.email || ''}</span>
         </label>
 
 
@@ -106,18 +91,18 @@ export function Register({handleSignup}) {
           <input
             required
             pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])\S{8,30}$'
-            autoComplete="on"
-            type="password"
+            autoComplete='on'
+            type='password'
             name='password'
             className='form__input form__input_type_name'
             placeholder='••••••••••••••'
 
-            onChange={handleChangePassword}
+            onChange={handleChange}
                         
           />
           {/* input 'password' */}
 
-          <span className='form__input-error'>{errorText}</span>
+          <span className='form__input-error'>{errors.password || ''}</span>
         </label>
 
         </div>  
