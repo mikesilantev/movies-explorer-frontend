@@ -66,6 +66,7 @@ export default function App() {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
   //~~~~~~~~~~~~~~Регистрация~~/signup~~~~~~~~~~~~~~//
   // Дописать ошибки
+          // написать функцию для ошибок
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
   function handleSignup(data) {
     mainApi.signup({ data })
@@ -92,6 +93,7 @@ export default function App() {
         navigate('/movies', { replace: true });
       })
       .catch((err) => {
+        // написать функцию для ошибок
         if (err === 'Ошибка: 400') {
           setApiErrorText('Вы ввели неправильный логин или пароль.')
         }
