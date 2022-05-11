@@ -20,6 +20,10 @@ export default function SavedMovies({
       <SearchForm
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      checkboxStatus={checkboxStatus}
+      setCheckboxStatus={setCheckboxStatus}
+      searchByQuery={searchByQuery}
+      initialMovies={initialMovies}
       >
       </SearchForm>
       <MoviesCardList

@@ -96,7 +96,7 @@ export default function App() {
   // Поведение поля поиска при вводе 
   useEffect(() => {
     // console.log(initialMovies)
-    // console.log(searchQuery)
+    console.log(searchQuery)
     async function filterMovie() {
       const perfomMovies = await initialMovies.filter(
         movie => (
@@ -204,6 +204,21 @@ export default function App() {
     localStorage.removeItem('searchQuery')
     localStorage.removeItem('filteredMovies')  
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
 

@@ -34,7 +34,6 @@ export default function Movies({
         searchResult={searchResult}
         searchByQuery={searchByQuery}
         checkboxStatus={checkboxStatus}
-
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         removeMovieFromDb={removeMovieFromDb}

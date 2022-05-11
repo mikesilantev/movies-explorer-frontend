@@ -19,6 +19,16 @@ export function MoviesCardList({
   removeMovieFromDb,
 }) {
 
+  useEffect(() => {
+    console.log('checkboxStatus')
+    if (checkboxStatus) {
+      console.log(true)
+      console.log(renderMovies)
+    } else {
+      console.log(false)
+    }
+  }, [checkboxStatus])
+
   
   let { pathname } = useLocation();
   const [renderMovies, setRenderMovies] = useState([]);
@@ -60,16 +70,15 @@ export function MoviesCardList({
   // Загрузка страницы
   useEffect(() => {
     if (pathname === '/movies') {
-      console.log(pathname)
+      console.log(pathname);
       if (getLocalFilteredMovie) {
         // console.log(getLocalFilteredMovie)
-        setRenderMovies(getLocalFilteredMovie)
-        setSearchQuery(getLastQuery)
+        setRenderMovies(getLocalFilteredMovie);
+        setSearchQuery(getLastQuery);
       }
     } else {
-      console.log('СОХРАНЕННЫЕ ФИЛЬМЫ')
-      getSavedMoviesFromApi()
-
+      console.log('СОХРАНЕННЫЕ ФИЛЬМЫ');
+      getSavedMoviesFromApi();
     }
   }, [searchResult])
 
@@ -88,7 +97,7 @@ export function MoviesCardList({
         setRenderMovies(saveMovies)
       )
       .catch(err => console.log(err))
-      .finally(console.log(renderMovies))
+      .finally()
   }
 
 
