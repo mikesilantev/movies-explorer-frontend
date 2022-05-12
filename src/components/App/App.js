@@ -38,151 +38,65 @@ export default function App() {
 
   //Состояние ошибок из API
   const [apiErrorText, setApiErrorText] = useState('');
+
+
   // unuse
   // const [isLoadingMovies, setIsLoadingMovies] = useState(false);
   // const [preloader, setPreloader] = useState(false);
-
-  //~~prod~~~~~~~~~~~~~~~~~~~~~~//
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~~~~~~~Проверка токена~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  
+  // loggedIn
   useEffect(() => {
-    function checkToken() {
-      let token = localStorage.getItem('JWT_TOKEN');
-      if (token) {
-        mainApi.getUser(token)
-          .then((userData) => {
-            setCurrentUser(userData);
-            setLoggedIn(true)
-          })
-          .catch(
-            err => console.log(err)
-          )
+    const token = localStorage.getItem('JWT_TOKEN')
+
+      async function checkTokenAndCurrentUser() {
+        if (token) {
+          const getUser = await mainApi.getUser(token)
+          setCurrentUser(getUser)
+          setLoggedIn(true)
+          console.log(token)
+        }
       }
-    }
-    checkToken();
-  }, [])
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~~~~~~~Регистрация~~/signup~~~~~~~~~~~~~~//
-  // Дописать ошибки
-  // написать функцию для ошибок
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  function handleSignup(data) {
-    mainApi.signup({ data })
-      .then(() => {
-        handleSignin({
-          email: data.email,
-          password: data.password,
-        })
-      })
-      .catch(
-        err => console.log(err)
-      )
-  }
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~Авторизация пользователя /signin~~~~~~~~//
-  // Дописать ошибки/ Разобрать
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  function handleSignin(data) {
-    mainApi.signin({ data })
-      .then((res) => {
-        localStorage.setItem('JWT_TOKEN', res.token);
-        setLoggedIn(true)
+      checkTokenAndCurrentUser();
+  }, []);
 
-        navigate('/movies', { replace: true });
-      })
-      .catch((err) => {
-        // написать функцию для ошибок
-        if (err === 'Ошибка: 400') {
-          setApiErrorText('Вы ввели неправильный логин или пароль.')
-        }
-        else if (err === 'Ошибка: 401') {
-          setApiErrorText('Вы ввели неправильный логин или пароль.')
-        }
-        else if (err === 'Ошибка: 409') {
-          setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
-        }
-        else if (err === 'Ошибка: 429') {
-          setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
-        }
-        else {
-          setApiErrorText('Вы ввели неправильный логин или пароль. ')
-          console.log(apiErrorText)
-        }
-      })
-  }
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+  // Загрузка в локал файла с фильмами
   useEffect(() => {
     let moviesToLocalStorage = localStorage.getItem('initialMovies');
-    if (moviesToLocalStorage && loggedIn) {
-      moviesToState(setInitialMovies, moviesToLocalStorage);
-    } else if (loggedIn){
-      uploadInitMovie(moviesToLocalStorage);
+
+    if (loggedIn && !moviesToLocalStorage) {
+      try {
+        console.log('first')
+        async function getMovies() {
+          const getMovies = await movieApi.getMovies();
+          moviesToLocalStorage = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
+          const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
+          setInitialMovies(getLocalMovies);
+        }
+        getMovies();
+      }
+      catch (err) {
+        console.log(err);
+      }
+      finally {
+        console.log('Закрывай прелоадер');
+      }
+    } else {
+      console.log('НИЧЕГО НЕ ДЕЛАЕМ')
+      async function saveMoveToState() {
+        const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
+        setInitialMovies(getLocalMovies);
+        // console.log(initialMovies)
+      }
+      saveMoveToState();
     }
   }, [loggedIn]);
-
-
-  function moviesToState(stateFunc, el) {
-    stateFunc(JSON.parse(el))
-  }
-
-  function uploadInitMovie(el) {
-    movieApi.getMovies()
-      .then((res) => {
-        el = localStorage.setItem('initialMovies', JSON.stringify(res));
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .then()
-  }
-
-
-
-
-
-
-  // // Загрузка в локал файла с фильмами
-  // useEffect(() => {
-  //       let moviesToLocalStorage = localStorage.getItem('initialMovies');
-
-  //       if (loggedIn && !moviesToLocalStorage) {
-  //         try {
-  //           console.log('first')
-  //           async function getMovies() {
-  //             const getMovies = await movieApi.getMovies();
-  //             moviesToLocalStorage = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
-  //             const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-  //             setInitialMovies(getLocalMovies);
-  //           }
-  //           getMovies();
-  //         }
-  //         catch (err) {
-  //           console.log(err);
-  //         }
-  //         finally {
-  //           console.log('Закрывай прелоадер');
-  //         }
-  //       } else {
-  //         console.log('НИЧЕГО НЕ ДЕЛАЕМ')
-  //         async function saveMoveToState() {
-  //           const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-  //           setInitialMovies(getLocalMovies);
-  //           // console.log(initialMovies)
-  //         }
-  //         saveMoveToState();
-  //       }
-  //     }, [loggedIn]);
 
 
   // Поведение поля поиска при вводе 
   useEffect(() => {
     // console.log(initialMovies)
-    // console.log(searchQuery)
+    console.log(searchQuery)
     async function filterMovie() {
       const perfomMovies = await initialMovies.filter(
         movie => (
@@ -228,10 +142,46 @@ export default function App() {
     mainApi.removeMovie(id, token)
   }
 
+  // Авторизация пользователя /signin
+  function handleSignin(data) {
+    mainApi.signin({ data })
+      //Получаем в ответ токен
+      .then((res) => {
+        localStorage.setItem('JWT_TOKEN', res.token);
+        setCurrentUser(data)
+        setLoggedIn(true)
+        navigate('/movies', { replace: true });
+      })
+      .catch(err => {
+        if (err === 'Ошибка: 400') {
+          setApiErrorText('Вы ввели неправильный логин или пароль.')
+        }
+        if (err === 'Ошибка: 401') {
+          setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
+        }
+        if (err === 'Ошибка: 409') {
+          setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
+        }
+        if (err === 'Ошибка: 429') {
+          setApiErrorText('Слишком много запросов, пожалуйста, повторите попытку позже')
+        }
+        else {
+          setApiErrorText('Вы ввели неправильный логин или пароль. ')
+          console.log(apiErrorText)
+        }
 
+      })
+  }
 
+  // Регистрация пользователя /signup
+  function handleSignup(data) {
+    mainApi.signup({ data })
+      .then(res => {
+        navigate('/movies');
+      })
+  }
 
-  function patchUser(data) {
+  function patchUser(data){
     let token = localStorage.getItem('JWT_TOKEN');
     mainApi.patchUser(data, token)
       .then((res) => console.log(res))
@@ -246,25 +196,40 @@ export default function App() {
     navigate('/', { replace: true });
   }
 
-  function removeLocalStorageOnExit() {
+  function removeLocalStorageOnExit(){
     localStorage.removeItem('JWT_TOKEN')
     localStorage.removeItem('checkboxStatus')
     localStorage.removeItem('initialMovies')
     localStorage.removeItem('savedMovies')
     localStorage.removeItem('searchQuery')
-    localStorage.removeItem('filteredMovies')
+    localStorage.removeItem('filteredMovies')  
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path='/' element={
-          <AppLayout
+        <AppLayout 
 
-            loggedIn={loggedIn}
-
-          />}>
+        loggedIn={loggedIn} 
+        
+        />}>
           <Route index element={<Main />} />
           <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
             <Route path='movies' element={
@@ -283,26 +248,26 @@ export default function App() {
             }></Route>
             <Route path='saved-movies' element={
               <SavedMovies
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                checkboxStatus={checkboxStatus}
-                setCheckboxStatus={setCheckboxStatus}
-                searchByQuery={searchByQuery}
-                initialMovies={initialMovies}
-                searchResult={searchResult}
-                filteredMovies={filteredMovies}
-                saveMovieToDb={saveMovieToDb}
-                removeMovieFromDb={removeMovieFromDb}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              checkboxStatus={checkboxStatus}
+              setCheckboxStatus={setCheckboxStatus}
+              searchByQuery={searchByQuery}
+              initialMovies={initialMovies}
+              searchResult={searchResult}
+              filteredMovies={filteredMovies}
+              saveMovieToDb={saveMovieToDb}
+              removeMovieFromDb={removeMovieFromDb}
               />}></Route>
           </Route>
         </Route>
 
         <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
           <Route path='/profile' element=
-            {<ProfileLayout
-              loggedIn={loggedIn}
+          {<ProfileLayout 
+          loggedIn={loggedIn}
 
-            />}>
+          />}>
             <Route index element=
               {<Profile
                 patchUser={patchUser}
@@ -316,7 +281,7 @@ export default function App() {
         <Route path='/signup'
           element=
           {<Register
-            handleSignup={handleSignup}
+          handleSignup={handleSignup}
           />} />
 
         <Route path='/signin'
