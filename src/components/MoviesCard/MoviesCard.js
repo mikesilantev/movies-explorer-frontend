@@ -1,28 +1,23 @@
 import react, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 
 import './MovieCard.css';
 
 export function MovieCard({
-  movie,
   cover,
   title,
   durationMovie,
   trailerLink,
+  movie,
   saveMovieToDb,
   removeMovieFromDb,
 }) {
-
-  let { pathname } = useLocation();
-
   const {
     country, director, year, description, image, thumbnail,
     nameRU, nameEN, duration, trailer, movieId,
   } = movie;
 
 const [saveButtonStatus, setSaveButtonStatus] = useState(false);
-
 
   //
   function saveMovieClick() {
@@ -43,7 +38,7 @@ const [saveButtonStatus, setSaveButtonStatus] = useState(false);
   }
 
   function removieMovieClick(){
-    removeMovieFromDb(movie._id);
+    removeMovieFromDb(movie.id);
     console.log(movie.id)
     console.log('first')
   }
@@ -55,19 +50,11 @@ const [saveButtonStatus, setSaveButtonStatus] = useState(false);
         <img src={cover} alt={title} className='movie-card__cover' />
       </a>
 
-      {/* {!saveButtonStatus ? (
+      {!saveButtonStatus ? (
       <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
       ) : (
       <button className='movie-card__save-btn movie-card__saved' onClick={removieMovieClick}></button>
-        )} */}
-
-
-      {pathname === '/saved-movies' ? (
-        <button className='movie-card__save-btn movie-card__saved' onClick={removieMovieClick}></button>
-      ) : (
-        <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
-      )
-      }
+        )}
 
       
 

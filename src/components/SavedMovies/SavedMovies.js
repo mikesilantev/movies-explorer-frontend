@@ -1,44 +1,32 @@
-import { useEffect } from 'react';
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
 import './SavedMovies.css';
 
-export default function SavedMovies({
-  searchQuery,
-  setSearchQuery,
-  handleSearch,
-  checkboxStatus,
-  setCheckboxStatus,
-  setMoviesToRender,
-  moviesToRender,
+export default function SavedMovies({ 
+  searchQuery, 
+  setSearchQuery, 
+  checkboxStatus, 
+  setCheckboxStatus, 
+  searchByQuery, 
+  filteredMovies,
+  saveMovieToDb,
+  searchResult,
+  initialMovies,
   removeMovieFromDb,
-
-
-  savedMoviesCheckboxStatus,
-  setSavedMoviesCheckboxStatus,
 }){
-
-
-  useEffect(() => {
-    console.log('SAVED MOVIES')
-  }, []);
 
   return (
     <section className='movies'>
       <SearchForm
-      handleSearch={handleSearch}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
       checkboxStatus={checkboxStatus}
       setCheckboxStatus={setCheckboxStatus}
-      savedMoviesCheckboxStatus={savedMoviesCheckboxStatus}
-      setSavedMoviesCheckboxStatus={setSavedMoviesCheckboxStatus}
+      searchByQuery={searchByQuery}
+      initialMovies={initialMovies}
       >
       </SearchForm>
       <MoviesCardList
-      searchQuery={searchQuery}
-      moviesToRender={moviesToRender}
-      setMoviesToRender={setMoviesToRender}
-      removeMovieFromDb={removeMovieFromDb}
-
       ></MoviesCardList>
     </section>
   )
