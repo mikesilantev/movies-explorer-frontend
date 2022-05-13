@@ -27,13 +27,28 @@ export default function App() {
   const navigate = useNavigate();
   let { pathname } = useLocation();
 
+  const moviesPage = pathname === '/movies',
+        savedMoviesPage = pathname === '/saved-movies';
+
   // STATE
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
   const [initialMovies, setInitialMovies] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState('');
+
   const [checkboxStatus, setCheckboxStatus] = useState(false);
+
+
   const [filteredMovies, setFilteredMovies] = useState([]);
+
+  const [moviesToRender, setMoviesToRender] = useState([]);
+
+
+
+  const[savedMovie, setSavedMovie] = useState([]);
+
   const [searchResult, setSearchResult] = useState([]);
 
   //Состояние ошибок из API
@@ -60,88 +75,98 @@ export default function App() {
   }, []);
 
 
-  // Загрузка в локал файла с фильмами
+  // Загрузка в локал файла с фильмами и добавление в стейт или добавление в стейт
+  // или добавление в стейт срабатывает при изменении стейта loggedIn
+
   useEffect(() => {
     let moviesToLocalStorage = localStorage.getItem('initialMovies');
-
+    
     if (loggedIn && !moviesToLocalStorage) {
       try {
-        console.log('first')
-        async function getMovies() {
-          const getMovies = await movieApi.getMovies();
-          moviesToLocalStorage = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
-          const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-          setInitialMovies(getLocalMovies);
-        }
-        getMovies();
+        getMovies(moviesToLocalStorage);
       }
       catch (err) {
         console.log(err);
       }
-      finally {
-        console.log('Закрывай прелоадер');
-      }
     } else {
-      console.log('НИЧЕГО НЕ ДЕЛАЕМ')
-      async function saveMoveToState() {
-        const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-        setInitialMovies(getLocalMovies);
-        // console.log(initialMovies)
-      }
-      saveMoveToState();
+      saveMoveToState(moviesToLocalStorage);
     }
   }, [loggedIn]);
 
 
-  // Поведение поля поиска при вводе 
-  useEffect(() => {
-    // console.log(initialMovies)
-    console.log(searchQuery)
-    async function filterMovie() {
-      const perfomMovies = await initialMovies.filter(
-        movie => (
-          searchQuery ?
-            movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) : true)
-          &&
-          (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
-      )
-      // console.log(perfomMovies)
-      setFilteredMovies(perfomMovies);
-    }
-    filterMovie();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery, searchResult, checkboxStatus]);
+  async function getMovies(localMovies) {
+    console.log('Отработала getMovies')
+    const getMovies = await movieApi.getMovies();
+    localMovies = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
+    const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
+    setInitialMovies(getLocalMovies);
+  }
 
-
-  // Нажатие по кнопке поиска
-  // заносит данные в стейт с результатми поиска
-  // и передает инфо в функцию сохранения в локал
-  async function searchByQuery() {
-    console.log('кнопка поиска')
-    // console.log('searchByQuery')
-    // console.log(filteredMovies)
-    saveToLocaleStorage(filteredMovies)
-    setSearchResult(filteredMovies)
+  async function saveMoveToState(localMovies) {
+    const getLocalMovies = await JSON.parse(localMovies);
+    setInitialMovies(getLocalMovies);
   }
 
 
+
+  // Поведение поля поиска при вводе 
+  useEffect(() => {
+    if (moviesPage){
+      filterMovie(searchQuery, initialMovies);
+      console.log(filteredMovies);
+    } else if (pathname === '/saved-movies'){
+
+      console.log('SAVED MOVIES SEARCH')
+    }
+  }, [searchQuery, checkboxStatus]);
+  // }, [searchQuery, searchResult, checkboxStatus]);
+
+
+  async function filterMovie(query, data) {
+    const perfomMovies = await data.filter(
+      movie => (
+        query ?
+          movie.nameRU.toLowerCase().includes(query.toLowerCase()) : true)
+        &&
+        (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
+    )
+    setFilteredMovies(perfomMovies);
+  }
+
+  function handleSearch() {
+    saveToLocaleStorage(filteredMovies)
+    renderMoviesToPage(filteredMovies);
+  }
+
   // Сохраняем данные запроса
   function saveToLocaleStorage(searсh) {
-    localStorage.setItem('filteredMovies', JSON.stringify(searсh))
+    if (moviesPage) {
+      localStorage.setItem('filteredMovies', JSON.stringify(searсh))
+      console.log('MOVIES')
+    }
     localStorage.setItem('checkboxStatus', checkboxStatus)
     localStorage.setItem('searchQuery', searchQuery)
+  }
+
+  function renderMoviesToPage(arr) {
+    setMoviesToRender(arr)
   }
 
   function saveMovieToDb(item) {
     const token = localStorage.getItem('JWT_TOKEN');
     mainApi.saveMovie(item, token)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   function removeMovieFromDb(id) {
     const token = localStorage.getItem('JWT_TOKEN');
     mainApi.removeMovie(id, token)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
+  // ДОДЕЛАТЬ
   // Авторизация пользователя /signin
   function handleSignin(data) {
     mainApi.signin({ data })
@@ -173,7 +198,7 @@ export default function App() {
       })
   }
 
-  // Регистрация пользователя /signup
+  // ДОДЕЛАТЬ
   function handleSignup(data) {
     mainApi.signup({ data })
       .then(res => {
@@ -181,6 +206,7 @@ export default function App() {
       })
   }
 
+  // ДОДЕЛАТЬ
   function patchUser(data){
     let token = localStorage.getItem('JWT_TOKEN');
     mainApi.patchUser(data, token)
@@ -208,18 +234,6 @@ export default function App() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
@@ -234,29 +248,32 @@ export default function App() {
           <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
             <Route path='movies' element={
               <Movies
+
+                moviesPage={moviesPage}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                handleSearch={handleSearch}
                 checkboxStatus={checkboxStatus}
                 setCheckboxStatus={setCheckboxStatus}
-                searchByQuery={searchByQuery}
-                initialMovies={initialMovies}
-                searchResult={searchResult}
+
                 filteredMovies={filteredMovies}
+                moviesToRender={moviesToRender}
+                setMoviesToRender={setMoviesToRender}
+
                 saveMovieToDb={saveMovieToDb}
-                removeMovieFromDb={removeMovieFromDb}
+
               />
             }></Route>
             <Route path='saved-movies' element={
               <SavedMovies
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              handleSearch={handleSearch}
               checkboxStatus={checkboxStatus}
               setCheckboxStatus={setCheckboxStatus}
-              searchByQuery={searchByQuery}
-              initialMovies={initialMovies}
-              searchResult={searchResult}
-              filteredMovies={filteredMovies}
-              saveMovieToDb={saveMovieToDb}
+              moviesToRender={moviesToRender}
+              setMoviesToRender={setMoviesToRender}
+
               removeMovieFromDb={removeMovieFromDb}
               />}></Route>
           </Route>
