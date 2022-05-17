@@ -51,31 +51,35 @@ export function MoviesCardList({
         async function getMoviesToLocalStorage(){
           let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
           await setRenderMovies(filterMoviesLocalStorage);
+          if (localStorage.getItem('savedMoviesId')) {
+            console.log(localStorage.getItem('savedMoviesId'))
+
+          }
         }
 
         getMoviesToLocalStorage();
     } else {
+      const token = localStorage.getItem('JWT_TOKEN');
+      mainApi.getSavedMovie(token)
+        .then(res => {
+          setMoviesToRender(res)
 
+          let savedMoviesID = [];
+          res.map((i) => {
+            savedMoviesID.push(i.movieId);
+          })
+          localStorage.setItem('savedMoviesId', JSON.stringify(savedMoviesID))
+          console.log(savedMoviesID)
 
-      async function getSavedMoviesFromDB(){
-        const token = localStorage.getItem('JWT_TOKEN');
-        const getSavedMovies = await mainApi.getSavedMovie(token);
-        await setMoviesToRender(getSavedMovies)
-      }
-      getSavedMoviesFromDB();
+        })
     }
   }, [])
-
-
-
-  useEffect(() => {
-    console.log(moviesToRender)
-  }, [moviesToRender])
 
 
   return (
     <section className='movies-list'>
       <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}>
+
         {
           pathname === '/movies' ?
           renderMovies && renderMovies.length > 0 ?
@@ -88,8 +92,9 @@ export function MoviesCardList({
                 title={card.nameRU}
                 durationMovie={card.duration}
                 trailerLink={card.trailerLink}
-                  movie={card}
-                  handleSaveMovies={handleSaveMovies}
+                movie={card}
+                handleSaveMovies={handleSaveMovies}
+                // liked={}
                 />
               )
             }
@@ -98,7 +103,23 @@ export function MoviesCardList({
               :
               (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
 
-              renderMovies ? ('ЕСТЬ') : ('НЕТУ')
+              moviesToRender ? (
+                moviesToRender.map((card) => {
+                  return (
+                    <MovieCard
+                    key={card.id}
+                    cover={card.image}
+                    title={card.nameRU}
+                    durationMovie={card.duration}
+                    trailerLink={card.trailerLink}
+                    movie={card}
+                    handleSaveMovies={handleSaveMovies}
+                    />
+                  )
+                })
+              ) : (
+              <p className='movies-list__nulled-query'>Ничего не найдено</p>
+              )
 
 
         }
