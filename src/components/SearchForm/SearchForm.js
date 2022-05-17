@@ -1,47 +1,57 @@
-import { useEffect } from "react";
-import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { FilterCheckbox } from "../FilterCheckbox/FilterCheckbox";
 
 import './SearchForm.css';
 
-export function SearchForm({checkboxStatus}) {
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
-  const isDisabled = !isValid;
-  
-  useEffect(() => {
-    console.log(values)
-  }, [values])
+export function SearchForm({
+  searchQuery,
+  setSearchQuery,
+  handleSubmitSearchButton,
+  checkboxStatus,
+  setCheckboxStatus,
+}) {
 
 
+  function handleSearchInput(evt) {
+    setSearchQuery(evt.target.value)
+  }
 
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    handleSubmitSearchButton()
+  }
 
   return (
-    <form 
+    <form
       className="search-form"
-      
-      >
-   
+      onSubmit={handleSubmit}
+    >
       <span className="search-form__search-icon"></span>
       <label htmlFor="search-input" className="search-form__input-wrap">
 
-        <input 
-          onChange={handleChange}
-          value={values.search || ''}
-          type="text" 
-          name="search" 
-          id="search-input" 
-          className="search-form__input" 
-          placeholder="Фильм" 
+        <input
+          onChange={(evt) => {
+            setSearchQuery(evt.target.value)
+          }}
+          value={searchQuery}
+          type="text"
+          name="search"
+          id="search-input"
+          className="search-form__input"
+          placeholder="Фильм"
           required
+        // defaultValue={}
         />
 
-        <button 
-          type="button" 
+        <button
+          type="submit"
           className="search-form__button"
-          disabled={isDisabled}
-          ></button>
+        ></button>
       </label>
-      <FilterCheckbox checkboxStatus={checkboxStatus}></FilterCheckbox>
+      <FilterCheckbox
+        checkboxStatus={checkboxStatus}
+        setCheckboxStatus={setCheckboxStatus}
+      />
     </form>
   )
 }

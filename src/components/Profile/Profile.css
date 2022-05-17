@@ -82,11 +82,8 @@
   font-size: 10px;
   line-height: 12px;
   color: #EE3465;
+  width: 260px;
 }
-
-
-
-
 
 .profile-form__link {
   height: 45px;
@@ -125,9 +122,19 @@
   border: none;
 }
 
+.profile-form__btn-save:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
 .profile-form__btn-save:disabled {
   background-color: #F8F8F8;
   color: #C2C2C2;
+}
+
+.profile-form__btn-save:disabled:hover {
+  opacity: 1;
+  cursor: default;
 }
 
 .profile-form__error {
@@ -144,8 +151,9 @@
   border: none;
   cursor: pointer;
 }
+
 .profile-form__btn-edit:hover {
-opacity: 0.8;
+  opacity: 0.8;
 }
 
 @media screen and (min-width: 768px) {
@@ -176,6 +184,7 @@ opacity: 0.8;
 
   .profile-form__item {
     margin-bottom: 16px;
+    text-align: center;
   }
 
   .profile-form__btn-save {
@@ -183,12 +192,15 @@ opacity: 0.8;
     font-size: 14px;
     line-height: 17px;
   }
+
+  .profile-form__input-error {
+    width: 410px;
+  }
 }
 
 @media screen and (min-width: 1280px) {
   .profile {
     padding: 74px 0px 70px;
-
   }
 
   .profile-form {

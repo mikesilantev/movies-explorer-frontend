@@ -1,16 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Form } from '../Form/Forms';
-
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
-
 import './Login.css';
 
-export function Login({ handleSignin, apiErrorText }) {
-
+export function Login({ handleSignin, apiTextError }) {
   // Form validation variables
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
-
   const isDisabled = !isValid;
 
   // Отправка данных в форме
@@ -37,7 +32,7 @@ export function Login({ handleSignin, apiErrorText }) {
         signMessage='Ещё не зарегистрированы?'
         signLinkMessage='Регистрация'
         signLink='/signup'
-        apiErrorText={apiErrorText}
+        apiTextError={apiTextError}
       >
         <div className='form__label-wrap'>
           <label className='form__label'>
@@ -49,7 +44,6 @@ export function Login({ handleSignin, apiErrorText }) {
               value={values.email || ''}
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               required
-
               name='email'
               type='email'
               className='form__input form__input_type_name'
@@ -74,7 +68,7 @@ export function Login({ handleSignin, apiErrorText }) {
               type='password'
               name='password'
               className={!errors.password ? 'form__input' : 'form__input form__input_error'}
-              placeholder='••••••••••••••'s
+              placeholder='••••••••••••••'
             />
 
             {/* input 'password' */}

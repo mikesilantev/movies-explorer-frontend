@@ -11,8 +11,13 @@ export default function Header({ loggedIn }) {
   let { pathname } = useLocation()
   const [openMenu, setOpenMenu] = useState(false);
 
+
+  
   // .header__no-index 
   return (
+
+    // <header className={'header'}>
+
     <header className={ (pathname === '/') ? ('header') : ('header header_dark')}>
       <NavLink to='/' className='header__logo'>
         <img src={logo} alt='Mesto' />
