@@ -14,7 +14,9 @@ export default function Movies({
 
   checkboxStatus,
   setCheckboxStatus,
-  handleSaveMovies
+  handleSaveMovies,
+
+  savedMoviesId,
 }){
 
 
@@ -34,6 +36,8 @@ export default function Movies({
         renderMovies={renderMovies}
         setRenderMovies={setRenderMovies}
         handleSaveMovies={handleSaveMovies}
+
+        savedMoviesId={savedMoviesId}
       />
     </section>
   )

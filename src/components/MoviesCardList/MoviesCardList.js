@@ -1,21 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext} from 'react';
 import { useLocation } from 'react-router-dom';
 import useChangeWindowWidth from '../../hooks/useChangeWindowWidth';
+
+
+
 
 import  mainApi from '../../utils/MainApi';
 
 import { MovieCard } from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
-
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 export function MoviesCardList({
   searchQuery,
   setSearchQuery,
   renderMovies,
   setRenderMovies,
 
-  handleSaveMovies
+  handleSaveMovies,
+
+  savedMoviesId,
 }) {
 
+  const currentUser = useContext(CurrentUserContext);
   let { pathname } = useLocation();
   const [moviesToRender, setMoviesToRender] = useState([]);
 
@@ -43,6 +49,9 @@ export function MoviesCardList({
   }, [width]);
 
 
+
+
+
   useEffect(() => {
     let localFilterMovies = localStorage.getItem('filterMovies')
 
@@ -51,10 +60,6 @@ export function MoviesCardList({
         async function getMoviesToLocalStorage(){
           let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
           await setRenderMovies(filterMoviesLocalStorage);
-          if (localStorage.getItem('savedMoviesId')) {
-            console.log(localStorage.getItem('savedMoviesId'))
-
-          }
         }
 
         getMoviesToLocalStorage();
@@ -62,14 +67,19 @@ export function MoviesCardList({
       const token = localStorage.getItem('JWT_TOKEN');
       mainApi.getSavedMovie(token)
         .then(res => {
-          setMoviesToRender(res)
-
-          let savedMoviesID = [];
+          // setMoviesToRender(res)
+          let savedArreyMoves = [];
           res.map((i) => {
-            savedMoviesID.push(i.movieId);
+            // console.log(currentUser._id)
+            // console.log(i.owner._id)
+
+            if (i.owner._id === currentUser._id) {
+              savedArreyMoves.push(i)
+              return savedArreyMoves;
+            }
+            console.log(savedArreyMoves)
           })
-          localStorage.setItem('savedMoviesId', JSON.stringify(savedMoviesID))
-          console.log(savedMoviesID)
+
 
         })
     }
@@ -78,7 +88,8 @@ export function MoviesCardList({
 
   return (
     <section className='movies-list'>
-      <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}>
+      <div className={ 'movie-list__card-wrap'}>
+      {/* <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}> */}
 
         {
           pathname === '/movies' ?
@@ -94,7 +105,8 @@ export function MoviesCardList({
                 trailerLink={card.trailerLink}
                 movie={card}
                 handleSaveMovies={handleSaveMovies}
-                // liked={}
+
+                savedMoviesId={savedMoviesId}
                 />
               )
             }
@@ -104,19 +116,32 @@ export function MoviesCardList({
               (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
 
               moviesToRender ? (
-                moviesToRender.map((card) => {
+                moviesToRender.slice(0).reverse().map((card) => {
                   return (
                     <MovieCard
-                    key={card.id}
-                    cover={card.image}
-                    title={card.nameRU}
-                    durationMovie={card.duration}
-                    trailerLink={card.trailerLink}
-                    movie={card}
-                    handleSaveMovies={handleSaveMovies}
+                      key={card.id}
+                      cover={card.image}
+                      title={card.nameRU}
+                      durationMovie={card.duration}
+                      trailerLink={card.trailerLink}
+                      movie={card}
+                      handleSaveMovies={handleSaveMovies}
                     />
                   )
                 })
+                // moviesToRender.map((card) => {
+                //   return (
+                //     <MovieCard
+                //       key={card.id}
+                //       cover={card.image}
+                //       title={card.nameRU}
+                //       durationMovie={card.duration}
+                //       trailerLink={card.trailerLink}
+                //       movie={card}
+                //       handleSaveMovies={handleSaveMovies}
+                //     />
+                //   )
+                // })
               ) : (
               <p className='movies-list__nulled-query'>Ничего не найдено</p>
               )

@@ -40,7 +40,7 @@ export default function App() {
 
 
   // Массив ID Сохраненных фильмов 
-  const [savedLocalMovies, setSavedLocalMovies] = useState([]);
+  const [savedMoviesId, setSavedMoviesId ] = useState([]);
   // Стейты поиска
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
@@ -52,6 +52,23 @@ export default function App() {
   // Страницы с фильмами
   const moviesPage = pathname === '/movies',
         savedPage = pathname === '/saved-movies';
+
+
+
+
+  useEffect(() => {
+    if (loggedIn){
+      const token = localStorage.getItem('JWT_TOKEN');
+      let savedMovies = [];
+      mainApi.getSavedMovie(token)
+        .then((res) => { 
+          res.map((i) => {
+            return savedMovies.push({id: i.movieId})
+          })
+        })
+        setSavedMoviesId(savedMovies)
+    }
+  }, [loggedIn])
 
 
 
@@ -262,9 +279,6 @@ function removeLocalStorageOnExit(){
   localStorage.removeItem('searchQuery')
   localStorage.removeItem('filteredMovies')  
 }
-
-
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
@@ -296,6 +310,10 @@ function removeLocalStorageOnExit(){
                 setRenderMovies={setRenderMovies}
 
                 handleSaveMovies={handleSaveMovies}
+
+
+                savedMoviesId={savedMoviesId}
+                currentUser={currentUser}
               />
             }></Route>
 

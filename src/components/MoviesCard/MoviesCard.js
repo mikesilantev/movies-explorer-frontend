@@ -1,4 +1,6 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 import './MovieCard.css';
 
@@ -8,7 +10,23 @@ export function MovieCard({
   durationMovie,
   movie,
   handleSaveMovies,
+
+  savedMoviesId,
 }) {
+
+  const { pathname } = useLocation();
+  let isSaved;
+  if (pathname === '/movies') {
+      isSaved = savedMoviesId.some((saveMovie) => {
+      if (saveMovie.id === movie.id) {
+        return true
+      } else {
+        return false
+      }
+    })
+  }
+
+
 
   function saveMovieClick() {
     handleSaveMovies({
@@ -31,7 +49,19 @@ export function MovieCard({
     <article className='movie-card'>
 
       <img src={cover} alt={title} className="movie-card__cover" />
-      <button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>
+      {
+        pathname === '/movies' ?
+          !isSaved ?
+            (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
+            (<button className='movie-card__save-btn movie-card__saved' ></button>) :
+          (<button className='movie-card__save-btn movie-card__remove-btn' ></button>)
+        //   !isSaved ?
+        //   (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
+        //   (<button className='movie-card__save-btn movie-card__saved' ></button>) :
+        // (<button className='movie-card__save-btn movie-card__remove-btn' ></button>)
+      }
+
+
       <div className="movie-card__description">
         <p className='movie-card__title'>{title}</p>
         <span className='movie-card__duration'>{durationMovie}</span>
