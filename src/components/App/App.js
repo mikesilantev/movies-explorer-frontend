@@ -63,7 +63,10 @@ export default function App() {
       mainApi.getSavedMovie(token)
         .then((res) => { 
           res.map((i) => {
-            return savedMovies.push({id: i.movieId})
+            if (i.owner._id === currentUser._id) {
+              return savedMovies.push({id: i.movieId})
+            }
+
           })
         })
         setSavedMoviesId(savedMovies)
