@@ -67,6 +67,7 @@ export function Login({ handleSignin, apiTextError }) {
 
               type='password'
               name='password'
+              autoComplete='on'
               className={!errors.password ? 'form__input' : 'form__input form__input_error'}
               placeholder='••••••••••••••'
             />

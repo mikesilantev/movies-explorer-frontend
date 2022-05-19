@@ -24,7 +24,7 @@ export function MoviesCardList({
   const currentUser = useContext(CurrentUserContext);
   let { pathname } = useLocation();
   const [moviesToRender, setMoviesToRender] = useState([]);
-
+  console.log(currentUser)
   // Стейты для вывода кол-ва карточек в зависимости от ширины
   const { width } = useChangeWindowWidth();
   const [cardToRender, setCardToRender] = useState(0);
@@ -64,13 +64,13 @@ export function MoviesCardList({
 
         getMoviesToLocalStorage();
     } else {
+
       const token = localStorage.getItem('JWT_TOKEN');
       async function compareOwner() {
         const getSavedMoviesApi = await mainApi.getSavedMovie(token)
         console.log(getSavedMoviesApi)
         let arr = []
         const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
-
           if (movie.owner._id === currentUser._id) {
             arr.push(movie)
           }
@@ -79,32 +79,14 @@ export function MoviesCardList({
         setMoviesToRender(arr)
       }
       compareOwner();
-
-      // mainApi.getSavedMovie(token)
-      //   .then(res => {
-      //     // setMoviesToRender(res)
-      //     let savedArreyMoves = [];
-      //     res.map((i) => {
-      //       // console.log(currentUser._id)
-      //       // console.log(i.owner._id)
-
-      //       if (i.owner._id === currentUser._id) {
-      //         savedArreyMoves.push(i)
-      //         return savedArreyMoves;
-      //       }
-      //       console.log(savedArreyMoves)
-      //     })
-
-
-      //   })
     }
   }, [])
 
 
   return (
     <section className='movies-list'>
-      <div className={ 'movie-list__card-wrap'}>
-      {/* <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}> */}
+      {/* <div className={'movie-list__card-wrap'}> */}
+      <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}>
 
         {
           pathname === '/movies' ?
@@ -134,7 +116,7 @@ export function MoviesCardList({
                 moviesToRender.slice(0).reverse().map((card) => {
                   return (
                     <MovieCard
-                      key={card.id}
+                      key={'saved_' + card.id}
                       cover={card.image}
                       title={card.nameRU}
                       durationMovie={card.duration}
@@ -144,19 +126,6 @@ export function MoviesCardList({
                     />
                   )
                 })
-                // moviesToRender.map((card) => {
-                //   return (
-                //     <MovieCard
-                //       key={card.id}
-                //       cover={card.image}
-                //       title={card.nameRU}
-                //       durationMovie={card.duration}
-                //       trailerLink={card.trailerLink}
-                //       movie={card}
-                //       handleSaveMovies={handleSaveMovies}
-                //     />
-                //   )
-                // })
               ) : (
               <p className='movies-list__nulled-query'>Ничего не найдено</p>
               )

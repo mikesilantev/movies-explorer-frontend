@@ -26,9 +26,8 @@ export function MovieCard({
     })
   }
 
-
-
   function saveMovieClick() {
+    isSaved = true;
     handleSaveMovies({
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',
@@ -55,10 +54,6 @@ export function MovieCard({
             (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
             (<button className='movie-card__save-btn movie-card__saved' ></button>) :
           (<button className='movie-card__save-btn movie-card__remove-btn' ></button>)
-        //   !isSaved ?
-        //   (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
-        //   (<button className='movie-card__save-btn movie-card__saved' ></button>) :
-        // (<button className='movie-card__save-btn movie-card__remove-btn' ></button>)
       }
 
 

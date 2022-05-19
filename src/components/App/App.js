@@ -57,7 +57,7 @@ export default function App() {
 
 
   useEffect(() => {
-    if (loggedIn){
+    if (loggedIn && !renderMovies){
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
       mainApi.getSavedMovie(token)
@@ -111,7 +111,6 @@ export default function App() {
   }
 
   useEffect(() => {
-    console.log(searchQuery)
     if (moviesPage){
       filterMovies(searchQuery, initialMovies);
       console.log(filteredMovies);
@@ -198,7 +197,7 @@ export default function App() {
     console.log(typeof (data))
     mainApi.signup({ data }).then(res => {
        console.log(res)
-       setCurrentUser(res);
+      //  setCurrentUser(res);
        handleSignin({email: data.email, password: data.password})
     })
     .catch(err => {
@@ -223,6 +222,7 @@ function handleSignin(data){
   mainApi.signin({data})
   .then(res => {
     localStorage.setItem('JWT_TOKEN', res.token)
+    setCurrentUser(res)
     setLoggedIn(true);
     setCorrectToken(true);
     navigate('/movies');
