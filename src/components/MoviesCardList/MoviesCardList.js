@@ -65,23 +65,38 @@ export function MoviesCardList({
         getMoviesToLocalStorage();
     } else {
       const token = localStorage.getItem('JWT_TOKEN');
-      mainApi.getSavedMovie(token)
-        .then(res => {
-          // setMoviesToRender(res)
-          let savedArreyMoves = [];
-          res.map((i) => {
-            // console.log(currentUser._id)
-            // console.log(i.owner._id)
+      async function compareOwner() {
+        const getSavedMoviesApi = await mainApi.getSavedMovie(token)
+        console.log(getSavedMoviesApi)
+        let arr = []
+        const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
 
-            if (i.owner._id === currentUser._id) {
-              savedArreyMoves.push(i)
-              return savedArreyMoves;
-            }
-            console.log(savedArreyMoves)
-          })
-
-
+          if (movie.owner._id === currentUser._id) {
+            arr.push(movie)
+          }
         })
+        console.log(arr)
+        setMoviesToRender(arr)
+      }
+      compareOwner();
+
+      // mainApi.getSavedMovie(token)
+      //   .then(res => {
+      //     // setMoviesToRender(res)
+      //     let savedArreyMoves = [];
+      //     res.map((i) => {
+      //       // console.log(currentUser._id)
+      //       // console.log(i.owner._id)
+
+      //       if (i.owner._id === currentUser._id) {
+      //         savedArreyMoves.push(i)
+      //         return savedArreyMoves;
+      //       }
+      //       console.log(savedArreyMoves)
+      //     })
+
+
+      //   })
     }
   }, [])
 
