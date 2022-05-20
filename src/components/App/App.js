@@ -50,7 +50,7 @@ export default function App() {
 
   // Страницы с фильмами
   const moviesPage = pathname === '/movies',
-        savedPage = pathname === '/saved-movies';
+         savedPage = pathname === '/saved-movies';
 
   useEffect(() => {
     const querySearchLocalStorage = localStorage.getItem('searchQuery')
@@ -192,7 +192,6 @@ export default function App() {
   function handleSignup(data) {
     console.log(typeof (data))
     mainApi.signup({ data }).then(res => {
-       console.log(res)
       //  setCurrentUser(res);
        handleSignin({email: data.email, password: data.password})
     })
@@ -219,6 +218,7 @@ function handleSignin(data){
   .then(res => {
     localStorage.setItem('JWT_TOKEN', res.token)
     console.log(res)
+    auth(res.token)
     setLoggedIn(true);
     setCorrectToken(true);
     navigate('/movies');
