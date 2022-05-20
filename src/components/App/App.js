@@ -151,16 +151,26 @@ export default function App() {
 
 
   function handleSaveMovies(data) {
+    console.log('нажали на сохранение')
     mainApi.saveMovie(data)
       .then(res => {
         console.log(res)
-        console.log(res.movieId)
       })
       .catch(err => console.log(err))
-
   }
 
 
+
+
+function handleRemoveMovie(id){
+  console.log('УДАЛИТЬ')
+  const token = localStorage.getItem('JWT_TOKEN')
+  mainApi.removeMovie(id , token)
+    .then( 
+      // res => console.log(res)
+      )
+    .catch( err => console.log(err))
+}
 
   // Проверка токена
   function checkToken() {
@@ -323,6 +333,8 @@ function removeLocalStorageOnExit(){
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 handleSubmitSearchButton={handleSubmitSearchButton}
+
+                handleRemoveMovie={handleRemoveMovie}
               />}></Route>
           </Route>
         </Route>

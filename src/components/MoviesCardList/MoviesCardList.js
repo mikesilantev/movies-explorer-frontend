@@ -19,6 +19,7 @@ export function MoviesCardList({
   handleSaveMovies,
 
   savedMoviesId,
+  handleRemoveMovie,
 }) {
 
   const currentUser = useContext(CurrentUserContext);
@@ -61,25 +62,24 @@ export function MoviesCardList({
         let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
         await setRenderMovies(filterMoviesLocalStorage);
       }
-
       getMoviesToLocalStorage();
+
     } else {
-      if (localStorage.getItem('searchQuery')) {
+      console.log(savedMoviesId)
+      // if (savedMoviesId) {
         const token = localStorage.getItem('JWT_TOKEN');
         async function compareOwner() {
           const getSavedMoviesApi = await mainApi.getSavedMovie(token)
-          console.log(getSavedMoviesApi)
           let arr = []
           const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
             if (movie.owner._id === currentUser._id) {
               arr.push(movie)
             }
           })
-          console.log(arr)
           setMoviesToRender(arr)
         }
         compareOwner();
-      }
+      // }
     }
   }, [])
 
@@ -103,9 +103,8 @@ export function MoviesCardList({
                       durationMovie={card.duration}
                       trailerLink={card.trailerLink}
                       movie={card}
-                      handleSaveMovies={handleSaveMovies}
-
                       savedMoviesId={savedMoviesId}
+                      handleSaveMovies={handleSaveMovies}
                     />
                   )
                 }
@@ -126,7 +125,8 @@ export function MoviesCardList({
                     durationMovie={card.duration}
                     trailerLink={card.trailerLink}
                     movie={card}
-                    handleSaveMovies={handleSaveMovies}
+
+                    handleRemoveMovie={handleRemoveMovie}
                   />
                 )
               })}

@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 
@@ -12,22 +12,30 @@ export function MovieCard({
   handleSaveMovies,
 
   savedMoviesId,
+  handleRemoveMovie,
 }) {
 
 
   const { pathname } = useLocation();
-  let isSaved;
-  if (pathname === '/movies') {
-      isSaved = savedMoviesId.some((saveMovie) => {
+
+  const [isSaved, setIsSaved ] = useState();
+
+  // Лайки для /movies
+  useEffect(() => {
+    if (pathname === '/movies') {
+      setIsSaved(savedMoviesId.some((saveMovie) => {
       if (saveMovie.id === movie.id) {
         return true
       } else {
         return false
       }
-    })
+    }))
   }
+  }, [movie.id, pathname, savedMoviesId])
+
 
   function saveMovieClick() {
+    setIsSaved(true)
     handleSaveMovies({
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',
@@ -44,6 +52,11 @@ export function MovieCard({
   }
 
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  function handleRemove(){
+    handleRemoveMovie(movie._id)
+  }
+
   return (
     <article className='movie-card'>
 
@@ -53,7 +66,7 @@ export function MovieCard({
           !isSaved ?
             (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
             (<button className='movie-card__save-btn movie-card__saved' ></button>) :
-          (<button className='movie-card__save-btn movie-card__remove-btn' ></button>)
+          (<button className='movie-card__save-btn movie-card__remove-btn' onClick={handleRemove}></button>)
       }
 
 
