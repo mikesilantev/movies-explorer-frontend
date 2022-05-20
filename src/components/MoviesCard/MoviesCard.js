@@ -14,6 +14,7 @@ export function MovieCard({
   savedMoviesId,
 }) {
 
+
   const { pathname } = useLocation();
   let isSaved;
   if (pathname === '/movies') {
@@ -27,7 +28,6 @@ export function MovieCard({
   }
 
   function saveMovieClick() {
-    isSaved = true;
     handleSaveMovies({
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',

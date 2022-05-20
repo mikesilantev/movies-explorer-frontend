@@ -30,7 +30,6 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [correctToken, setCorrectToken] = useState(false);
-  // const [,set] = useState();
 
   // Стейты с фильмами
   const [initialMovies, setInitialMovies] = useState([]);
@@ -53,11 +52,9 @@ export default function App() {
   const moviesPage = pathname === '/movies',
         savedPage = pathname === '/saved-movies';
 
-
-
-
   useEffect(() => {
-    if (loggedIn && !renderMovies){
+    const querySearchLocalStorage = localStorage.getItem('searchQuery')
+    if (loggedIn && querySearchLocalStorage){
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
       mainApi.getSavedMovie(token)
@@ -66,7 +63,6 @@ export default function App() {
             if (i.owner._id === currentUser._id) {
               return savedMovies.push({id: i.movieId})
             }
-
           })
         })
         setSavedMoviesId(savedMovies)
@@ -222,7 +218,7 @@ function handleSignin(data){
   mainApi.signin({data})
   .then(res => {
     localStorage.setItem('JWT_TOKEN', res.token)
-    setCurrentUser(res)
+    console.log(res)
     setLoggedIn(true);
     setCorrectToken(true);
     navigate('/movies');

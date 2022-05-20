@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext} from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import useChangeWindowWidth from '../../hooks/useChangeWindowWidth';
 
 
 
 
-import  mainApi from '../../utils/MainApi';
+import mainApi from '../../utils/MainApi';
 
 import { MovieCard } from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
@@ -24,7 +24,6 @@ export function MoviesCardList({
   const currentUser = useContext(CurrentUserContext);
   let { pathname } = useLocation();
   const [moviesToRender, setMoviesToRender] = useState([]);
-  console.log(currentUser)
   // Стейты для вывода кол-ва карточек в зависимости от ширины
   const { width } = useChangeWindowWidth();
   const [cardToRender, setCardToRender] = useState(0);
@@ -55,14 +54,14 @@ export function MoviesCardList({
   useEffect(() => {
     let localFilterMovies = localStorage.getItem('filterMovies')
 
-    if (pathname === '/movies' && !localFilterMovies){
+    if (pathname === '/movies' && !localFilterMovies) {
 
-        async function getMoviesToLocalStorage(){
-          let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
-          await setRenderMovies(filterMoviesLocalStorage);
-        }
+      async function getMoviesToLocalStorage() {
+        let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
+        await setRenderMovies(filterMoviesLocalStorage);
+      }
 
-        getMoviesToLocalStorage();
+      getMoviesToLocalStorage();
     } else {
 
       const token = localStorage.getItem('JWT_TOKEN');
@@ -86,53 +85,55 @@ export function MoviesCardList({
   return (
     <section className='movies-list'>
       {/* <div className={'movie-list__card-wrap'}> */}
-      <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}>
 
+      {/* <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}> */}
         {
           pathname === '/movies' ?
-          renderMovies && renderMovies.length > 0 ?
-          renderMovies.reduce((accum, card) => {
-            if (accum.length < cardCount){
-              accum.push(
-                <MovieCard
-                key={card.id}
-                cover={`https://api.nomoreparties.co/${card.image.url}`}
-                title={card.nameRU}
-                durationMovie={card.duration}
-                trailerLink={card.trailerLink}
-                movie={card}
-                handleSaveMovies={handleSaveMovies}
-
-                savedMoviesId={savedMoviesId}
-                />
-              )
-            }
-            return accum
-          }, [])
-              :
-              (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
-
-              moviesToRender ? (
-                moviesToRender.slice(0).reverse().map((card) => {
-                  return (
+            renderMovies && renderMovies.length > 0 ?
+            (<div className={'movie-list__card-wrap'}>
+              {renderMovies.reduce((accum, card) => {
+                if (accum.length < cardCount) {
+                  accum.push(
                     <MovieCard
-                      key={'saved_' + card.id}
-                      cover={card.image}
+                      key={card.id}
+                      cover={`https://api.nomoreparties.co/${card.image.url}`}
                       title={card.nameRU}
                       durationMovie={card.duration}
                       trailerLink={card.trailerLink}
                       movie={card}
                       handleSaveMovies={handleSaveMovies}
+
+                      savedMoviesId={savedMoviesId}
                     />
                   )
-                })
-              ) : (
+                }
+                return accum
+              }, [])}
+              </div>)
+              :
+              (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
+
+            moviesToRender ? (
+              <div className={'movie-list__card-wrap'}>{
+              moviesToRender.slice(0).reverse().map((card) => {
+                return (
+                  <MovieCard
+                    key={card.id}
+                    cover={card.image}
+                    title={card.nameRU}
+                    durationMovie={card.duration}
+                    trailerLink={card.trailerLink}
+                    movie={card}
+                    handleSaveMovies={handleSaveMovies}
+                  />
+                )
+              })}
+            </div>) : (
               <p className='movies-list__nulled-query'>Ничего не найдено</p>
-              )
+            )
 
 
         }
-      </div>
     </section>
   )
 }

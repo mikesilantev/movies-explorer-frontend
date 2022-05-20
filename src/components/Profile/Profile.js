@@ -13,6 +13,9 @@ export function Profile({ handleLogout, handleUserUpdate, apiTextError, setApiTe
   // Состояние формы - находится в редактировании или нет
   const [isEdited, setIsEdited] = useState(false);
 
+  console.log('PROFILE')
+  console.log(currentUser)
+
   useEffect(()=> {
     setTimeout(() => {
       let apiError = apiTextError;
