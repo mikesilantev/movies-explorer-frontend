@@ -49,10 +49,6 @@ export function MoviesCardList({
     }
   }, [width]);
 
-
-
-
-
   useEffect(() => {
     let localFilterMovies = localStorage.getItem('filterMovies')
 
@@ -86,9 +82,6 @@ export function MoviesCardList({
 
   return (
     <section className='movies-list'>
-      {/* <div className={'movie-list__card-wrap'}> */}
-
-      {/* <div className={renderMovies && renderMovies.length > 0 ? 'movie-list__card-wrap' : ''}> */}
         {
           pathname === '/movies' ?
             renderMovies && renderMovies.length > 0 ?

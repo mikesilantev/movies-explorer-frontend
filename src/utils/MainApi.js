@@ -100,9 +100,7 @@ class MainApi {
     .then(res => this._checkResult(res))
   }
 
-
   getSavedMovie(token){
-    console.log(token)
     return fetch(`${this._url}/movies`, {
       method: 'GET',
       headers: {

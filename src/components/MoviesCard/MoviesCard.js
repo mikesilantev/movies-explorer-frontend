@@ -17,7 +17,6 @@ export function MovieCard({
 
 
   const { pathname } = useLocation();
-
   const [isSaved, setIsSaved ] = useState();
 
   // Лайки для /movies
@@ -31,7 +30,7 @@ export function MovieCard({
       }
     }))
   }
-  }, [movie.id, pathname, savedMoviesId])
+  }, [])
 
 
   function saveMovieClick() {

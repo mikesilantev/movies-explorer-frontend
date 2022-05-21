@@ -55,8 +55,14 @@ export default function App() {
   useEffect(() => {
     const querySearchLocalStorage = localStorage.getItem('searchQuery')
     if (loggedIn && querySearchLocalStorage){
+
+
+
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
+
+      console.log('USEEFFECT')
+
       mainApi.getSavedMovie(token)
         .then((res) => { 
           res.map((i) => {
@@ -67,7 +73,7 @@ export default function App() {
         })
         setSavedMoviesId(savedMovies)
     }
-  }, [loggedIn])
+  }, [moviesPage])
 
 
 
@@ -78,10 +84,11 @@ export default function App() {
     //   setLoggedIn(false)
     //   handleLogout();
     // }
+
   }, [])
 
   useEffect(() => {
-    let moviesToLocalStorage = localStorage.getItem('initialMovies');
+    const moviesToLocalStorage = localStorage.getItem('initialMovies');
     if (loggedIn && !moviesToLocalStorage) {
       try {
         getMovies(moviesToLocalStorage);
@@ -109,7 +116,6 @@ export default function App() {
   useEffect(() => {
     if (moviesPage){
       filterMovies(searchQuery, initialMovies);
-      console.log(filteredMovies);
     } else if (savedPage){
       console.log("savedPage")
     } else {
