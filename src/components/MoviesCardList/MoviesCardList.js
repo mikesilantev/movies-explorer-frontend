@@ -49,6 +49,12 @@ export function MoviesCardList({
     }
   }, [width]);
 
+  // Кнопка показать "еще"
+  function handleMoreBtn(evt) {
+    evt.preventDefault();
+    setCardCount(cardCount + cardToRender)
+  }
+
   useEffect(() => {
     let localFilterMovies = localStorage.getItem('filterMovies')
 
@@ -63,18 +69,18 @@ export function MoviesCardList({
     } else {
       console.log(savedMoviesId)
       // if (savedMoviesId) {
-        const token = localStorage.getItem('JWT_TOKEN');
-        async function compareOwner() {
-          const getSavedMoviesApi = await mainApi.getSavedMovie(token)
-          let arr = []
-          const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
-            if (movie.owner._id === currentUser._id) {
-              arr.push(movie)
-            }
-          })
-          setMoviesToRender(arr)
-        }
-        compareOwner();
+      const token = localStorage.getItem('JWT_TOKEN');
+      async function compareOwner() {
+        const getSavedMoviesApi = await mainApi.getSavedMovie(token)
+        let arr = []
+        const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
+          if (movie.owner._id === currentUser._id) {
+            arr.push(movie)
+          }
+        })
+        setMoviesToRender(arr)
+      }
+      compareOwner();
       // }
     }
   }, [])
@@ -82,9 +88,9 @@ export function MoviesCardList({
 
   return (
     <section className='movies-list'>
-        {
-          pathname === '/movies' ?
-            renderMovies && renderMovies.length > 0 ?
+      {
+        pathname === '/movies' ?
+          renderMovies && renderMovies.length > 0 ?
             (<div className={'movie-list__card-wrap'}>
               {renderMovies.reduce((accum, card) => {
                 if (accum.length < cardCount) {
@@ -102,13 +108,24 @@ export function MoviesCardList({
                   )
                 }
                 return accum
-              }, [])}
-              </div>)
-              :
-              (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
+              }, [])   
+              }
 
-            moviesToRender ? (
-              <div className={'movie-list__card-wrap'}>{
+{
+        (renderMovies.length > cardCount && pathname === '/movies')
+        &&
+        <button
+          onClick={handleMoreBtn}
+          className='movies-list__btn'>
+          Еще
+        </button>
+      }
+            </div>)
+            :
+            (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
+
+          moviesToRender ? (
+            <div className={'movie-list__card-wrap'}>{
               moviesToRender.slice(0).reverse().map((card) => {
                 return (
                   <MovieCard
@@ -124,47 +141,11 @@ export function MoviesCardList({
                 )
               })}
             </div>) : (
-              <p className='movies-list__nulled-query'>Ничего не найдено</p>
-            )
+            <p className='movies-list__nulled-query'>Ничего не найдено</p>
+          )
 
 
-        }
+      }
     </section>
   )
 }
-
-//   (
-
-//             ) :
-//             (<h1>SAVED MOVIES</h1>)
-
-
-// eslint-disable-next-line no-lone-blocks
-{/* <section className='movies-list'>
-<div className='movie-list__card-wrap'>
-  { 
-    pathname === '/movies' ?
-    renderMovies && renderMovies.length > 0 ?
-        ( 
-          renderMovies.reduce((accum, card) => {
-            if (accum.length < cardCount) {
-              accum.push(
-                <MovieCard
-                key={card.id}
-                cover={`https://api.nomoreparties.co/${card.image.url}`}
-                title={card.nameRU}
-                durationMovie={card.duration}
-                trailerLink={card.trailerLink}
-                movie={card}
-                // saveMovieToDb={saveMovieToDb}
-                // removeMovieFromDb={removeMovieFromDb}
-              />
-              )
-            }
-          })
-        ):
-        console.log(renderMovies.length) :
-    (<span>Saved Movies: {pathname}</span>)
-  }
-</div>
-</section> */}

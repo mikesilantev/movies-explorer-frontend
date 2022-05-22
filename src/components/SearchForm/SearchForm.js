@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { FilterCheckbox } from "../FilterCheckbox/FilterCheckbox";
 import './SearchForm.css';
@@ -12,12 +13,16 @@ export function SearchForm({
 
   let { pathname } = useLocation();
 
-  if (pathname === '/movies') {
-    setSearchQuery(localStorage.getItem('searchQuery'))
-    console.log('отработка')
-  } else {
-    setSearchQuery('')
-  }
+
+  // useEffect(() => {
+  //   if (pathname === '/movies') {
+  //     setSearchQuery(localStorage.getItem('searchQuery'))
+  //     console.log('отработка')
+  //   } else {
+  //     setSearchQuery('')
+  //   }
+  // }, []);
+
 
   function handleSearchInput(evt) {
     setSearchQuery(evt.target.value)
@@ -48,7 +53,6 @@ export function SearchForm({
           className="search-form__input"
           placeholder="Фильм"
           required
-        // defaultValue={}
         />
 
         <button

@@ -52,17 +52,15 @@ export default function App() {
   const moviesPage = pathname === '/movies',
          savedPage = pathname === '/saved-movies';
 
+
+
   useEffect(() => {
+    console.log('USEEFFECT')
     const querySearchLocalStorage = localStorage.getItem('searchQuery')
     if (loggedIn && querySearchLocalStorage){
 
-
-
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
-
-      console.log('USEEFFECT')
-
       mainApi.getSavedMovie(token)
         .then((res) => { 
           res.map((i) => {
@@ -73,7 +71,7 @@ export default function App() {
         })
         setSavedMoviesId(savedMovies)
     }
-  }, [moviesPage])
+  }, [])
 
 
 

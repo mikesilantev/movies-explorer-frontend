@@ -30,7 +30,7 @@ export function MovieCard({
       }
     }))
   }
-  }, [])
+  }, [movie.id, pathname, savedMoviesId, saveMovieClick])
 
 
   function saveMovieClick() {
