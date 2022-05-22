@@ -61,6 +61,7 @@ export default function App() {
 
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
+      console.log(savedMovies)
       mainApi.getSavedMovie(token)
         .then((res) => { 
           res.map((i) => {
