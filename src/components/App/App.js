@@ -57,12 +57,12 @@ export default function App() {
   useEffect(() => {
     console.log('USEEFFECT')
     const querySearchLocalStorage = localStorage.getItem('searchQuery')
+
+
     if (loggedIn && querySearchLocalStorage){
 
       const token = localStorage.getItem('JWT_TOKEN');
       let savedMovies = [];
-      console.log(savedMovies)
-      console.log(savedMovies)
       mainApi.getSavedMovie(token)
         .then((res) => { 
           res.map((i) => {
@@ -87,8 +87,16 @@ export default function App() {
 
   }, [])
 
+  ////////////////////////////////////////////////////////////////////////////
+  // STATE LOGGEDIN
+  // При изменнении стейта loggedIn проверяем
+  // Если loggedIn = true , и нету фильмов в локал сторейдже
+  // загружаем их, если в локале есть фильмы записываем их 
+  // через saveMoveToState в initialMovies
+
   useEffect(() => {
     const moviesToLocalStorage = localStorage.getItem('initialMovies');
+
     if (loggedIn && !moviesToLocalStorage) {
       try {
         getMovies(moviesToLocalStorage);
@@ -101,6 +109,7 @@ export default function App() {
     }
   }, [loggedIn]);
 
+  // Загружаем фильмы
   async function getMovies(localMovies) {
     const getMovies = await movieApi.getMovies();
     localMovies = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
@@ -108,10 +117,29 @@ export default function App() {
     setInitialMovies(getLocalMovies);
   }
 
+  // Сохраняем в стейт
   async function saveMoveToState(localMovies) {
     const getLocalMovies = await JSON.parse(localMovies);
     setInitialMovies(getLocalMovies);
   }
+
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  // EFFECT - при изменнении строки поиска и чекбокса
+  // Если находимся на странице с фильмами /movies
+  // передаем searchQuery - запрос 
+  // и initialMovies массив с фильмами для фильтрации 
+  // если находимся на /saved-movies
+  // передаем запрос searchQuery и массив с сохраненными фильмами???????
+
+  // ???????????????????????????
+  // ???????????????????????????
+  // ???????????????????????????
 
   useEffect(() => {
     if (moviesPage){
@@ -125,6 +153,8 @@ export default function App() {
 
   // Фильтруем входящий массив с фильмами
   // query - Поисковый запрос, data - массив с фильмами - либо initialMovies || savedMovies
+  // permovMovies - рузультат поиска
+
   async function filterMovies(query, data) {
     const permovMovies = await data.filter(
       movie => (
@@ -136,26 +166,39 @@ export default function App() {
     if (moviesPage) {
       setFilteredMovies(permovMovies)
     } else {
-      
+      // ???????????
+      // ???????????
+      // ???????????
+      // ???????????
     }
 
   }
 
+
+  // Нажаатие на кнопку поиска
+  // Отправляем отфильтрованные фильмы
+  // и запрос в локал сторейдж
+  // отправляем в renderMovies - filteredMovies
   function handleSubmitSearchButton(){
-    addMoviesSearchToLocalStorage(filteredMovies)
+    if (moviesPage){
+      addMoviesSearchToLocalStorage(filteredMovies)
+    }
     setRenderMovies(filteredMovies)
   }
 
+
+  // функция добавления в локал сторейдж используется в handleSubmitSearchButton
+  // при добавлении фильм в сохраненные на странице /movies
   function addMoviesSearchToLocalStorage(search){
     if (moviesPage) {
       localStorage.setItem('filteredMovies', JSON.stringify(search))
       localStorage.setItem('checkboxStatus', checkboxStatus)
       localStorage.setItem('searchQuery', searchQuery);
     }
-    // localStorage.setItem(moviesPage ? ('moviesCheckBoxStatus', checkboxStatus) : ('savedMoviesCheckboxStatus', checkboxStatus));
   }
 
-
+  // нажатие на кнопку сохранить
+  // пока просто сохраняем в базу данных
   function handleSaveMovies(data) {
     console.log('нажали на сохранение')
     mainApi.saveMovie(data)
