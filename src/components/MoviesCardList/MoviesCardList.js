@@ -60,11 +60,16 @@ export function MoviesCardList({
     setCardCount(cardCount + cardToRender)
   }
 
+
+  /// эффект при загрузке
+  // если /movies и локалсторейдж с отфильтрованными фильмами пуст
+  // Разобраться
+
   useEffect(() => {
     let localFilterMovies = localStorage.getItem('filterMovies')
 
     if (pathname === '/movies' && !localFilterMovies) {
-
+      console.log('ШЛЯПА')
       async function getMoviesToLocalStorage() {
         let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
         await setRenderMovies(filterMoviesLocalStorage);
@@ -77,6 +82,7 @@ export function MoviesCardList({
       const token = localStorage.getItem('JWT_TOKEN');
       async function compareOwner() {
         const getSavedMoviesApi = await mainApi.getSavedMovie(token)
+
         let arr = []
         const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
           if (movie.owner._id === currentUser._id) {

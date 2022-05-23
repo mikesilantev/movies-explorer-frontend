@@ -39,6 +39,9 @@ export default function App() {
 
 
   // Массив ID Сохраненных фильмов 
+  // Все сохраненные фильмы
+  const [allSavedMovies, setAllSavedMovies] = useState([]);
+  // Айди сохраненных фильмов конкретного пользователя
   const [savedMoviesId, setSavedMoviesId] = useState([]);
   // Стейты поиска
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,6 +61,94 @@ export default function App() {
   // Страницы с фильмами
   const moviesPage = pathname === '/movies',
     savedPage = pathname === '/saved-movies';
+
+
+// Загрузка приложения
+// Проверка токена
+useEffect(() => {
+  checkToken(); // loggedIn :true
+  setApiTextError('');
+}, [])
+
+
+// Если токен fale ничего
+
+// Проверили токен - loggedIn true
+// Запускаем событие по loggedIn
+  useEffect(() => {
+    // Скачать сохраненные фильмы
+    getSavedMoviesApi()
+
+
+  }, [loggedIn])
+
+  // проверка фильмов на принадлженость пользователя
+  // Загрузка айди фильмов в стейт savedMoviesId
+  // на выходе Стейт с айди фильмами
+
+
+  // useEffect(() => {
+  //   let currentUserSavedMovies = [];
+  //   allSavedMovies.map((movie) => {
+  //     if(movie.owner._id === currentUser._id) {
+  //       return currentUserSavedMovies.push(movie)
+  //     }
+  //   })
+  //   setAllSavedMovies(currentUserSavedMovies)
+  // }, [])
+
+  // Сортирум сохраненные конкретным пользователем лайки
+  useEffect(() => {
+    console.log(allSavedMovies)
+    allSavedMovies.map((savedMovie) => {
+      console.log(savedMovie)
+    } )
+  },  [allSavedMovies])
+
+
+  // забираем сохраненные фильмы из БД
+  // и заносим в стейт allSavedMovies
+  function getSavedMoviesApi() {
+    const token = localStorage.getItem('JWT_TOKEN');
+    if (token) {
+      mainApi.getSavedMovie(token)
+        .then((movies) => {
+          console.log(movies)
+          setAllSavedMovies(movies)
+        })
+    }
+  }
+  
+  // нажатие на кнопку сохранить
+  // пока просто сохраняем в базу данных
+  function handleSaveMovies(data) {
+    console.log('нажали на сохранение')
+    mainApi.saveMovie(data)
+      .then(movie => {
+        // Перезапишем в стейт allSavedMovies сстарые данные и новые movie
+        setAllSavedMovies([...allSavedMovies, movie])
+      })
+      .catch(err => console.log(err))
+  }
+
+// Загружаем сохраненные фильмы
+// Сортируем на принадлежность к пользователю
+// Сравнили с фильмами из локала
+
+// Записали в savedMoviesId
+
+// Событие по SavedMoviesId
+// Берем фильмы из локала
+// Записываем в стейт
+
+
+
+
+
+
+
+
+
 
 
 
@@ -80,25 +171,23 @@ export default function App() {
   //         })
   //       })
   //     setSavedMoviesId(savedMovies)
+  //     console.log(savedMoviesId)
   //   }
   // }, [])
 
-useEffect(() => {
-  console.log('запускаем лайки')
+  // useEffect(() => {
+  //   checkToken();
+  //   setApiTextError('');
 
 
+  //   // if (!correctToken){
+  //   //   setLoggedIn(false)
+  //   //   handleLogout();
+  //   // }
 
-}, [renderMovies])
+  // }, [])
 
-  useEffect(() => {
-    checkToken();
-    setApiTextError('');
-    // if (!correctToken){
-    //   setLoggedIn(false)
-    //   handleLogout();
-    // }
 
-  }, [])
 
   ////////////////////////////////////////////////////////////////////////////
   // STATE LOGGEDIN
@@ -182,6 +271,7 @@ useEffect(() => {
     )
     if (moviesPage) {
 
+
       setFilteredMovies(permovMovies)
     } else {
       // ???????????
@@ -220,8 +310,9 @@ useEffect(() => {
   function handleSaveMovies(data) {
     console.log('нажали на сохранение')
     mainApi.saveMovie(data)
-      .then(res => {
-        console.log(res)
+      .then(movie => {
+        // Перезапишем в стейт allSavedMovies сстарые данные и новые movie
+        setAllSavedMovies([...allSavedMovies, movie])
       })
       .catch(err => console.log(err))
   }
