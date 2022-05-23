@@ -58,7 +58,7 @@ class MainApi {
   }
 
   patchUser(data){
-    const token = localStorage.getItem('JWT_TOKEN')
+    const token = localStorage.getItem('JWT_TOKEN');
     return fetch (`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {

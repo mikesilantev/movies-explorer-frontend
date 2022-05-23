@@ -24,7 +24,7 @@ import { PageNotFound } from "../PageNotFound/PageNotFound";
 
 export default function App() {
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
 
   const [currentUser, setCurrentUser] = useState({});
@@ -39,7 +39,7 @@ export default function App() {
 
 
   // Массив ID Сохраненных фильмов 
-  const [savedMoviesId, setSavedMoviesId ] = useState([]);
+  const [savedMoviesId, setSavedMoviesId] = useState([]);
   // Стейты поиска
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
@@ -48,34 +48,47 @@ export default function App() {
 
 
 
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  // временно
+  const [isSaved, setIsSaved ] = useState();
+  //_______________________________________________
+
   // Страницы с фильмами
   const moviesPage = pathname === '/movies',
-         savedPage = pathname === '/saved-movies';
+    savedPage = pathname === '/saved-movies';
 
 
 
-  useEffect(() => {
-    console.log('USEEFFECT')
-    const querySearchLocalStorage = localStorage.getItem('searchQuery')
+  // useEffect(() => {
+  //   console.log('Проставим лайки')
+  //   const querySearchLocalStorage = localStorage.getItem('searchQuery')
 
 
-    if (loggedIn && querySearchLocalStorage){
+  //   if (loggedIn && querySearchLocalStorage) {
 
-      const token = localStorage.getItem('JWT_TOKEN');
-      let savedMovies = [];
-      mainApi.getSavedMovie(token)
-        .then((res) => { 
-          res.map((i) => {
-            if (i.owner._id === currentUser._id) {
-              return savedMovies.push({id: i.movieId})
-            }
-          })
-        })
-        setSavedMoviesId(savedMovies)
-    }
-  }, [])
+  //     const token = localStorage.getItem('JWT_TOKEN');
+  //     let savedMovies = [];
+      
+  //     mainApi.getSavedMovie(token)
+  //       .then((res) => {
+  //         res.map((i) => {
+  //           if (i.owner._id === currentUser._id) {
+  //             return savedMovies.push({ id: i.movieId })
+  //           }
+  //         })
+  //       })
+  //     setSavedMoviesId(savedMovies)
+  //   }
+  // }, [])
+
+useEffect(() => {
+  console.log('запускаем лайки')
 
 
+
+}, [renderMovies])
 
   useEffect(() => {
     checkToken();
@@ -96,7 +109,7 @@ export default function App() {
 
   useEffect(() => {
     const moviesToLocalStorage = localStorage.getItem('initialMovies');
-
+    // setIsLoading(false)
     if (loggedIn && !moviesToLocalStorage) {
       try {
         getMovies(moviesToLocalStorage);
@@ -104,9 +117,13 @@ export default function App() {
       catch (err) {
         console.log(err);
       }
+      finally {
+        // setIsLoading(true)
+      }
     } else {
       saveMoveToState(moviesToLocalStorage);
     }
+    // setIsLoading(true)
   }, [loggedIn]);
 
   // Загружаем фильмы
@@ -142,9 +159,9 @@ export default function App() {
   // ???????????????????????????
 
   useEffect(() => {
-    if (moviesPage){
+    if (moviesPage) {
       filterMovies(searchQuery, initialMovies);
-    } else if (savedPage){
+    } else if (savedPage) {
       console.log("savedPage")
     } else {
       console.log(pathname)
@@ -164,6 +181,7 @@ export default function App() {
         (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
     )
     if (moviesPage) {
+
       setFilteredMovies(permovMovies)
     } else {
       // ???????????
@@ -179,8 +197,8 @@ export default function App() {
   // Отправляем отфильтрованные фильмы
   // и запрос в локал сторейдж
   // отправляем в renderMovies - filteredMovies
-  function handleSubmitSearchButton(){
-    if (moviesPage){
+  function handleSubmitSearchButton() {
+    if (moviesPage) {
       addMoviesSearchToLocalStorage(filteredMovies)
     }
     setRenderMovies(filteredMovies)
@@ -189,7 +207,7 @@ export default function App() {
 
   // функция добавления в локал сторейдж используется в handleSubmitSearchButton
   // при добавлении фильм в сохраненные на странице /movies
-  function addMoviesSearchToLocalStorage(search){
+  function addMoviesSearchToLocalStorage(search) {
     if (moviesPage) {
       localStorage.setItem('filteredMovies', JSON.stringify(search))
       localStorage.setItem('checkboxStatus', checkboxStatus)
@@ -209,18 +227,21 @@ export default function App() {
   }
 
 
-
-
-function handleRemoveMovie(id){
-  console.log('УДАЛИТЬ')
-  const token = localStorage.getItem('JWT_TOKEN')
-  mainApi.removeMovie(id , token)
-    .then( 
-      // res => console.log(res)
+  function handleRemoveMovie(id) {
+    console.log('УДАЛИТЬ')
+    const token = localStorage.getItem('JWT_TOKEN')
+    mainApi.removeMovie(id, token)
+      .then(
+        // res => console.log(res)
       )
-    .catch( err => console.log(err))
-}
+      .catch(err => console.log(err))
+  }
 
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Пользователь
+  // 
   // Проверка токена
   function checkToken() {
     const token = localStorage.getItem('JWT_TOKEN')
@@ -252,91 +273,96 @@ function handleRemoveMovie(id){
     console.log(typeof (data))
     mainApi.signup({ data }).then(res => {
       //  setCurrentUser(res);
-       handleSignin({email: data.email, password: data.password})
+      handleSignin({ email: data.email, password: data.password })
     })
-    .catch(err => {
-      if ( err === 'Ошибка: 400') {
-        setApiTextError('Пользователь с таким email уже существует.')
-      } else if ( err === 'Ошибка: 401') {
-        setApiTextError('Ошибка 401')
-      } else if ( err === 'Ошибка: 403') {
-        setApiTextError('Ошибка 403')
-      } else if ( err === 'Ошибка: 409' ) {
-        setApiTextError('Пользователь с таким email уже существует.')
-      } else if ( err === 'Ошибка: 429' ) {
-        setApiTextError('Слишком много запросов, попробуйте позже!')
-      } else {
-        setApiTextError('Неизвестная ошибка!')
-      }
-    })
+      .catch(err => {
+        if (err === 'Ошибка: 400') {
+          setApiTextError('Пользователь с таким email уже существует.')
+        } else if (err === 'Ошибка: 401') {
+          setApiTextError('Ошибка 401')
+        } else if (err === 'Ошибка: 403') {
+          setApiTextError('Ошибка 403')
+        } else if (err === 'Ошибка: 409') {
+          setApiTextError('Пользователь с таким email уже существует.')
+        } else if (err === 'Ошибка: 429') {
+          setApiTextError('Слишком много запросов, попробуйте позже!')
+        } else {
+          setApiTextError('Неизвестная ошибка!')
+        }
+      })
   }
 
-// Отправили email и пароль, получили токен
-function handleSignin(data){
-  mainApi.signin({data})
-  .then(res => {
-    localStorage.setItem('JWT_TOKEN', res.token)
-    console.log(res)
-    auth(res.token)
-    setLoggedIn(true);
-    setCorrectToken(true);
-    navigate('/movies');
-  })
-  .catch(err => {
-    if ( err === 'Ошибка: 400') {
-      setApiTextError('')
-    } else if ( err === 'Ошибка: 401') {
-      setApiTextError('Вы ввели неправильный логин или пароль')
-    } else if ( err === 'Ошибка: 403') {
-      setApiTextError('')
-    } else if ( err === 'Ошибка: 409' ) {
-      setApiTextError('')
-    } else if ( err === 'Ошибка: 429' ) {
-      setApiTextError('Слишком много запросов, попробуйте позже!')
-    }  
-  })
-}
+  // Отправили email и пароль, получили токен
+  function handleSignin(data) {
+    mainApi.signin({ data })
+      .then(res => {
+        localStorage.setItem('JWT_TOKEN', res.token)
+        console.log(res)
+        auth(res.token)
+        setLoggedIn(true);
+        setCorrectToken(true);
+        navigate('/movies');
+      })
+      .catch(err => {
+        if (err === 'Ошибка: 400') {
+          setApiTextError('')
+        } else if (err === 'Ошибка: 401') {
+          setApiTextError('Вы ввели неправильный логин или пароль')
+        } else if (err === 'Ошибка: 403') {
+          setApiTextError('')
+        } else if (err === 'Ошибка: 409') {
+          setApiTextError('')
+        } else if (err === 'Ошибка: 429') {
+          setApiTextError('Слишком много запросов, попробуйте позже!')
+        }
+      })
+  }
 
-// Редактирование профиля 
- function handleUserUpdate(data){
-  mainApi.patchUser(data)
-  .then(()=> {
-    setCurrentUser({name: data.name, email: data.email})
-    setApiTextError('');
-  })
-  .catch(err => {
-    if ( err === 'Ошибка: 400') {
-      setApiTextError('Пользователь с таким email уже существует');
-    } else if ( err === '401') {
-      setApiTextError('При обновлении профиля произошла ошибка');
-    }
-     else if ( err === '409') {
-      setApiTextError('При обновлении профиля произошла ошибка');
-    }
-     else if ( err === '429') {
-      setApiTextError('Слишком много запросов, попробуйте позже!');
-    }
-  })
-}
+  // Редактирование профиля 
+  function handleUserUpdate(data) {
+    mainApi.patchUser(data)
+      .then(() => {
+        setCurrentUser({ name: data.name, email: data.email })
+        setApiTextError('');
+      })
+      .catch(err => {
+        if (err === 'Ошибка: 400') {
+          setApiTextError('Пользователь с таким email уже существует');
+        } else if (err === '401') {
+          setApiTextError('При обновлении профиля произошла ошибка');
+        }
+        else if (err === '409') {
+          setApiTextError('При обновлении профиля произошла ошибка');
+        }
+        else if (err === '429') {
+          setApiTextError('Слишком много запросов, попробуйте позже!');
+        }
+      })
+  }
 
 
-// logout
-function handleLogout() {
-  setLoggedIn(false);
-  // setSearchQuery('');
-  removeLocalStorageOnExit();
-  navigate('/', { replace: true });
-}
+  // logout
+  function handleLogout() {
+    setLoggedIn(false);
+    // setSearchQuery('');
+    removeLocalStorageOnExit();
+    navigate('/', { replace: true });
+  }
 
-function removeLocalStorageOnExit(){
-  localStorage.removeItem('CORRECT_TOKEN')
-  localStorage.removeItem('JWT_TOKEN')
-  localStorage.removeItem('checkboxStatus')
-  localStorage.removeItem('initialMovies')
-  localStorage.removeItem('savedMovies')
-  localStorage.removeItem('searchQuery')
-  localStorage.removeItem('filteredMovies')  
-}
+  function removeLocalStorageOnExit() {
+    localStorage.removeItem('CORRECT_TOKEN')
+    localStorage.removeItem('JWT_TOKEN')
+    localStorage.removeItem('checkboxStatus')
+    localStorage.removeItem('initialMovies')
+    localStorage.removeItem('savedMovies')
+    localStorage.removeItem('searchQuery')
+    localStorage.removeItem('filteredMovies')
+  }
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
@@ -348,16 +374,16 @@ function removeLocalStorageOnExit(){
           />}>
           <Route index element={<Main />} />
           <Route element={
-            <ProtectedRoute 
-               loggedIn={loggedIn} 
-               correctToken={correctToken}
-               />}>
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              correctToken={correctToken}
+            />}>
 
             {/* {MOVIES} */}
             <Route path='movies' element={
 
               <Movies
-               moviesPage={moviesPage}
+                moviesPage={moviesPage}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 handleSubmitSearchButton={handleSubmitSearchButton}
@@ -372,6 +398,11 @@ function removeLocalStorageOnExit(){
 
                 savedMoviesId={savedMoviesId}
                 currentUser={currentUser}
+
+              // ТЕСТ
+              // isSaved={isSaved}
+              // setIsSaved={setIsSaved}
+
               />
             }></Route>
 

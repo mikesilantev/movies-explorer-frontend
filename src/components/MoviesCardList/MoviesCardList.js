@@ -20,6 +20,11 @@ export function MoviesCardList({
 
   savedMoviesId,
   handleRemoveMovie,
+
+
+  // ТЕСТ
+  // isSaved,
+  // setIsSaved,
 }) {
 
   const currentUser = useContext(CurrentUserContext);
@@ -90,8 +95,9 @@ export function MoviesCardList({
     <section className='movies-list'>
       {
         pathname === '/movies' ?
-          renderMovies && renderMovies.length > 0 ?
-            (<div className={'movie-list__card-wrap'}>
+          renderMovies && renderMovies.length > 0 ?      
+            (<>
+            <div className={'movie-list__card-wrap'}>
               {renderMovies.reduce((accum, card) => {
                 if (accum.length < cardCount) {
                   accum.push(
@@ -104,23 +110,29 @@ export function MoviesCardList({
                       movie={card}
                       savedMoviesId={savedMoviesId}
                       handleSaveMovies={handleSaveMovies}
+                    // ТЕСТ
+                    // isSaved={isSaved}
+                    // setIsSaved={setIsSaved}
                     />
                   )
                 }
                 return accum
-              }, [])   
+              }, [])
               }
 
-{
-        (renderMovies.length > cardCount && pathname === '/movies')
-        &&
-        <button
-          onClick={handleMoreBtn}
-          className='movies-list__btn'>
-          Еще
-        </button>
-      }
-            </div>)
+            </div>
+            
+            
+              {(renderMovies.length > cardCount && pathname === '/movies')
+              &&
+              <button
+                onClick={handleMoreBtn}
+                className='movies-list__btn'>
+                Еще
+              </button>}
+            
+            </>
+            )
             :
             (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
 

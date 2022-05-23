@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect }from "react";
+import { Suspense, useState, useEffect } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import './Movies.css';
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
@@ -17,7 +17,12 @@ export default function Movies({
   handleSaveMovies,
 
   savedMoviesId,
-}){
+
+
+  // ТЕСТ
+  // isSaved,
+  // setIsSaved,
+}) {
 
 
   return (
@@ -38,6 +43,13 @@ export default function Movies({
         handleSaveMovies={handleSaveMovies}
 
         savedMoviesId={savedMoviesId}
+
+
+
+      // ТЕСТ
+      // isSaved={isSaved}
+      // setIsSaved={setIsSaved}
+
       />
     </section>
   )

@@ -13,8 +13,11 @@ export function MovieCard({
 
   savedMoviesId,
   handleRemoveMovie,
-}) {
 
+  // ТЕСТ
+  // isSaved,
+  // setIsSaved,
+}) {
 
   const { pathname } = useLocation();
   const [isSaved, setIsSaved ] = useState();
@@ -30,7 +33,7 @@ export function MovieCard({
       }
     }))
   }
-  }, [movie.id, pathname, savedMoviesId, saveMovieClick])
+  }, [])
 
 
   function saveMovieClick() {
