@@ -37,7 +37,7 @@ export function MovieCard({
 
 
   function saveMovieClick() {
-    setIsSaved(true)
+    // setIsSaved(true)
     handleSaveMovies({
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',
@@ -57,6 +57,7 @@ export function MovieCard({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function handleRemove(){
     handleRemoveMovie(movie._id)
+
   }
 
   return (

@@ -99,26 +99,35 @@ useEffect(() => {
 
   // Сортирум сохраненные конкретным пользователем лайки
   useEffect(() => {
-    console.log(allSavedMovies)
+    let arrSavedMoviesID = [];
     allSavedMovies.map((savedMovie) => {
-      console.log(savedMovie)
+      arrSavedMoviesID.push({id: savedMovie.movieId})
+    console.log(savedMovie)
     } )
+    console.log(arrSavedMoviesID)
+    setSavedMoviesId(arrSavedMoviesID)
   },  [allSavedMovies])
 
-
+  // 1 ПОЛУЧИТЬ СПИСОК ВСЕХ СОХРАНЕННЫХ ФИЛЬМОВ
   // забираем сохраненные фильмы из БД
   // и заносим в стейт allSavedMovies
   function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
+    console.log(currentUser)
     if (token) {
+      let arr = [];
       mainApi.getSavedMovie(token)
         .then((movies) => {
-          console.log(movies)
           setAllSavedMovies(movies)
         })
+        .catch((err) => {
+          console.log(err)
+        })
+        console.log(arr)
     }
   }
-  
+
+
   // нажатие на кнопку сохранить
   // пока просто сохраняем в базу данных
   function handleSaveMovies(data) {
@@ -305,18 +314,7 @@ useEffect(() => {
     }
   }
 
-  // нажатие на кнопку сохранить
-  // пока просто сохраняем в базу данных
-  function handleSaveMovies(data) {
-    console.log('нажали на сохранение')
-    mainApi.saveMovie(data)
-      .then(movie => {
-        // Перезапишем в стейт allSavedMovies сстарые данные и новые movie
-        setAllSavedMovies([...allSavedMovies, movie])
-      })
-      .catch(err => console.log(err))
-  }
-
+ 
 
   function handleRemoveMovie(id) {
     console.log('УДАЛИТЬ')
@@ -338,6 +336,9 @@ useEffect(() => {
     const token = localStorage.getItem('JWT_TOKEN')
     if (token) {
       auth(token);
+    } else {
+      // new
+      handleLogout();
     }
   }
 
