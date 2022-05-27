@@ -13,10 +13,6 @@ export function MovieCard({
 
   savedMoviesId,
   handleRemoveMovie,
-
-  // ТЕСТ
-  // isSaved,
-  // setIsSaved,
 }) {
 
   const { pathname } = useLocation();
