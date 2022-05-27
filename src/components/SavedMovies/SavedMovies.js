@@ -9,6 +9,11 @@ export default function SavedMovies({
   setSearchQuery,
   handleSubmitSearchButton,
   handleRemoveMovie,
+
+  allSavedMovies,
+
+  renderSavedMovie,
+  setRenderSavedMovies,
 }) {
   return (
     <section className="saved-movies">
@@ -20,6 +25,10 @@ export default function SavedMovies({
 
       <MoviesCardList
         handleRemoveMovie={handleRemoveMovie}
+        allSavedMovies={allSavedMovies}
+
+        renderSavedMovie={renderSavedMovie}
+        setRenderSavedMovies={setRenderSavedMovies}
       />
     </section>
   )

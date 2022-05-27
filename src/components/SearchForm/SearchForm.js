@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { FilterCheckbox } from "../FilterCheckbox/FilterCheckbox";
 import './SearchForm.css';
 
@@ -10,24 +8,6 @@ export function SearchForm({
   checkboxStatus,
   setCheckboxStatus,
 }) {
-
-  let { pathname } = useLocation();
-
-
-  // useEffect(() => {
-  //   if (pathname === '/movies') {
-  //     setSearchQuery(localStorage.getItem('searchQuery'))
-  //     console.log('отработка')
-  //   } else {
-  //     setSearchQuery('')
-  //   }
-  // }, []);
-
-
-  function handleSearchInput(evt) {
-    setSearchQuery(evt.target.value)
-  }
-
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -54,16 +34,17 @@ export function SearchForm({
           placeholder="Фильм"
           required
         />
-
         <button
           type="submit"
           className="search-form__button"
-        ></button>
+        />
       </label>
+
       <FilterCheckbox
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
       />
+      
     </form>
   )
 }

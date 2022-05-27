@@ -150,7 +150,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  url : 'http://localhost:8080',
+  url : 'http://192.168.1.5:8080',
 });
 
 

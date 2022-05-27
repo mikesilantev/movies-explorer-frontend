@@ -1,27 +1,21 @@
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, lazy } from "react";
 import { SearchForm } from "../SearchForm/SearchForm";
 import './Movies.css';
+import { Preloader } from '../Preloader/Preloader';
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
-import Preloader from '../Preloader/Preloader';
 
 export default function Movies({
+  isLoading,
   searchQuery,
   setSearchQuery,
   handleSubmitSearchButton,
-
   renderMovies,
   setRenderMovies,
-
   checkboxStatus,
   setCheckboxStatus,
   handleSaveMovies,
-
-  savedMoviesId,
-
-
-  // ТЕСТ
-  // isSaved,
-  // setIsSaved,
+  savedMoviesID,
+  allSavedMovies,
 }) {
 
 
@@ -34,23 +28,17 @@ export default function Movies({
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
       />
-
+      {isLoading ? console.log(true) : console.log(false)}
       <MoviesCardList
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         renderMovies={renderMovies}
         setRenderMovies={setRenderMovies}
         handleSaveMovies={handleSaveMovies}
-
-        savedMoviesId={savedMoviesId}
-
-
-
-      // ТЕСТ
-      // isSaved={isSaved}
-      // setIsSaved={setIsSaved}
-
+        savedMoviesID={savedMoviesID}
+        allSavedMovies={allSavedMovies}
       />
+
     </section>
   )
 }

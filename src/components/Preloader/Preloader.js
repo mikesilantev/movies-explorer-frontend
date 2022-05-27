@@ -1,14 +1,24 @@
 import React from 'react'
 import './Preloader.css'
 
-const Preloader = () => {
+export const Preloader = () => {
     return (
-        <div className="preloader">
+        <div className="preloader" ref={React.createRef()}>
             <div className="preloader__container">
                 <span className="preloader__round"></span>
             </div>
         </div>
     )
 };
+// import React from 'react'
+// import './Preloader.css'
 
-export default Preloader
+// export const Preloader = () => {
+//     return (
+//         <div className="preloader">
+//             <div className="preloader__container">
+//                 <span className="preloader__round"></span>
+//             </div>
+//         </div>
+//     )
+// };

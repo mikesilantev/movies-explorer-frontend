@@ -18,9 +18,14 @@ export function MoviesCardList({
 
   handleSaveMovies,
 
-  savedMoviesId,
-  handleRemoveMovie,
+  savedMoviesID,
 
+
+  handleRemoveMovie,
+  allSavedMovies,
+
+  renderSavedMovie,
+  setRenderSavedMovies,
 
   // ТЕСТ
   // isSaved,
@@ -29,14 +34,61 @@ export function MoviesCardList({
 
   const currentUser = useContext(CurrentUserContext);
   let { pathname } = useLocation();
-  const [moviesToRender, setMoviesToRender] = useState([]);
+  // const [moviesToRender, setMoviesToRender] = useState([]);
 
   // Стейты для вывода кол-ва карточек в зависимости от ширины
   const { width } = useChangeWindowWidth();
   const [cardToRender, setCardToRender] = useState(0);
   const [cardCount, setCardCount] = useState(0);
-  const moviesToAddMoreSizeS = 2
+  const moviesToAddMoreSizeS = 2;
   const moviesToAddMoreSizeM = 3;
+
+  // При загрузке приложения, если есть результаты поиска
+
+  // useEffect(() => {
+  //   let localFilteredMovies = localStorage.getItem('filteredMovies');
+
+  //   if (pathname === '/movies' && localFilteredMovies) {
+  //     getMoviesFromLocalStorage();
+  //   }
+  // }, [])
+  useEffect(() => {
+    let localFilteredMovies = localStorage.getItem('filteredMovies');
+
+    if (pathname === '/movies' && localFilteredMovies) {
+      const filterMoviesLocalStorage = JSON.parse(localStorage.getItem('filteredMovies'));
+      setRenderMovies(filterMoviesLocalStorage);
+    }
+  }, [])
+
+  // MOVIES
+  // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
+  function getMoviesFromLocalStorage() {
+    const filterMoviesLocalStorage = JSON.parse(localStorage.getItem('filteredMovies'));
+    setRenderMovies(filterMoviesLocalStorage);
+  }
+  // // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
+  // async function getMoviesFromLocalStorage() {
+  //   let filterMoviesLocalStorage = [];
+  //   try {
+  //     filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
+  //     await setRenderMovies(filterMoviesLocalStorage);
+  //   }
+  //   catch (err){
+  //     console.log(err)
+  //   }
+  //   finally {
+
+  //   }
+  // }
+  // При загрузке стейта allSavedMovies и его изменении
+  // allSavedMovies - сохраненные фильмы
+  // renderSavedMovies - передаем на рендер
+  useEffect(() => {
+    if (pathname === '/saved-movies' && allSavedMovies) {
+      setRenderSavedMovies(allSavedMovies)
+    }
+  }, [allSavedMovies])
 
   // Эффект на измененние ширины экрана
   useEffect(() => {
@@ -60,91 +112,51 @@ export function MoviesCardList({
     setCardCount(cardCount + cardToRender)
   }
 
-
-  /// эффект при загрузке
-  // если /movies и локалсторейдж с отфильтрованными фильмами пуст
-  // Разобраться
-
-  useEffect(() => {
-    let localFilterMovies = localStorage.getItem('filterMovies')
-
-    if (pathname === '/movies' && !localFilterMovies) {
-      console.log('ШЛЯПА')
-      async function getMoviesToLocalStorage() {
-        let filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
-        await setRenderMovies(filterMoviesLocalStorage);
-      }
-      getMoviesToLocalStorage();
-
-    } else {
-      console.log(savedMoviesId)
-      // if (savedMoviesId) {
-      const token = localStorage.getItem('JWT_TOKEN');
-      async function compareOwner() {
-        const getSavedMoviesApi = await mainApi.getSavedMovie(token)
-
-        let arr = []
-        const compareMoviesId = await getSavedMoviesApi.forEach((movie) => {
-          if (movie.owner._id === currentUser._id) {
-            arr.push(movie)
-          }
-        })
-        setMoviesToRender(arr)
-      }
-      compareOwner();
-      // }
-    }
-  }, [])
-
-
   return (
     <section className='movies-list'>
       {
         pathname === '/movies' ?
-          renderMovies && renderMovies.length > 0 ?      
+          renderMovies && renderMovies.length > 0 ?
             (<>
-            <div className={'movie-list__card-wrap'}>
-              {renderMovies.reduce((accum, card) => {
-                if (accum.length < cardCount) {
-                  accum.push(
-                    <MovieCard
-                      key={card.id}
-                      cover={`https://api.nomoreparties.co/${card.image.url}`}
-                      title={card.nameRU}
-                      durationMovie={card.duration}
-                      trailerLink={card.trailerLink}
-                      movie={card}
-                      savedMoviesId={savedMoviesId}
-                      handleSaveMovies={handleSaveMovies}
-                    // ТЕСТ
-                    // isSaved={isSaved}
-                    // setIsSaved={setIsSaved}
-                    />
-                  )
+              <div className={'movie-list__card-wrap'}>
+                {renderMovies.reduce((accum, card) => {
+                  if (accum.length < cardCount) {
+                    accum.push(
+                      <MovieCard
+                        key={card.id}
+                        cover={`https://api.nomoreparties.co/${card.image.url}`}
+                        title={card.nameRU}
+                        durationMovie={card.duration}
+                        trailerLink={card.trailerLink}
+                        movie={card}
+                        savedMoviesID={savedMoviesID}
+                        handleSaveMovies={handleSaveMovies}
+                      />
+                    )
+                  }
+                  return accum
+                }, [])
                 }
-                return accum
-              }, [])
-              }
 
-            </div>
-            
-            
+              </div>
+
+
               {(renderMovies.length > cardCount && pathname === '/movies')
-              &&
-              <button
-                onClick={handleMoreBtn}
-                className='movies-list__btn'>
-                Еще
-              </button>}
-            
+                &&
+                <button
+                  onClick={handleMoreBtn}
+                  className='movies-list__btn'>
+                  Еще
+                </button>}
+
             </>
             )
             :
             (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
 
-          moviesToRender ? (
+          renderSavedMovie ? (
             <div className={'movie-list__card-wrap'}>{
-              moviesToRender.slice(0).reverse().map((card) => {
+              renderSavedMovie.slice(0).reverse().map((card) => {
                 return (
                   <MovieCard
                     key={card._id}

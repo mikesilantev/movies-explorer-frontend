@@ -9,57 +9,62 @@ export function MovieCard({
   title,
   durationMovie,
   movie,
+  trailerLink,
   handleSaveMovies,
-
-  savedMoviesId,
+  savedMoviesID,
   handleRemoveMovie,
+
 }) {
 
   const { pathname } = useLocation();
-  const [isSaved, setIsSaved ] = useState();
+  // Сохранен фильм или нет
+  const [isSaved, setIsSaved] = useState();
 
-  // Лайки для /movies
   useEffect(() => {
-    if (pathname === '/movies') {
-      setIsSaved(savedMoviesId.some((saveMovie) => {
-      if (saveMovie.id === movie.id) {
-        return true
-      } else {
-        return false
-      }
-    }))
-  }
-  }, [])
+    //MOVIES
+    if (pathname === '/movies' && savedMoviesID) {
+      setIsSaved(savedMoviesID.some((saveMovie) => {
+        if (saveMovie.id === movie.id) {
+          return true
+        } else {
+          return false
+        }
+      }))
+  
+    }
+
+  }, [savedMoviesID])
+
 
 
   function saveMovieClick() {
-    // setIsSaved(true)
     handleSaveMovies({
       country: movie.country || 'пусто',
       director: movie.director || 'пусто',
       duration: movie.duration || 0,
       year: movie.year || 'пусто',
       description: movie.description || 'пусто',
-      image: movie.image.url,
-      trailerLink: movie.trailerLink,
-      thumbnail: movie.image.formats.thumbnail.url || 'https://youtube.com',
+      image: movie.image.url || 'пусто',
+      trailerLink: movie.trailerLink || 'https://youtube.com',
+      thumbnail: movie.image.formats.thumbnail.url || 'пусто',
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN, 
+      nameEN: movie.nameEN,
     });
   }
 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function handleRemove(){
+  function handleRemove() {
     handleRemoveMovie(movie._id)
-
   }
 
   return (
     <article className='movie-card'>
 
+      <a href={trailerLink} target="_blank" rel="noreferrer">
       <img src={cover} alt={title} className="movie-card__cover" />
+        </a>
       {
         pathname === '/movies' ?
           !isSaved ?

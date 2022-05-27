@@ -5,7 +5,7 @@ import ProfileLayout from "../ProfileLayout/ProfileLayout";
 import Test from "../Test/Test";
 //
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import './App.css';
 // API
 import mainApi from "../../utils/MainApi";
@@ -26,107 +26,122 @@ export default function App() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [correctToken, setCorrectToken] = useState(false);
 
   // Стейты с фильмами
   const [initialMovies, setInitialMovies] = useState([]);
+
   // Отсортированные фильмы - идет в локал
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [renderMovies, setRenderMovies] = useState([]);
 
+  // Все фильмы сохраненные данным пользователем
+  const [allSavedMovies, setAllSavedMovies] = useState([]);
 
   // Массив ID Сохраненных фильмов 
-  // Все сохраненные фильмы
-  const [allSavedMovies, setAllSavedMovies] = useState([]);
-  // Айди сохраненных фильмов конкретного пользователя
-  const [savedMoviesId, setSavedMoviesId] = useState([]);
+  const [savedMoviesID, setSavedMoviesID] = useState([]);
+
+  //Сохранен фильм или нет
+  const [isSaved, setIsSaved] = useState();
+
+  // Стейт с фильмами для отрисовки на /saved-movies
+  const [renderSavedMovie, setRenderSavedMovies] = useState([]);
+
   // Стейты поиска
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
-
   const [apiTextError, setApiTextError] = useState('');
 
-
-
+  // Стейт для прелоадера Preloader
   const [isLoading, setIsLoading] = useState(false);
-
-
-  // временно
-  const [isSaved, setIsSaved ] = useState();
-  //_______________________________________________
 
   // Страницы с фильмами
   const moviesPage = pathname === '/movies',
     savedPage = pathname === '/saved-movies';
 
 
-// Загрузка приложения
-// Проверка токена
-useEffect(() => {
-  checkToken(); // loggedIn :true
-  setApiTextError('');
-}, [])
+
+  // CHECKLIST
+  //   Пользователю отображается уведомление об успешном запросе к серверу при сохранении профиля.
+  //   Прелоадер крутится во время выполнения запроса фильмов.
+  //   Если карточки уже были отображены на странице в блоке результатов, клик по чекбоксу «Короткометражки» приводит к повторной фильтрации результата.
+  //   На странице «Сохранённые фильмы»:
+  // отображается форма поиска. Она позволяет искать фильмы по уже полученным данным о сохранённых фильмах.
+  // После успешного вызова обработчика onSignOut происходит редирект на /. / 2
+  // Не выполняются лишние запросы к бэкенду, например: запрос всех фильмов с сервиса beatfilm-movies производится только при первом поиске; все сохранённые фильмы не запрашиваются с сервера при каждом лайке или дизлайке; данные пользователя запрашиваются один раз при запуске приложения. / 2
+  // Для элементов списка используется уникальный ключ key, а не индекс массива. / 2
+
+// При загрузке приложения мы скачиваем сохраненные пользователем фильмы
+// Перебираем и Записываем в стейт allSavedMovies сохраненные фильмы данного пользователя
+// Передаем стейт allSavedMovies в /saved-movies для рендера
+// Перебираем allSavedMovies и сохраняем id фильмов в savedMoviesID для отрисовки лайков
 
 
-// Если токен fale ничего
 
-// Проверили токен - loggedIn true
-// Запускаем событие по loggedIn
+  // Загрузка приложения
+  // Проверка токена
   useEffect(() => {
-    // Скачать сохраненные фильмы
-    getSavedMoviesApi()
+    checkToken(); // loggedIn :true
+    setApiTextError('');
+  }, [])
 
-
+  useEffect(() => {
+    if (loggedIn) {
+      getSavedMoviesApi()
+    }
   }, [loggedIn])
 
-  // проверка фильмов на принадлженость пользователя
-  // Загрузка айди фильмов в стейт savedMoviesId
-  // на выходе Стейт с айди фильмами
-
-
-  // useEffect(() => {
-  //   let currentUserSavedMovies = [];
-  //   allSavedMovies.map((movie) => {
-  //     if(movie.owner._id === currentUser._id) {
-  //       return currentUserSavedMovies.push(movie)
-  //     }
-  //   })
-  //   setAllSavedMovies(currentUserSavedMovies)
-  // }, [])
-
-  // Сортирум сохраненные конкретным пользователем лайки
+  // не загружает статус чекбокса при перезагрузке страницы
+  // только после перехода между 
   useEffect(() => {
-    let arrSavedMoviesID = [];
-    allSavedMovies.map((savedMovie) => {
-      arrSavedMoviesID.push({id: savedMovie.movieId})
-    console.log(savedMovie)
-    } )
-    console.log(arrSavedMoviesID)
-    setSavedMoviesId(arrSavedMoviesID)
-  },  [allSavedMovies])
+    if (moviesPage) {
+      setSearchQuery(localStorage.getItem('searchQuery'));
+      console.log(localStorage.getItem('checkboxStatus'))
+      setCheckboxStatus(localStorage.getItem(false))
+    } else {
+      setSearchQuery('')
+    }
+  }, [moviesPage, savedPage])
 
-  // 1 ПОЛУЧИТЬ СПИСОК ВСЕХ СОХРАНЕННЫХ ФИЛЬМОВ
-  // забираем сохраненные фильмы из БД
-  // и заносим в стейт allSavedMovies
+  // Сортировка и запись id сохраненных фильмов
+  useEffect(() => {
+    if (allSavedMovies) {
+      let savedID = []
+      allSavedMovies.map((savedMovieId) => {
+        return savedID.push({ id: savedMovieId.movieId })
+      })
+      setSavedMoviesID(savedID)
+    }
+
+  }, [allSavedMovies])
+
+  // Загружаем список всех сохраненных фильмов
   function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
-    console.log(currentUser)
-    if (token) {
-      let arr = [];
+    const savedLocal = localStorage.getItem('SavedMovies');
+
+    if (token && savedLocal === 'true') {
+      setIsLoading(true)
       mainApi.getSavedMovie(token)
-        .then((movies) => {
-          setAllSavedMovies(movies)
+        .then((responseMovies) => {
+          let arrSavedMoviesCurrentUser = []
+          responseMovies.map((movie) => {
+            if (movie.owner._id === currentUser._id) {
+              return arrSavedMoviesCurrentUser.push(movie)
+            }
+          })
+          setAllSavedMovies(arrSavedMoviesCurrentUser)
         })
         .catch((err) => {
           console.log(err)
         })
-        console.log(arr)
+        .finally(
+          setIsLoading(false),
+        )
     }
   }
-
 
   // нажатие на кнопку сохранить
   // пока просто сохраняем в базу данных
@@ -134,69 +149,35 @@ useEffect(() => {
     console.log('нажали на сохранение')
     mainApi.saveMovie(data)
       .then(movie => {
-        // Перезапишем в стейт allSavedMovies сстарые данные и новые movie
         setAllSavedMovies([...allSavedMovies, movie])
+        localStorage.setItem('SavedMovies', true)
       })
       .catch(err => console.log(err))
   }
 
-// Загружаем сохраненные фильмы
-// Сортируем на принадлежность к пользователю
-// Сравнили с фильмами из локала
+  // Удаляем фильма
+  // 1- Отправить запрос на удаление
+  // получить ответ
+  // из массива сохраненных фильмов
+  // убрать айди из ответ
+  // перерисовать /saved-movies
+  function handleRemoveMovie(id) {
+    console.log('УДАЛИТЬ')
+    const token = localStorage.getItem('JWT_TOKEN')
+    mainApi.removeMovie(id, token)
+      .then((res) => {
+        console.log(res)
+        let moviesArr = []
+        moviesArr = allSavedMovies.filter((savedMovie) => {
+          return savedMovie._id !== res._id
+        })
+        console.log(moviesArr)
+        setAllSavedMovies(moviesArr)
 
-// Записали в savedMoviesId
-
-// Событие по SavedMoviesId
-// Берем фильмы из локала
-// Записываем в стейт
-
-
-
-
-
-
-
-
-
-
-
-
-  // useEffect(() => {
-  //   console.log('Проставим лайки')
-  //   const querySearchLocalStorage = localStorage.getItem('searchQuery')
-
-
-  //   if (loggedIn && querySearchLocalStorage) {
-
-  //     const token = localStorage.getItem('JWT_TOKEN');
-  //     let savedMovies = [];
-      
-  //     mainApi.getSavedMovie(token)
-  //       .then((res) => {
-  //         res.map((i) => {
-  //           if (i.owner._id === currentUser._id) {
-  //             return savedMovies.push({ id: i.movieId })
-  //           }
-  //         })
-  //       })
-  //     setSavedMoviesId(savedMovies)
-  //     console.log(savedMoviesId)
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   checkToken();
-  //   setApiTextError('');
-
-
-  //   // if (!correctToken){
-  //   //   setLoggedIn(false)
-  //   //   handleLogout();
-  //   // }
-
-  // }, [])
-
-
+      })
+      .catch(err => console.log(err))
+      .finally(console.log(allSavedMovies))
+  }
 
   ////////////////////////////////////////////////////////////////////////////
   // STATE LOGGEDIN
@@ -207,8 +188,10 @@ useEffect(() => {
 
   useEffect(() => {
     const moviesToLocalStorage = localStorage.getItem('initialMovies');
-    // setIsLoading(false)
+
     if (loggedIn && !moviesToLocalStorage) {
+
+      setIsLoading(true)
       try {
         getMovies(moviesToLocalStorage);
       }
@@ -216,7 +199,7 @@ useEffect(() => {
         console.log(err);
       }
       finally {
-        // setIsLoading(true)
+        setIsLoading(false)
       }
     } else {
       saveMoveToState(moviesToLocalStorage);
@@ -237,30 +220,13 @@ useEffect(() => {
     const getLocalMovies = await JSON.parse(localMovies);
     setInitialMovies(getLocalMovies);
   }
-
   ////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////
-
-
-
-  ////////////////////////////////////////////////////////////////////////////
-  // EFFECT - при изменнении строки поиска и чекбокса
-  // Если находимся на странице с фильмами /movies
-  // передаем searchQuery - запрос 
-  // и initialMovies массив с фильмами для фильтрации 
-  // если находимся на /saved-movies
-  // передаем запрос searchQuery и массив с сохраненными фильмами???????
-
-  // ???????????????????????????
-  // ???????????????????????????
-  // ???????????????????????????
 
   useEffect(() => {
     if (moviesPage) {
       filterMovies(searchQuery, initialMovies);
     } else if (savedPage) {
-      console.log("savedPage")
+      filterMovies(searchQuery, allSavedMovies)
     } else {
       console.log(pathname)
     }
@@ -274,7 +240,7 @@ useEffect(() => {
     const permovMovies = await data.filter(
       movie => (
         query ?
-          movie.nameRU.toLowerCase().includes(query.toLowerCase()) : true)
+          movie.nameRU.toLowerCase().includes(query.toLowerCase()) : (savedPage ? console.log(pathname) : ''))
         &&
         (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
     )
@@ -283,6 +249,7 @@ useEffect(() => {
 
       setFilteredMovies(permovMovies)
     } else {
+      setFilteredMovies(permovMovies)
       // ???????????
       // ???????????
       // ???????????
@@ -297,11 +264,25 @@ useEffect(() => {
   // и запрос в локал сторейдж
   // отправляем в renderMovies - filteredMovies
   function handleSubmitSearchButton() {
+    addMoviesSearchToLocalStorage(filteredMovies)
     if (moviesPage) {
-      addMoviesSearchToLocalStorage(filteredMovies)
+      setRenderMovies(filteredMovies)
+    } else {
+      setAllSavedMovies(filteredMovies)
     }
-    setRenderMovies(filteredMovies)
   }
+
+  // old
+  // function handleSubmitSearchButton() {
+  //   if (moviesPage) {
+  //     addMoviesSearchToLocalStorage(filteredMovies)
+  //     setRenderMovies(filteredMovies)
+  //   } else {
+  //     console.log('CLICK')
+  //     setAllSavedMovies(filteredMovies)
+  //   }
+
+  // }
 
 
   // функция добавления в локал сторейдж используется в handleSubmitSearchButton
@@ -314,17 +295,9 @@ useEffect(() => {
     }
   }
 
- 
 
-  function handleRemoveMovie(id) {
-    console.log('УДАЛИТЬ')
-    const token = localStorage.getItem('JWT_TOKEN')
-    mainApi.removeMovie(id, token)
-      .then(
-        // res => console.log(res)
-      )
-      .catch(err => console.log(err))
-  }
+
+
 
 
 
@@ -436,7 +409,6 @@ useEffect(() => {
   // logout
   function handleLogout() {
     setLoggedIn(false);
-    // setSearchQuery('');
     removeLocalStorageOnExit();
     navigate('/', { replace: true });
   }
@@ -449,6 +421,9 @@ useEffect(() => {
     localStorage.removeItem('savedMovies')
     localStorage.removeItem('searchQuery')
     localStorage.removeItem('filteredMovies')
+    setAllSavedMovies();
+    setSavedMoviesID();
+    setRenderSavedMovies();
   }
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
@@ -475,6 +450,7 @@ useEffect(() => {
             <Route path='movies' element={
 
               <Movies
+                isLoading={isLoading}
                 moviesPage={moviesPage}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -487,10 +463,13 @@ useEffect(() => {
 
                 handleSaveMovies={handleSaveMovies}
 
+                allSavedMovies={allSavedMovies}
 
-                savedMoviesId={savedMoviesId}
+                savedMoviesID={savedMoviesID}
+
+
+
                 currentUser={currentUser}
-
               // ТЕСТ
               // isSaved={isSaved}
               // setIsSaved={setIsSaved}
@@ -502,11 +481,21 @@ useEffect(() => {
             <Route path='saved-movies' element={
 
               <SavedMovies
+
+                //new
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                // new
+
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 handleSubmitSearchButton={handleSubmitSearchButton}
 
                 handleRemoveMovie={handleRemoveMovie}
+                allSavedMovies={allSavedMovies}
+                renderSavedMovie={renderSavedMovie}
+                setRenderSavedMovies={setRenderSavedMovies}
+
               />}></Route>
           </Route>
         </Route>
