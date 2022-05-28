@@ -73,10 +73,10 @@ export default function App() {
   // Не выполняются лишние запросы к бэкенду, например: запрос всех фильмов с сервиса beatfilm-movies производится только при первом поиске; все сохранённые фильмы не запрашиваются с сервера при каждом лайке или дизлайке; данные пользователя запрашиваются один раз при запуске приложения. / 2
   // Для элементов списка используется уникальный ключ key, а не индекс массива. / 2
 
-// При загрузке приложения мы скачиваем сохраненные пользователем фильмы
-// Перебираем и Записываем в стейт allSavedMovies сохраненные фильмы данного пользователя
-// Передаем стейт allSavedMovies в /saved-movies для рендера
-// Перебираем allSavedMovies и сохраняем id фильмов в savedMoviesID для отрисовки лайков
+  // При загрузке приложения мы скачиваем сохраненные пользователем фильмы
+  // Перебираем и Записываем в стейт allSavedMovies сохраненные фильмы данного пользователя
+  // Передаем стейт allSavedMovies в /saved-movies для рендера
+  // Перебираем allSavedMovies и сохраняем id фильмов в savedMoviesID для отрисовки лайков
 
 
 
@@ -118,30 +118,52 @@ export default function App() {
   }, [allSavedMovies])
 
   // Загружаем список всех сохраненных фильмов
-  function getSavedMoviesApi() {
+  async function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
-    const savedLocal = localStorage.getItem('SavedMovies');
-
-    if (token && savedLocal === 'true') {
+    
+    // !! - перевод на булево значение
+    if (token) {
       setIsLoading(true)
-      mainApi.getSavedMovie(token)
-        .then((responseMovies) => {
-          let arrSavedMoviesCurrentUser = []
-          responseMovies.map((movie) => {
-            if (movie.owner._id === currentUser._id) {
-              return arrSavedMoviesCurrentUser.push(movie)
-            }
-          })
-          setAllSavedMovies(arrSavedMoviesCurrentUser)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(
-          setIsLoading(false),
-        )
+      try {
+      const responseMovies = await mainApi.getSavedMovie(token)
+      if(!responseMovies?.length) {
+        return
+        console.log('no data in db')
+      }
+
+      const savedMoviesCurrentUser = responseMovies.filter(movie => movie.owner._id === currentUser._id)
+    
+      setAllSavedMovies(savedMoviesCurrentUser)
+    } catch(e) {
+      console.log(e)
+    } finally {
+      setIsLoading(false)
     }
   }
+  // function getSavedMoviesApi() {
+  //   const token = localStorage.getItem('JWT_TOKEN');
+  //   const savedLocal = localStorage.getItem('SavedMovies');
+
+  //   if (token && savedLocal === 'true') {
+  //     setIsLoading(true)
+  //     mainApi.getSavedMovie(token)
+  //       .then((responseMovies) => {
+  //         let arrSavedMoviesCurrentUser = []
+  //         responseMovies.map((movie) => {
+  //           if (movie.owner._id === currentUser._id) {
+  //             return arrSavedMoviesCurrentUser.push(movie)
+  //           }
+  //         })
+  //         setAllSavedMovies(arrSavedMoviesCurrentUser)
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //       })
+  //       .finally(
+  //         setIsLoading(false),
+  //       )
+  //   }
+  // }
 
   // нажатие на кнопку сохранить
   // пока просто сохраняем в базу данных
@@ -156,11 +178,6 @@ export default function App() {
   }
 
   // Удаляем фильма
-  // 1- Отправить запрос на удаление
-  // получить ответ
-  // из массива сохраненных фильмов
-  // убрать айди из ответ
-  // перерисовать /saved-movies
   function handleRemoveMovie(id) {
     console.log('УДАЛИТЬ')
     const token = localStorage.getItem('JWT_TOKEN')
@@ -179,13 +196,6 @@ export default function App() {
       .finally(console.log(allSavedMovies))
   }
 
-  ////////////////////////////////////////////////////////////////////////////
-  // STATE LOGGEDIN
-  // При изменнении стейта loggedIn проверяем
-  // Если loggedIn = true , и нету фильмов в локал сторейдже
-  // загружаем их, если в локале есть фильмы записываем их 
-  // через saveMoveToState в initialMovies
-
   useEffect(() => {
     const moviesToLocalStorage = localStorage.getItem('initialMovies');
 
@@ -193,7 +203,7 @@ export default function App() {
 
       setIsLoading(true)
       try {
-        getMovies(moviesToLocalStorage);
+        getMovies();
       }
       catch (err) {
         console.log(err);
@@ -207,26 +217,39 @@ export default function App() {
     // setIsLoading(true)
   }, [loggedIn]);
 
+
   // Загружаем фильмы
-  async function getMovies(localMovies) {
-    const getMovies = await movieApi.getMovies();
-    localMovies = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
-    const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-    setInitialMovies(getLocalMovies);
+  async function getMovies() {
+    try {
+      const getMovies = await movieApi.getMovies();
+      localStorage.setItem('initialMovies', JSON.stringify(getMovies));
+      setInitialMovies(getMovies);
+    } catch (err) {
+      console.log(err)
+    }
   }
+  // async function getMovies(localMovies) {
+  //   try {
+  //     const getMovies = await movieApi.getMovies();
+  //     localMovies = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
+  //     const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
+  //     setInitialMovies(getLocalMovies);
+  //   } catch(err){
+  //     console.log(err)
+  //   }
+  // }
 
   // Сохраняем в стейт
-  async function saveMoveToState(localMovies) {
-    const getLocalMovies = await JSON.parse(localMovies);
+  function saveMoveToState(localMovies) {
+    const getLocalMovies = JSON.parse(localMovies);
     setInitialMovies(getLocalMovies);
   }
-  ////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     if (moviesPage) {
-      filterMovies(searchQuery, initialMovies);
+      handleFilterMovies(searchQuery, initialMovies);
     } else if (savedPage) {
-      filterMovies(searchQuery, allSavedMovies)
+      handleFilterMovies(searchQuery, allSavedMovies)
     } else {
       console.log(pathname)
     }
@@ -236,27 +259,47 @@ export default function App() {
   // query - Поисковый запрос, data - массив с фильмами - либо initialMovies || savedMovies
   // permovMovies - рузультат поиска
 
-  async function filterMovies(query, data) {
-    const permovMovies = await data.filter(
-      movie => (
-        query ?
-          movie.nameRU.toLowerCase().includes(query.toLowerCase()) : (savedPage ? console.log(pathname) : ''))
-        &&
-        (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
+  //chain options
+  // !query.length null ? indef
+  // !query?.length false/true - приводит к булеву значению
+
+  function handleFilterMovies(query, data) {
+    if (!query?.length) return data
+
+    const filteredData = data.filter(
+      movie => movie.nameRU.toLowerCase().includes(query.toLowerCase())
     )
+    .filter(movie => checkboxStatus ? movie.duration <= 40 : movie.duration >= 0)
+
     if (moviesPage) {
-
-
-      setFilteredMovies(permovMovies)
+      setFilteredMovies(filteredData)
     } else {
-      setFilteredMovies(permovMovies)
-      // ???????????
-      // ???????????
-      // ???????????
-      // ???????????
+      setFilteredMovies(filteredData)
     }
 
   }
+
+  // function filterMovies(query, data) {
+  //   const permovMovies = data.filter(
+  //     movie => (
+  //       query ?
+  //         movie.nameRU.toLowerCase().includes(query.toLowerCase()) : true)
+  //       &&
+  //       (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
+  //   )
+  //   if (moviesPage) {
+
+
+  //     setFilteredMovies(permovMovies)
+  //   } else {
+  //     setFilteredMovies(permovMovies)
+  //     // ???????????
+  //     // ???????????
+  //     // ???????????
+  //     // ???????????
+  //   }
+
+  // }
 
 
   // Нажаатие на кнопку поиска

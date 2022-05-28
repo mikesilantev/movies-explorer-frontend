@@ -49,7 +49,7 @@ export function MovieCard({
       thumbnail: movie.image.formats.thumbnail.url || 'пусто',
       movieId: movie.id,
       nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
+      nameEN: movie.nameEN || 'empty',
     });
   }
 
