@@ -1,157 +1,96 @@
 // константы юрл и бестфильм
 const movieUrl = 'https://api.nomoreparties.co'
 
-
 class MainApi {
-  constructor({ url }) {
-    this._url = url;
+  token; // атрибуты
+  url; 
+  constructor() {
+    this.url = 'http://192.168.1.5:8080';
+    this.token = localStorage.getItem('JWT_TOKEN');
   }
 
   _checkResult(res){
     if (res.ok) {
       return res.json();
     } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка: ${console.log(res)}`);
     }
   }
 
-// User Zone
-  signup({data}) {
-    return fetch (`${this._url}/signup`, {
-      method: 'POST',
+  async request(method, url, params){
+    return  await fetch (`${this.url}/${url}`, {
+      method,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.token}`,
       },
-      body: JSON.stringify(
-        {
-          'name' : data.name,
-          'email' : data.email,
-          'password' : data.password,
-        }),
+      body: JSON.stringify(params),
     }).then(res => this._checkResult(res));
   }
+
+  // User Zone
+  signup({ name, email, password }) {
+    return this.request('POST', 'signup',
+      {
+        name, 
+        email, 
+        password
+      });
+    }
   
-  // Login
-  signin({data}) {
-    return fetch (`${this._url}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(
-        {
-          'email' : data.email,
-          'password' : data.password,
-        }),
-    }).then(res => this._checkResult(res));
-  }
-
-  getUser(token){
-    return fetch (`${this._url}/users/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-    .then(res => this._checkResult(res));
-  }
-
-  patchUser(data){
-    const token = localStorage.getItem('JWT_TOKEN');
-    return fetch (`${this._url}/users/me`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
+    signin({ email, password }){
+      return this.request('POST', 'signin',{
+        email, password
+      }).then((res) => {
+        localStorage.setItem('JWT_KEY', res.token)
       })
-    })
-    .then(res => this._checkResult(res));
-  }
+    }
+
+    getUser(){
+      return this.request('GET', 'users/me');
+    }
+
+    patchUser({ name, email}){
+      return this.request('PATCH', 'users/me', { name, email })
+    }
+
+    saveMovie({
+      country, 
+      director, 
+      duration, 
+      year, 
+      description, 
+      image, 
+      trailerLink, 
+      nameRU, 
+      nameEN,
+      thumbnail,
+      movieId,
+    }){
+      return this.request('POST', 'movies', {
+        country, 
+        director, 
+        duration, 
+        year, 
+        description, 
+        image, 
+        trailerLink, 
+        nameRU, 
+        nameEN,
+        thumbnail,
+        movieId, 
+      })
+    }
   
-  saveMovie(data){
+    getSavedMovie(){
+      return this.request('GET', 'movies')
+    }
 
-    let token = localStorage.getItem('JWT_TOKEN')
-    return fetch (`${this._url}/movies`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        country: data.country,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
-        image: `${movieUrl}${data.image}`,
-        trailerLink: data.trailerLink,
-        nameRU: data.nameRU,
-        nameEN: data.nameEN,
-        thumbnail: `${movieUrl}${data.thumbnail}`,
-        movieId: data.movieId,
-      }
-      )
-    })
-    .then(res => this._checkResult(res))
-  }
-
-  getSavedMovie(token){
-    return fetch(`${this._url}/movies`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    }).then(this._checkResult)
-  }
-
-
-  removeMovie(data, token){
-    // console.log(data)
-    return fetch (`${this._url}/movies/${data}`, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-    .then(res => this._checkResult(res))
-  }
-
-  testApi({data}) {
-    console.log(this._url);
-    console.log(data);
-    console.log({data});
-
-    return fetch (`${this._url}/movies`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(
-        {
-          'email' : data.email,
-          'password' : data.password,
-        }),
-    }).then(res => this._checkResult(res));
-  }
-
-// Movies Zone
-
-  
-  
+    removeMovie(id){
+      return this.request('DELETE', `movies/${id}`)
+    }
 }
 
-const mainApi = new MainApi({
-  url : 'http://192.168.1.5:8080',
-});
-
+const mainApi = new MainApi();
 
 export default mainApi;

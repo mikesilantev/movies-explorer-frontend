@@ -11,7 +11,8 @@ export default function SavedMovies({
   handleRemoveMovie,
 
   allSavedMovies,
-
+  checkboxStatus,
+  setCheckboxStatus,
   renderSavedMovie,
   setRenderSavedMovies,
 }) {
@@ -21,12 +22,13 @@ export default function SavedMovies({
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         handleSubmitSearchButton={handleSubmitSearchButton}
+        checkboxStatus={checkboxStatus}
+        setCheckboxStatus={setCheckboxStatus}
       />
 
       <MoviesCardList
         handleRemoveMovie={handleRemoveMovie}
         allSavedMovies={allSavedMovies}
-
         renderSavedMovie={renderSavedMovie}
         setRenderSavedMovies={setRenderSavedMovies}
       />

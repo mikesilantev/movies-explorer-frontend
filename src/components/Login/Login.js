@@ -1,20 +1,25 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Form } from '../Form/Forms';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
+import mainApi from '../../utils/MainApi';
+
 import './Login.css';
 
-export function Login({ handleSignin, apiTextError }) {
+export function Login() {
   // Form validation variables
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
   const isDisabled = !isValid;
 
+  const [apiTextError, setApiTextError ] = useState('')
+
   // Отправка данных в форме
   function handleSubmit(evt) {
     evt.preventDefault();
-    handleSignin({
+    mainApi.signin({
       email: values.email,
       password: values.password,
-    })
+    }).catch(e => setApiTextError(e));
+  
   }
 
   useEffect(() => {
