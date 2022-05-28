@@ -32,17 +32,19 @@ export default function Movies({
         inputRef={inputRef}
 
       />
-      {isLoading ? console.log(true) : console.log(false)}
-      <MoviesCardList
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        renderMovies={renderMovies}
-        setRenderMovies={setRenderMovies}
-        handleSaveMovies={handleSaveMovies}
-        savedMoviesID={savedMoviesID}
-        allSavedMovies={allSavedMovies}
-        textError={textError}
-      />
+      {isLoading ? <Preloader/> :
+        <MoviesCardList
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          renderMovies={renderMovies}
+          setRenderMovies={setRenderMovies}
+          handleSaveMovies={handleSaveMovies}
+          savedMoviesID={savedMoviesID}
+          allSavedMovies={allSavedMovies}
+          textError={textError}
+        />
+      }
+
 
     </section>
   )

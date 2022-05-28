@@ -43,38 +43,6 @@ export function MoviesCardList({
   const moviesToAddMoreSizeS = 2;
   const moviesToAddMoreSizeM = 3;
 
-  // При загрузке приложения, если есть результаты поиска
-
-  // useEffect(() => {
-  //   let localFilteredMovies = localStorage.getItem('filteredMovies');
-
-  //   if (pathname === '/movies' && localFilteredMovies) {
-  //     getMoviesFromLocalStorage();
-  //   }
-  // }, [])
-  
-  // MOVIES
-  // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
-  function getMoviesFromLocalStorage() {
-    const filterMoviesLocalStorage = JSON.parse(localStorage.getItem('filteredMovies'));
-  }
-  // // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
-  // async function getMoviesFromLocalStorage() {
-  //   let filterMoviesLocalStorage = [];
-  //   try {
-  //     filterMoviesLocalStorage = await JSON.parse(localStorage.getItem('filteredMovies'));
-  //     await setRenderMovies(filterMoviesLocalStorage);
-  //   }
-  //   catch (err){
-  //     console.log(err)
-  //   }
-  //   finally {
-
-  //   }
-  // }
-  // При загрузке стейта allSavedMovies и его изменении
-  // allSavedMovies - сохраненные фильмы
-  // renderSavedMovies - передаем на рендер
   useEffect(() => {
     if (pathname === '/saved-movies' && allSavedMovies) {
       setRenderSavedMovies(allSavedMovies)
@@ -152,7 +120,7 @@ export function MoviesCardList({
             :
             (<p className='movies-list__nulled-query'>Ничего не найдено</p>) :
 
-          renderSavedMovie ? (
+          renderSavedMovie?.length ? (
             <div className={'movie-list__card-wrap'}>{
               renderSavedMovie.slice(0).reverse().map((card) => {
                 return (

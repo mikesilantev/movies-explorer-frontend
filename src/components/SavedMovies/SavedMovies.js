@@ -1,10 +1,11 @@
 import { SearchForm } from '../SearchForm/SearchForm';
 import { MoviesCardList } from '../MoviesCardList/MoviesCardList';
-
+import { Preloader } from '../Preloader/Preloader';
 import './SavedMovies.css';
 
 
 export default function SavedMovies({
+  isLoading,
   searchQuery,
   setSearchQuery,
   handleSubmitSearchButton,
@@ -16,6 +17,7 @@ export default function SavedMovies({
   setRenderSavedMovies,
   inputRef,
   textError,
+  setCheckboxStatus,
 }) {
   return (
     <section className="saved-movies">
@@ -24,17 +26,21 @@ export default function SavedMovies({
         setSearchQuery={setSearchQuery}
         handleSubmitSearchButton={handleSubmitSearchButton}
         inputRef={inputRef}
-
+        setCheckboxStatus={setCheckboxStatus}
       />
 
-      <MoviesCardList
-        handleRemoveMovie={handleRemoveMovie}
-        allSavedMovies={allSavedMovies}
+      {
+        isLoading ? <Preloader /> : (
+          <MoviesCardList
+            handleRemoveMovie={handleRemoveMovie}
+            allSavedMovies={allSavedMovies}
+            renderSavedMovie={renderSavedMovie}
+            setRenderSavedMovies={setRenderSavedMovies}
+            textError={textError}
+          />
+        )
+      }
 
-        renderSavedMovie={renderSavedMovie}
-        setRenderSavedMovies={setRenderSavedMovies}
-        textError={textError}
-      />
     </section>
   )
 }

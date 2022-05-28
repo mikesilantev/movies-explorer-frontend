@@ -18,7 +18,7 @@ export function FilterCheckbox({
           type="checkbox" 
           name="" 
           id="filter-checkbox"
-          defaultChecked={checkboxStatus}
+          checked={checkboxStatus}
           onChange={handleCheckbox}
           />
         <label htmlFor="filter-checkbox" className="filter-checkbox__label"></label>

@@ -27,81 +27,51 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [correctToken, setCorrectToken] = useState(false);
 
-  // Стейты с фильмами
   const [initialMovies, setInitialMovies] = useState([]);
-
-  // Отсортированные фильмы - идет в локал
-  // const [filteredMovies, setFilteredMovies] = useState([]);
-  // const [renderMovies, setRenderMovies] = useState([]);
-
-  // Все фильмы сохраненные данным пользователем
   const [allSavedMovies, setAllSavedMovies] = useState([]);
-
-  // Массив ID Сохраненных фильмов
   const [savedMoviesID, setSavedMoviesID] = useState([]);
-
-  // Стейт с фильмами для отрисовки на /saved-movies
   const [renderSavedMovie, setRenderSavedMovies] = useState([]);
 
-  // Стейты поиска
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
   const [apiTextError, setApiTextError] = useState('');
 
-  // Ошибка поиска, пустого запроса
   const [textError, setTextError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Стейт для прелоадера Preloader
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Страницы с фильмами
   const moviesPage = pathname === '/movies',
     savedPage = pathname === '/saved-movies';
 
 
   const filteredMovies = useMemo(
     () =>
-      initialMovies
+      searchQuery?.length ? initialMovies
         ?.filter((movie) =>
           movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase())
         )
         ?.filter((movie) =>
           checkboxStatus ? movie.duration <= 40 : movie.duration >= 0
-        ) ?? [],
-    [searchQuery,checkboxStatus, initialMovies]
+        ) : [],
+    [searchQuery, checkboxStatus, initialMovies]
   );
 
   const filteredSavedMovies = useMemo(
     () =>
-      allSavedMovies
+      searchQuery?.length ? allSavedMovies
         ?.filter((movie) =>
           movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase())
         )
         ?.filter((movie) =>
           checkboxStatus ? movie.duration <= 40 : movie.duration >= 0
-        ) ?? [],
-    [searchQuery,checkboxStatus, allSavedMovies]
+        ) : allSavedMovies,
+    [searchQuery, checkboxStatus, allSavedMovies]
   );
 
   const inputRef = useRef(null);
 
-  // CHECKLIST
-  //   Пользователю отображается уведомление об успешном запросе к серверу при сохранении профиля.
-  //   Прелоадер крутится во время выполнения запроса фильмов.
-  //   Если карточки уже были отображены на странице в блоке результатов, клик по чекбоксу «Короткометражки» приводит к повторной фильтрации результата.
-  //   На странице «Сохранённые фильмы»:
-  // отображается форма поиска. Она позволяет искать фильмы по уже полученным данным о сохранённых фильмах.
-  // После успешного вызова обработчика onSignOut происходит редирект на /. / 2
-  // Не выполняются лишние запросы к бэкенду, например: запрос всех фильмов с сервиса beatfilm-movies производится только при первом поиске; все сохранённые фильмы не запрашиваются с сервера при каждом лайке или дизлайке; данные пользователя запрашиваются один раз при запуске приложения. / 2
-  // Для элементов списка используется уникальный ключ key, а не индекс массива. / 2
-
-  // При загрузке приложения мы скачиваем сохраненные пользователем фильмы
-  // Перебираем и Записываем в стейт allSavedMovies сохраненные фильмы данного пользователя
-  // Передаем стейт allSavedMovies в /saved-movies для рендера
-  // Перебираем allSavedMovies и сохраняем id фильмов в savedMoviesID для отрисовки лайков
-
   // Загрузка приложения
   // Проверка токена
+
   useEffect(() => {
     checkToken(); // loggedIn :true
     setApiTextError('');
@@ -113,33 +83,22 @@ export default function App() {
     }
   }, [loggedIn]);
 
-  /* 
-  После сабмита формы поиска производится валидация. Если в поле не 
-  введён текст, выводится ошибка «Нужно ввести ключевое слово».
-   */
-
-  /*   Поиск на странице «Сохранённые фильмы» аналогичен поиску на главной, но данные у вас будут ещё до поиска — при запросе к вашему API на роут /movies для получения сохранённых фильмов.
-   */
-
-  /*   
-  Вопрос 1
-  Как правильно записывать и считывать статус чекбокс - 
-  при его изменении или при переключении? 
-  */
-
-  /*  
-  Вопрос 2 
-  Сохраненные фильмы при входе через логин сразу не ресуются, если 
-  обновить или перейти по страницам она подгружается.... 
-  проблема с зависимостям 
-  */
 
   useEffect(() => {
+    if (savedPage) {
+      inputRef.current.value = '';
+      setSearchQuery('')
+      return
+    }
     if (moviesPage) {
-      setSearchQuery(localStorage.getItem('searchQuery'));
-      setCheckboxStatus(localStorage.getItem('checkboxStatus'));
+      const query = localStorage.getItem('searchQuery') ?? ''
+      setSearchQuery(query);
+      inputRef.current.value = query;
+      setCheckboxStatus(localStorage.getItem('checkboxStatus') === 'true' ? true : false);
     }
   }, [moviesPage, savedPage]);
+
+
 
   // Сортировка и запись id сохраненных фильмов
   useEffect(() => {
@@ -152,13 +111,64 @@ export default function App() {
     }
   }, [allSavedMovies]);
 
+
+  useEffect(() => {
+    const moviesToLocalStorage = localStorage.getItem('initialMovies');
+
+    if (loggedIn && !moviesToLocalStorage) {
+      try {
+        getMovies();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      saveMoveToState(moviesToLocalStorage);
+    }
+    // setIsLoading(true)
+  }, [loggedIn]);
+
+  // Загружаем фильмы
+  async function getMovies() {
+    try {
+      const getMovies = await movieApi.getMovies();
+      localStorage.setItem('initialMovies', JSON.stringify(getMovies));
+      setInitialMovies(getMovies);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Сохраняем в стейт
+  function saveMoveToState(localMovies) {
+    const getLocalMovies = JSON.parse(localMovies);
+    setInitialMovies(getLocalMovies);
+  }
+
+  function handleSubmitSearchButton() {
+    const newSearchValue = inputRef.current?.value;
+    setSearchQuery(newSearchValue);
+    if (!newSearchValue) {
+      setTextError('Нужно ввести ключевое слово');
+    }
+  }
+
+  useEffect(() => {
+    if (moviesPage) {
+      localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
+      localStorage.setItem('checkboxStatus', checkboxStatus);
+      localStorage.setItem('searchQuery', searchQuery);
+    }
+  }, [searchQuery, filteredMovies, checkboxStatus])
+
   // Загружаем список всех сохраненных фильмов
   async function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
 
     // !! - перевод на булево значение
     if (token) {
-      setIsLoading(true);
+
       try {
         const responseMovies = await mainApi.getSavedMovie(token);
         if (!responseMovies?.length) {
@@ -176,31 +186,6 @@ export default function App() {
       }
     }
   }
-
-  // function getSavedMoviesApi() {
-  //   const token = localStorage.getItem('JWT_TOKEN');
-  //   const savedLocal = localStorage.getItem('SavedMovies');
-
-  //   if (token && savedLocal === 'true') {
-  //     setIsLoading(true)
-  //     mainApi.getSavedMovie(token)
-  //       .then((responseMovies) => {
-  //         let arrSavedMoviesCurrentUser = []
-  //         responseMovies.map((movie) => {
-  //           if (movie.owner._id === currentUser._id) {
-  //             return arrSavedMoviesCurrentUser.push(movie)
-  //           }
-  //         })
-  //         setAllSavedMovies(arrSavedMoviesCurrentUser)
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //       })
-  //       .finally(
-  //         setIsLoading(false),
-  //       )
-  //   }
-  // }
 
   // нажатие на кнопку сохранить
   // пока просто сохраняем в базу данных
@@ -233,103 +218,6 @@ export default function App() {
       .catch((err) => console.log(err))
       .finally(console.log(allSavedMovies));
   }
-
-  useEffect(() => {
-    const moviesToLocalStorage = localStorage.getItem('initialMovies');
-
-    if (loggedIn && !moviesToLocalStorage) {
-      setIsLoading(true);
-      try {
-        getMovies();
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      saveMoveToState(moviesToLocalStorage);
-    }
-    // setIsLoading(true)
-  }, [loggedIn]);
-
-  // Загружаем фильмы
-  async function getMovies() {
-    try {
-      const getMovies = await movieApi.getMovies();
-      localStorage.setItem('initialMovies', JSON.stringify(getMovies));
-      setInitialMovies(getMovies);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  // async function getMovies(localMovies) {
-  //   try {
-  //     const getMovies = await movieApi.getMovies();
-  //     localMovies = await localStorage.setItem('initialMovies', JSON.stringify(getMovies));
-  //     const getLocalMovies = await JSON.parse(localStorage.getItem('initialMovies'));
-  //     setInitialMovies(getLocalMovies);
-  //   } catch(err){
-  //     console.log(err)
-  //   }
-  // }
-
-  // Сохраняем в стейт
-  function saveMoveToState(localMovies) {
-    const getLocalMovies = JSON.parse(localMovies);
-    setInitialMovies(getLocalMovies);
-  }
-
-  // Фильтруем входящий массив с фильмами
-  // query - Поисковый запрос, data - массив с фильмами - либо initialMovies || savedMovies
-  // permovMovies - рузультат поиска
-
-  //chain options
-  // !query.length null ? indef
-  // !query?.length false/true - приводит к булеву значению
-
-
-  // function filterMovies(query, data) {
-  //   const permovMovies = data.filter(
-  //     movie => (
-  //       query ?
-  //         movie.nameRU.toLowerCase().includes(query.toLowerCase()) : true)
-  //       &&
-  //       (checkboxStatus ? (movie.duration <= 40) : (movie.duration >= 0))
-  //   )
-  //   if (moviesPage) {
-
-  //     setFilteredMovies(permovMovies)
-  //   } else {
-  //     setFilteredMovies(permovMovies)
-  //     // ???????????
-  //     // ???????????
-  //     // ???????????
-  //     // ???????????
-  //   }
-
-  // }
-
-  // Нажаатие на кнопку поиска
-  // Отправляем отфильтрованные фильмы
-  // и запрос в локал сторейдж
-  // отправляем в renderMovies - filteredMovies
-
-  function handleSubmitSearchButton() {
-    const newSearchValue = inputRef.current?.value;
-    setSearchQuery(newSearchValue);
-    if (!newSearchValue) {
-      setTextError('Нужно ввести ключевое слово');
-    }
-  }
-
-  useEffect(() => {
-    if (moviesPage) {
-      localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
-      localStorage.setItem('checkboxStatus', checkboxStatus);
-      localStorage.setItem('searchQuery', searchQuery);
-    }
-  }, [searchQuery, filteredMovies, checkboxStatus])
-
 
   // Проверка токена
   function checkToken() {
@@ -373,16 +261,10 @@ export default function App() {
       .catch((err) => {
         if (err === 'Ошибка: 400') {
           setApiTextError('Пользователь с таким email уже существует.');
-        } else if (err === 'Ошибка: 401') {
-          setApiTextError('Ошибка 401');
-        } else if (err === 'Ошибка: 403') {
-          setApiTextError('Ошибка 403');
-        } else if (err === 'Ошибка: 409') {
-          setApiTextError('Пользователь с таким email уже существует.');
         } else if (err === 'Ошибка: 429') {
           setApiTextError('Слишком много запросов, попробуйте позже!');
         } else {
-          setApiTextError('Неизвестная ошибка!');
+          setApiTextError('При регистрации пользователя произошла ошибка.');
         }
       });
   }
@@ -401,15 +283,15 @@ export default function App() {
       })
       .catch((err) => {
         if (err === 'Ошибка: 400') {
-          setApiTextError('');
+          setApiTextError('Вы ввели неправильный логин или пароль. ');
         } else if (err === 'Ошибка: 401') {
-          setApiTextError('Вы ввели неправильный логин или пароль');
+          setApiTextError(' При авторизации произошла ошибка. Токен не передан или передан не в том формате.');
         } else if (err === 'Ошибка: 403') {
-          setApiTextError('');
-        } else if (err === 'Ошибка: 409') {
-          setApiTextError('');
+          setApiTextError('При авторизации произошла ошибка. Переданный токен некорректен');
         } else if (err === 'Ошибка: 429') {
           setApiTextError('Слишком много запросов, попробуйте позже!');
+        } else {
+          setApiTextError('На сервере произошла ошибка');
         }
       });
   }
@@ -427,10 +309,10 @@ export default function App() {
           setApiTextError('Пользователь с таким email уже существует');
         } else if (err === '401') {
           setApiTextError('При обновлении профиля произошла ошибка');
-        } else if (err === '409') {
-          setApiTextError('При обновлении профиля произошла ошибка');
         } else if (err === '429') {
           setApiTextError('Слишком много запросов, попробуйте позже!');
+        } else {
+          setApiTextError('На сервере произошла ошибка');
         }
       });
   }
@@ -496,6 +378,7 @@ export default function App() {
                   //new
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
+                  setCheckboxStatus={setCheckboxStatus}
                   // new
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}

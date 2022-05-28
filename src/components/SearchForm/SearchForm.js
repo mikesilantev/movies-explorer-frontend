@@ -24,9 +24,7 @@ export function SearchForm({
       <label htmlFor="search-input" className="search-form__input-wrap">
 
         <input
-          // onChange={(evt) => {
-          //   setSearchQuery(evt.target.value)
-          // }}
+
           ref={inputRef}
           // value={searchQuery}
           defaultValue={searchQuery}
@@ -46,7 +44,7 @@ export function SearchForm({
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
       />
-      
+
     </form>
   )
 }

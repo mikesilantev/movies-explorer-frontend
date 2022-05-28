@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 
-
-import './MovieCard.css';
+import './MovieCard.css'
 
 export function MovieCard({
   cover,
@@ -13,29 +12,31 @@ export function MovieCard({
   handleSaveMovies,
   savedMoviesID,
   handleRemoveMovie,
-
 }) {
-
-  const { pathname } = useLocation();
+  const renderedDuration = useMemo(() => {
+    const h = (durationMovie / 60).toFixed(0)
+    const m = (durationMovie % 60).toFixed(0)
+    console.log(h, m)
+    return `${h != 0 ? `${h}ч` : ''} ${m != 0 ? `${m}м` : ''}`.trim()
+  }, [durationMovie])
+  const { pathname } = useLocation()
   // Сохранен фильм или нет
-  const [isSaved, setIsSaved] = useState();
+  const [isSaved, setIsSaved] = useState()
 
   useEffect(() => {
     //MOVIES
     if (pathname === '/movies' && savedMoviesID) {
-      setIsSaved(savedMoviesID.some((saveMovie) => {
-        if (saveMovie.id === movie.id) {
-          return true
-        } else {
-          return false
-        }
-      }))
-  
+      setIsSaved(
+        savedMoviesID.some((saveMovie) => {
+          if (saveMovie.id === movie.id) {
+            return true
+          } else {
+            return false
+          }
+        }),
+      )
     }
-
   }, [savedMoviesID])
-
-
 
   function saveMovieClick() {
     handleSaveMovies({
@@ -50,9 +51,8 @@ export function MovieCard({
       movieId: movie.id,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN || 'empty',
-    });
+    })
   }
-
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function handleRemove() {
@@ -61,24 +61,25 @@ export function MovieCard({
 
   return (
     <article className='movie-card'>
+      <a href={trailerLink} target='_blank' rel='noreferrer'>
+        <img src={cover} alt={title} className='movie-card__cover' />
+      </a>
+      {pathname === '/movies' ? (
+        !isSaved ? (
+          <button className='movie-card__save-btn' onClick={saveMovieClick}>
+            Сохранить
+          </button>
+        ) : (
+          <button className='movie-card__save-btn movie-card__saved'></button>
+        )
+      ) : (
+        <button className='movie-card__save-btn movie-card__remove-btn' onClick={handleRemove}></button>
+      )}
 
-      <a href={trailerLink} target="_blank" rel="noreferrer">
-      <img src={cover} alt={title} className="movie-card__cover" />
-        </a>
-      {
-        pathname === '/movies' ?
-          !isSaved ?
-            (<button className='movie-card__save-btn' onClick={saveMovieClick}>Сохранить</button>) :
-            (<button className='movie-card__save-btn movie-card__saved' ></button>) :
-          (<button className='movie-card__save-btn movie-card__remove-btn' onClick={handleRemove}></button>)
-      }
-
-
-      <div className="movie-card__description">
+      <div className='movie-card__description'>
         <p className='movie-card__title'>{title}</p>
-        <span className='movie-card__duration'>{durationMovie}</span>
+        <span className='movie-card__duration'>{renderedDuration}</span>
       </div>
-
     </article>
   )
 }
