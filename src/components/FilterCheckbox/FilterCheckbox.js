@@ -1,15 +1,13 @@
-import react from "react";
+import React, {useState} from "react";
 import './FilterCheckbox.css'
 
 export function FilterCheckbox({
   checkboxStatus,
   setCheckboxStatus,
 }) {
-
-
-  const handleCheckbox = () => {
-    setCheckboxStatus(!checkboxStatus);
-    console.log(checkboxStatus)
+  const handleCheckbox = (event) => {
+    console.log(event.target.checked, event.target.value)
+    setCheckboxStatus(event.target.checked);
   }
 
   return (
@@ -19,9 +17,9 @@ export function FilterCheckbox({
           className="filter-checkbox__checkbox" 
           type="checkbox" 
           name="" 
-          id="filter-checkbox" 
-          defaultChecked={!checkboxStatus}
-          onClick={handleCheckbox}
+          id="filter-checkbox"
+          defaultChecked={checkboxStatus}
+          onChange={handleCheckbox}
           />
         <label htmlFor="filter-checkbox" className="filter-checkbox__label"></label>
       </div>

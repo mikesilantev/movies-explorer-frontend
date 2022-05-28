@@ -7,6 +7,7 @@ export function SearchForm({
   handleSubmitSearchButton,
   checkboxStatus,
   setCheckboxStatus,
+  inputRef,
 }) {
 
   function handleSubmit(evt) {
@@ -23,16 +24,17 @@ export function SearchForm({
       <label htmlFor="search-input" className="search-form__input-wrap">
 
         <input
-          onChange={(evt) => {
-            setSearchQuery(evt.target.value)
-          }}
-          value={searchQuery}
+          // onChange={(evt) => {
+          //   setSearchQuery(evt.target.value)
+          // }}
+          ref={inputRef}
+          // value={searchQuery}
+          defaultValue={searchQuery}
           type="text"
           name="search"
           id="search-input"
           className="search-form__input"
           placeholder="Фильм"
-          required
         />
         <button
           type="submit"

@@ -26,7 +26,7 @@ export function MoviesCardList({
 
   renderSavedMovie,
   setRenderSavedMovies,
-
+  textError,
   // ТЕСТ
   // isSaved,
   // setIsSaved,
@@ -52,20 +52,11 @@ export function MoviesCardList({
   //     getMoviesFromLocalStorage();
   //   }
   // }, [])
-  useEffect(() => {
-    let localFilteredMovies = localStorage.getItem('filteredMovies');
-
-    if (pathname === '/movies' && localFilteredMovies) {
-      const filterMoviesLocalStorage = JSON.parse(localStorage.getItem('filteredMovies'));
-      setRenderMovies(filterMoviesLocalStorage);
-    }
-  }, [])
-
+  
   // MOVIES
   // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
   function getMoviesFromLocalStorage() {
     const filterMoviesLocalStorage = JSON.parse(localStorage.getItem('filteredMovies'));
-    setRenderMovies(filterMoviesLocalStorage);
   }
   // // Загрузка фильмов из локал сторейдж в стейт [renderMovies] для отрисовки в /movies
   // async function getMoviesFromLocalStorage() {
@@ -112,6 +103,13 @@ export function MoviesCardList({
     setCardCount(cardCount + cardToRender)
   }
 
+  if (textError.length) {
+    return (
+      <section className='movies-list'>
+        <p className='movies-list__nulled-query'>{textError}</p>
+      </section>
+    )
+  }
   return (
     <section className='movies-list'>
       {

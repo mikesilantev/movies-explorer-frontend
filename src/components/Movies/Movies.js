@@ -16,6 +16,8 @@ export default function Movies({
   handleSaveMovies,
   savedMoviesID,
   allSavedMovies,
+  textError,
+  inputRef,
 }) {
 
 
@@ -27,6 +29,8 @@ export default function Movies({
         handleSubmitSearchButton={handleSubmitSearchButton}
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
+        inputRef={inputRef}
+
       />
       {isLoading ? console.log(true) : console.log(false)}
       <MoviesCardList
@@ -37,6 +41,7 @@ export default function Movies({
         handleSaveMovies={handleSaveMovies}
         savedMoviesID={savedMoviesID}
         allSavedMovies={allSavedMovies}
+        textError={textError}
       />
 
     </section>

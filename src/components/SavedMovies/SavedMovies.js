@@ -14,6 +14,8 @@ export default function SavedMovies({
 
   renderSavedMovie,
   setRenderSavedMovies,
+  inputRef,
+  textError,
 }) {
   return (
     <section className="saved-movies">
@@ -21,6 +23,8 @@ export default function SavedMovies({
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         handleSubmitSearchButton={handleSubmitSearchButton}
+        inputRef={inputRef}
+
       />
 
       <MoviesCardList
@@ -29,6 +33,7 @@ export default function SavedMovies({
 
         renderSavedMovie={renderSavedMovie}
         setRenderSavedMovies={setRenderSavedMovies}
+        textError={textError}
       />
     </section>
   )
