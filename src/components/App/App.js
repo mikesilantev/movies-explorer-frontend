@@ -166,7 +166,7 @@ export default function App() {
   async function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
 
-    // !! - перевод на булево значение
+
     if (token) {
 
       try {

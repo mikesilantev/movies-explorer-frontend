@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import Button from '../Button/Button';
@@ -6,14 +6,14 @@ import logo from '../../images/logo.svg';
 import './Header.css';
 // BACKLOG
 // Заменить компонент Button на button
-export default function Header({ loggedIn }) {
+export function Header({ loggedIn }) {
 
   let { pathname } = useLocation()
   const [openMenu, setOpenMenu] = useState(false);
 
   // .header__no-index 
   return (
-    <header className={ (pathname === '/') ? ('header') : ('header header_dark')}>
+    <header className={(pathname === '/') ? ('header') : ('header header_dark')}>
       <NavLink to='/' className='header__logo'>
         <img src={logo} alt='Mesto' />
       </NavLink>
@@ -62,11 +62,11 @@ export default function Header({ loggedIn }) {
                 <Button buttonText='Аккаунт' buttonStyle='button__header-account' />
               </NavLink>
 
-            <MobileMenu 
-                status={openMenu} 
+              <MobileMenu
+                status={openMenu}
                 setOpenMenu={setOpenMenu}
               />
-              
+
             </>
           )
       }
