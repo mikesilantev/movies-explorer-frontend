@@ -165,7 +165,7 @@ export default function App() {
   // Загружаем список всех сохраненных фильмов
   async function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
-    if (token && allSavedMovies?.lentgh) {
+    if (token) {
       try {
         const responseMovies = await mainApi.getSavedMovie(token);
         if (!responseMovies?.length) {
@@ -187,7 +187,6 @@ export default function App() {
   // нажатие на кнопку сохранить
   // пока просто сохраняем в базу данных
   function handleSaveMovies(data) {
-    console.log('нажали на сохранение');
     mainApi
       .saveMovie(data)
       .then((movie) => {
@@ -272,7 +271,6 @@ export default function App() {
       .signin({ data })
       .then((res) => {
         localStorage.setItem('JWT_TOKEN', res.token);
-        console.log(res);
         auth(res.token);
         setLoggedIn(true);
         setCorrectToken(true);

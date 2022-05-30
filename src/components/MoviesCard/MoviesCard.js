@@ -16,7 +16,6 @@ export function MovieCard({
   const renderedDuration = useMemo(() => {
     const h = (durationMovie / 60).toFixed(0)
     const m = (durationMovie % 60).toFixed(0)
-    console.log(h, m)
     return `${h != 0 ? `${h}ч` : ''} ${m != 0 ? `${m}м` : ''}`.trim()
   }, [durationMovie])
   const { pathname } = useLocation()
