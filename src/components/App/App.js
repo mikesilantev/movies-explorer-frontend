@@ -165,10 +165,7 @@ export default function App() {
   // Загружаем список всех сохраненных фильмов
   async function getSavedMoviesApi() {
     const token = localStorage.getItem('JWT_TOKEN');
-
-
-    if (token) {
-
+    if (token && allSavedMovies?.lentgh) {
       try {
         const responseMovies = await mainApi.getSavedMovie(token);
         if (!responseMovies?.length) {
@@ -375,11 +372,9 @@ export default function App() {
               path='saved-movies'
               element={
                 <SavedMovies
-                  //new
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                   setCheckboxStatus={setCheckboxStatus}
-                  // new
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                   handleSubmitSearchButton={handleSubmitSearchButton}
