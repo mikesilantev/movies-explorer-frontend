@@ -7,7 +7,7 @@ class MainApi {
     this._url = url;
   }
 
-  _checkResult(res){
+  _checkResult(res) {
     if (res.ok) {
       return res.json();
     } else {
@@ -15,51 +15,51 @@ class MainApi {
     }
   }
 
-// User Zone
-  signup({data}) {
-    return fetch (`${this._url}/signup`, {
+  // User Zone
+  signup({ data }) {
+    return fetch(`${this._url}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(
         {
-          'name' : data.name,
-          'email' : data.email,
-          'password' : data.password,
-        }),
-    }).then(res => this._checkResult(res));
-  }
-  
-  // Login
-  signin({data}) {
-    return fetch (`${this._url}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(
-        {
-          'email' : data.email,
-          'password' : data.password,
+          'name': data.name,
+          'email': data.email,
+          'password': data.password,
         }),
     }).then(res => this._checkResult(res));
   }
 
-  getUser(token){
-    return fetch (`${this._url}/users/me`, {
+  // Login
+  signin({ data }) {
+    return fetch(`${this._url}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          'email': data.email,
+          'password': data.password,
+        }),
+    }).then(res => this._checkResult(res));
+  }
+
+  getUser(token) {
+    return fetch(`${this._url}/users/me`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
     })
-    .then(res => this._checkResult(res));
+      .then(res => this._checkResult(res));
   }
 
-  patchUser(data){
+  patchUser(data) {
     const token = localStorage.getItem('JWT_TOKEN');
-    return fetch (`${this._url}/users/me`, {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -70,13 +70,13 @@ class MainApi {
         email: data.email,
       })
     })
-    .then(res => this._checkResult(res));
+      .then(res => this._checkResult(res));
   }
-  
-  saveMovie(data){
+
+  saveMovie(data) {
 
     let token = localStorage.getItem('JWT_TOKEN')
-    return fetch (`${this._url}/movies`, {
+    return fetch(`${this._url}/movies`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -98,10 +98,10 @@ class MainApi {
       }
       )
     })
-    .then(res => this._checkResult(res))
+      .then(res => this._checkResult(res))
   }
 
-  getSavedMovie(token){
+  getSavedMovie(token) {
     return fetch(`${this._url}/movies`, {
       method: 'GET',
       headers: {
@@ -112,9 +112,9 @@ class MainApi {
   }
 
 
-  removeMovie(data, token){
+  removeMovie(data, token) {
     // console.log(data)
-    return fetch (`${this._url}/movies/${data}`, {
+    return fetch(`${this._url}/movies/${data}`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
@@ -122,35 +122,35 @@ class MainApi {
         'Authorization': `Bearer ${token}`,
       },
     })
-    .then(res => this._checkResult(res))
+      .then(res => this._checkResult(res))
   }
 
-  testApi({data}) {
+  testApi({ data }) {
     console.log(this._url);
     console.log(data);
-    console.log({data});
+    console.log({ data });
 
-    return fetch (`${this._url}/movies`, {
+    return fetch(`${this._url}/movies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(
         {
-          'email' : data.email,
-          'password' : data.password,
+          'email': data.email,
+          'password': data.password,
         }),
     }).then(res => this._checkResult(res));
   }
 
-// Movies Zone
+  // Movies Zone
 
-  
-  
+
+
 }
 
 const mainApi = new MainApi({
-  url : 'http://192.168.1.5:8080',
+  url: 'https://api.zootoo.ru',
 });
 
 
