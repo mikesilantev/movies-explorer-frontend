@@ -105,7 +105,10 @@ export default function App() {
     if (allSavedMovies) {
       let savedID = [];
       allSavedMovies.map((savedMovieId) => {
-        return savedID.push({ id: savedMovieId.movieId });
+        return savedID.push({
+          id: savedMovieId.movieId, _id: savedMovieId
+            ._id
+        });
       });
       setSavedMoviesID(savedID);
     }
@@ -363,6 +366,7 @@ export default function App() {
                   currentUser={currentUser}
                   textError={textError}
                   inputRef={inputRef}
+                  handleRemoveMovie={handleRemoveMovie}
                 />
               }
             ></Route>

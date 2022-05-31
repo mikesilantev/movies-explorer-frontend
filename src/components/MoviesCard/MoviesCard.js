@@ -62,6 +62,14 @@ export function MovieCard({
     handleRemoveMovie(movie._id)
   }
 
+  function handleRemoveByMovie() {
+    console.log(savedMoviesID)
+    handleRemoveMovie(savedMoviesID.find(item => item?._id === movie?.id || item?.id === movie?.id)._id)
+
+    // console.log(savedMoviesID.find(item => item?._id === movie?._id || item?.id === movie?._id))
+    // console.log(movie)
+  }
+
   return (
     <article className='movie-card'>
       <a href={trailerLink} target='_blank' rel='noreferrer'>
@@ -73,7 +81,7 @@ export function MovieCard({
             Сохранить
           </button>
         ) : (
-          <button className='movie-card__save-btn movie-card__saved'></button>
+          <button className='movie-card__save-btn movie-card__saved' onClick={handleRemoveByMovie}></button>
         )
       ) : (
         <button className='movie-card__save-btn movie-card__remove-btn' onClick={handleRemove}></button>

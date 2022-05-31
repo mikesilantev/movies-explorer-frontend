@@ -18,6 +18,7 @@ export default function Movies({
   allSavedMovies,
   textError,
   inputRef,
+  handleRemoveMovie,
 }) {
 
 
@@ -32,7 +33,7 @@ export default function Movies({
         inputRef={inputRef}
 
       />
-      {isLoading ? <Preloader/> :
+      {isLoading ? <Preloader /> :
         <MoviesCardList
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
@@ -42,6 +43,7 @@ export default function Movies({
           savedMoviesID={savedMoviesID}
           allSavedMovies={allSavedMovies}
           textError={textError}
+          handleRemoveMovie={handleRemoveMovie}
         />
       }
 

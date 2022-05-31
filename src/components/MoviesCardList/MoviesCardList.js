@@ -102,6 +102,7 @@ export function MoviesCardList({
                         movie={card}
                         savedMoviesID={savedMoviesID}
                         handleSaveMovies={handleSaveMovies}
+                        handleRemoveMovie={handleRemoveMovie}
                       />
                     )
                   }
