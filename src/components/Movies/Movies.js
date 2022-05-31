@@ -5,6 +5,8 @@ import { Preloader } from '../Preloader/Preloader';
 import { MoviesCardList } from "../MoviesCardList/MoviesCardList";
 
 export default function Movies({
+  isMount,
+  setMount,
   isLoading,
   searchQuery,
   setSearchQuery,
@@ -30,10 +32,13 @@ export default function Movies({
         checkboxStatus={checkboxStatus}
         setCheckboxStatus={setCheckboxStatus}
         inputRef={inputRef}
-
+        isMount={isMount}
+        setMount={setMount}
       />
-      {isLoading ? <Preloader/> :
+      {isLoading ? <Preloader /> :
         <MoviesCardList
+          isMount={isMount}
+          setMount={setMount}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           renderMovies={renderMovies}

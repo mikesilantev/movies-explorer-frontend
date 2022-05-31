@@ -11,31 +11,18 @@ import { MovieCard } from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 export function MoviesCardList({
+  searchQuery,
   renderMovies,
-
-
   handleSaveMovies,
-
   savedMoviesID,
-
-
   handleRemoveMovie,
   allSavedMovies,
-
   renderSavedMovie,
   setRenderSavedMovies,
   textError,
-  // ТЕСТ
-  // isSaved,
-  // setIsSaved,
+  isMount,
 }) {
 
-  console.log(renderSavedMovie)
-  /* 
-    Комментарий: Надпись "Ничего не найдено." присутствует на страницах сразу же при входе, когда пользователь ещй ничено не искал, а не только когда ничего не найдено.
-
-    Комментарий: Для нового пользователя отображаются активные лайки и карточки, которые сохранял предыдущий пользователь. Каждый пользователь должен иметь возможность видеть только свои сохранённые карточки и работать только со своими сохранёнными карточками. Чужие карточки исчезли только после перезагрузки сайта.
-   */
 
   const currentUser = useContext(CurrentUserContext);
   let { pathname } = useLocation();
@@ -48,13 +35,6 @@ export function MoviesCardList({
   const moviesToAddMoreSizeS = 2;
   const moviesToAddMoreSizeM = 3;
 
-  // useEffect(() => {
-  //   if (pathname === '/saved-movies' && allSavedMovies) {
-  //     setRenderSavedMovies(allSavedMovies)
-  //   }
-  // }, [allSavedMovies])
-
-  // Эффект на измененние ширины экрана
   useEffect(() => {
     if (pathname === '/movies') {
       if (width <= 480) {
@@ -70,6 +50,13 @@ export function MoviesCardList({
     }
   }, [width]);
 
+
+  useEffect(() => {
+    if (pathname === '/saved-movies' && allSavedMovies) {
+      setRenderSavedMovies(allSavedMovies)
+    }
+  }, [allSavedMovies])
+
   // Кнопка показать "еще"
   function handleMoreBtn(evt) {
     evt.preventDefault();
@@ -83,6 +70,15 @@ export function MoviesCardList({
       </section>
     )
   }
+
+  if (!isMount) {
+    return (
+      <section className='movies-list'>
+      </section>
+    )
+  }
+
+
   return (
     <section className='movies-list'>
       {

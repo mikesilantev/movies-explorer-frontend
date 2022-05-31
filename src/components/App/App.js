@@ -32,12 +32,14 @@ export default function App() {
   const [savedMoviesID, setSavedMoviesID] = useState([]);
   const [renderSavedMovie, setRenderSavedMovies] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState();
   const [checkboxStatus, setCheckboxStatus] = useState(false);
   const [apiTextError, setApiTextError] = useState('');
 
   const [textError, setTextError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isMount, setMount] = useState(false)
 
   const moviesPage = pathname === '/movies',
     savedPage = pathname === '/saved-movies';
@@ -348,6 +350,8 @@ export default function App() {
               path='movies'
               element={
                 <Movies
+                  isMount={isMount}
+                  setMount={setMount}
                   isLoading={isLoading}
                   moviesPage={moviesPage}
                   searchQuery={searchQuery}

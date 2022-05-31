@@ -8,10 +8,16 @@ export function SearchForm({
   checkboxStatus,
   setCheckboxStatus,
   inputRef,
+  isMount,
+  setMount,
 }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    if (!isMount && !!setMount) {
+      setMount(true)
+    }
+
     handleSubmitSearchButton()
   }
 
