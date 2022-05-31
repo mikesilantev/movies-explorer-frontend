@@ -13,6 +13,10 @@ export function MovieCard({
   savedMoviesID,
   handleRemoveMovie,
 }) {
+
+  /* 
+    Комментарий: При клике на активный лайк на странице фильмов, лайк должен становиться неактивным, а сама карточка должна удаляться из сохранённых.Сейчас этого не происходит.
+    */
   const renderedDuration = useMemo(() => {
     const h = (durationMovie / 60).toFixed(0)
     const m = (durationMovie % 60).toFixed(0)
