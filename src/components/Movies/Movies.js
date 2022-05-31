@@ -20,6 +20,7 @@ export default function Movies({
   allSavedMovies,
   textError,
   inputRef,
+  handleRemoveMovie,
 }) {
 
 
@@ -47,6 +48,7 @@ export default function Movies({
           savedMoviesID={savedMoviesID}
           allSavedMovies={allSavedMovies}
           textError={textError}
+          handleRemoveMovie={handleRemoveMovie}
         />
       }
 
