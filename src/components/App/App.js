@@ -320,19 +320,19 @@ export default function App() {
   }
 
   function removeLocalStorageOnExit() {
-    localStorage.removeItem('CORRECT_TOKEN');
-    localStorage.removeItem('JWT_TOKEN');
-    localStorage.removeItem('checkboxStatus');
-    localStorage.removeItem('initialMovies');
-    localStorage.removeItem('savedMovies');
-    localStorage.removeItem('searchQuery');
-    localStorage.removeItem('filteredMovies');
+    localStorage.clear();
 
     // setRenderMovies([]);
-    setAllSavedMovies([]);
-    setSavedMoviesID([]);
-    setRenderSavedMovies([]);
+    setAllSavedMovies(null);
+    setSavedMoviesID(null);
+    setRenderSavedMovies(null);
+    setInitialMovies(null);
+    console.log('isClear')
   }
+
+  useEffect(() => {
+    console.log(filteredSavedMovies)
+  }, [loggedIn])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -378,7 +378,7 @@ export default function App() {
                   handleSubmitSearchButton={handleSubmitSearchButton}
                   handleRemoveMovie={handleRemoveMovie}
                   allSavedMovies={filteredSavedMovies}
-                  renderSavedMovie={renderSavedMovie}
+                  renderSavedMovie={filteredSavedMovies}
                   setRenderSavedMovies={setRenderSavedMovies}
                   inputRef={inputRef}
                   textError={textError}

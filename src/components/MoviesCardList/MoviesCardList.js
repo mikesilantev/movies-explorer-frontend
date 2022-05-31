@@ -11,10 +11,8 @@ import { MovieCard } from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 export function MoviesCardList({
-  searchQuery,
-  setSearchQuery,
   renderMovies,
-  setRenderMovies,
+
 
   handleSaveMovies,
 
@@ -32,6 +30,7 @@ export function MoviesCardList({
   // setIsSaved,
 }) {
 
+  console.log(renderSavedMovie)
   /* 
     Комментарий: Надпись "Ничего не найдено." присутствует на страницах сразу же при входе, когда пользователь ещй ничено не искал, а не только когда ничего не найдено.
 
@@ -49,11 +48,11 @@ export function MoviesCardList({
   const moviesToAddMoreSizeS = 2;
   const moviesToAddMoreSizeM = 3;
 
-  useEffect(() => {
-    if (pathname === '/saved-movies' && allSavedMovies) {
-      setRenderSavedMovies(allSavedMovies)
-    }
-  }, [allSavedMovies])
+  // useEffect(() => {
+  //   if (pathname === '/saved-movies' && allSavedMovies) {
+  //     setRenderSavedMovies(allSavedMovies)
+  //   }
+  // }, [allSavedMovies])
 
   // Эффект на измененние ширины экрана
   useEffect(() => {
@@ -88,7 +87,7 @@ export function MoviesCardList({
     <section className='movies-list'>
       {
         pathname === '/movies' ?
-          renderMovies && renderMovies.length > 0 ?
+          renderMovies && renderMovies?.length > 0 ?
             (<>
               <div className={'movie-list__card-wrap'}>
                 {renderMovies.reduce((accum, card) => {
