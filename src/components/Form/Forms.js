@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Logo } from '../Logo/Logo';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Logo } from '../Logo/Logo'
 
-import './Form.css';
+import './Form.css'
 
 export function Form({
   isDisabled,
@@ -14,33 +14,34 @@ export function Form({
   signLink,
   children,
   onSubmit,
-  apiTextError
+  apiTextError,
+  isLoading,
 }) {
   return (
-    <form className='form' onSubmit={onSubmit} onChange={onChange}>
-
-      <div className='form__wrap'>
-        <Logo place='__form' />
-        <h1 className='form__title'>
-          {title}
-        </h1>
+    <form className="form" onSubmit={onSubmit} onChange={onChange}>
+      <div className="form__wrap">
+        <Logo place="__form" />
+        <h1 className="form__title">{title}</h1>
         {children}
       </div>
-      <div className='form__sign-wrap'>
-        <span className='form__errors'>{apiTextError || ''}</span>
+      <div className="form__sign-wrap">
+        <span className="form__errors">{apiTextError || ''}</span>
         {/* Кнопка */}
         <button
-          disabled={isDisabled}
-          type='submit'
-          className='
+          disabled={isDisabled || isLoading}
+          type="submit"
+          className="
           form__button 
-          '>
+          "
+        >
           {buttonText}
         </button>
         {/* Кнопка */}
-        <p className='form__sign-text'>
+        <p className="form__sign-text">
           {signMessage}
-          <Link className='form__sign-link' to={signLink}>{signLinkMessage}</Link>
+          <Link className="form__sign-link" to={signLink}>
+            {signLinkMessage}
+          </Link>
         </p>
       </div>
     </form>
