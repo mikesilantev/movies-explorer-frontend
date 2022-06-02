@@ -1,0 +1,31 @@
+{
+  "material-icon-theme.activeIconPack": "react",
+  "workbench.activityBar.visible": true,
+  "workbench.colorCustomizations": {
+  "[Atom One Dark]": {
+    // "foreground" : "#ffffff",
+    //Фон редактора
+    "editor.background": "#202020",
+    "editorIndentGuide.background": "#f67fff6a",
+    "editorRuler.foreground": "#960a0a",
+    "textBlockQuote.background": "#5900ff",
+    "textBlockQuote.border": "#00ccff",
+    "textCodeBlock.background": "#ffb70027",
+
+  //Код
+  "editorLineNumber.foreground": "#fdfdfd1e",
+  "editorLineNumber.activeForeground": "#22ff05",
+  "editorGroup.border":"#00aaff",
+  "editorGroup.dropBackground":"#22ff0565",
+  "tab.inactiveBackground":"#202020",
+  "tab.unfocusedInactiveBackground":"#202020",
+
+  "tab.activeBackground": "#202020",
+  "tab.activeBorder":"#22ff05",
+  "tab.activeBorderTop":"#22ff05"
+  
+  }
+  //
+
+  }
+}
