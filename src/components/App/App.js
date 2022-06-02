@@ -1,55 +1,55 @@
 // Layout
-import { AppLayout } from '../AppLayout/AppLayout'
-import ProfileLayout from '../ProfileLayout/ProfileLayout'
-import { useState, useEffect, useMemo, useRef } from 'react'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import './App.css'
+import { AppLayout } from '../AppLayout/AppLayout';
+import ProfileLayout from '../ProfileLayout/ProfileLayout';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import './App.css';
 // API
-import mainApi from '../../utils/MainApi'
-import movieApi from '../../utils/MovieApi'
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
+import mainApi from '../../utils/MainApi';
+import movieApi from '../../utils/MovieApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 // Components
-import Main from '../Main/Main'
-import Movies from '../Movies/Movies'
-import SavedMovies from '../SavedMovies/SavedMovies'
+import Main from '../Main/Main';
+import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 
-import { Register } from '../Register/Register'
-import { Login } from '../Login/Login'
-import { Profile } from '../Profile/Profile'
-import { PageNotFound } from '../PageNotFound/PageNotFound'
+import { Register } from '../Register/Register';
+import { Login } from '../Login/Login';
+import { Profile } from '../Profile/Profile';
+import { PageNotFound } from '../PageNotFound/PageNotFound';
 
 export default function App() {
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const [currentUser, setCurrentUser] = useState({})
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [correctToken, setCorrectToken] = useState(false)
+  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [correctToken, setCorrectToken] = useState(false);
 
-  const [initialMovies, setInitialMovies] = useState([])
-  const [allSavedMovies, setAllSavedMovies] = useState([])
-  const [savedMoviesID, setSavedMoviesID] = useState([])
-  const [renderSavedMovie, setRenderSavedMovies] = useState([])
+  const [initialMovies, setInitialMovies] = useState([]);
+  const [allSavedMovies, setAllSavedMovies] = useState([]);
+  const [savedMoviesID, setSavedMoviesID] = useState([]);
+  const [renderSavedMovie, setRenderSavedMovies] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState()
-  const [checkboxStatus, setCheckboxStatus] = useState(false)
-  const [apiTextError, setApiTextError] = useState('')
+  const [searchQuery, setSearchQuery] = useState();
+  const [checkboxStatus, setCheckboxStatus] = useState(false);
+  const [apiTextError, setApiTextError] = useState('');
 
-  const [textError, setTextError] = useState('Введите ключевое слово')
-  const [isLoading, setIsLoading] = useState(true)
+  const [textError, setTextError] = useState('Введите ключевое слово');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [isMount, setMount] = useState(false)
+  const [isMount, setMount] = useState(false);
 
   const moviesPage = pathname === '/movies',
-    savedPage = pathname === '/saved-movies'
+    savedPage = pathname === '/saved-movies';
 
   const filteredMovies = useMemo(
     () =>
       searchQuery?.length
         ? initialMovies
-            ?.filter((movie) => movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
-            ?.filter((movie) => (checkboxStatus ? movie.duration <= 40 : movie.duration >= 0))
+          ?.filter((movie) => movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
+          ?.filter((movie) => (checkboxStatus ? movie.duration <= 40 : movie.duration >= 0))
         : [],
     [searchQuery, checkboxStatus, initialMovies],
   )
@@ -58,8 +58,8 @@ export default function App() {
     () =>
       searchQuery?.length
         ? allSavedMovies
-            ?.filter((movie) => movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
-            ?.filter((movie) => (checkboxStatus ? movie.duration <= 40 : movie.duration >= 0))
+          ?.filter((movie) => movie?.nameRU?.toLowerCase()?.includes(searchQuery?.toLowerCase()))
+          ?.filter((movie) => (checkboxStatus ? movie.duration <= 40 : movie.duration >= 0))
         : allSavedMovies,
     [searchQuery, checkboxStatus, allSavedMovies],
   )
@@ -70,23 +70,23 @@ export default function App() {
   // Проверка токена
 
   useEffect(() => {
-    checkToken() // loggedIn :true
-    setApiTextError('')
+    checkToken(); // loggedIn :true
+    setApiTextError('');
   }, [])
 
   useEffect(() => {
     if (loggedIn) {
-      getSavedMoviesApi()
+      getSavedMoviesApi();
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
   useEffect(() => {
     if (savedPage) {
       if (inputRef.current) {
         inputRef.current.value = ''
       }
-      setTextError('')
-      setSearchQuery('')
+      setTextError('');
+      setSearchQuery('');
       return
     }
     if (moviesPage) {
@@ -95,9 +95,9 @@ export default function App() {
       if (inputRef.current) {
         inputRef.current.value = query
       }
-      setCheckboxStatus(localStorage.getItem('checkboxStatus') === 'true' ? true : false)
+      setCheckboxStatus(localStorage.getItem('checkboxStatus') === 'true' ? true : false);
     }
-  }, [moviesPage, savedPage])
+  }, [moviesPage, savedPage]);
 
   // Сортировка и запись id сохраненных фильмов
   useEffect(() => {
@@ -109,9 +109,9 @@ export default function App() {
           _id: savedMovieId._id,
         })
       })
-      setSavedMoviesID(savedID)
+      setSavedMoviesID(savedID);
     }
-  }, [allSavedMovies])
+  }, [allSavedMovies]);
 
   useEffect(() => {
     const moviesToLocalStorage = localStorage.getItem('initialMovies')
@@ -124,7 +124,7 @@ export default function App() {
         setIsLoading(false)
       }
     } else {
-      saveMoveToState(moviesToLocalStorage)
+      saveMoveToState(moviesToLocalStorage);
     }
     // setIsLoading(true)
   }, [loggedIn])

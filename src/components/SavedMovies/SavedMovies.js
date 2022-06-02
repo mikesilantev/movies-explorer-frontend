@@ -10,9 +10,7 @@ export default function SavedMovies({
   setSearchQuery,
   handleSubmitSearchButton,
   handleRemoveMovie,
-
   allSavedMovies,
-
   renderSavedMovie,
   setRenderSavedMovies,
   inputRef,

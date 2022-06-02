@@ -3,7 +3,7 @@ import './SearchForm.css'
 
 export function SearchForm({
   searchQuery,
-  setSearchQuery,
+  // setSearchQuery,
   handleSubmitSearchButton,
   checkboxStatus,
   setCheckboxStatus,

@@ -1,50 +1,49 @@
-import { useState, useEffect, useContext } from 'react'
-import { useLocation } from 'react-router-dom'
-import useChangeWindowWidth from '../../hooks/useChangeWindowWidth'
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import useChangeWindowWidth from '../../hooks/useChangeWindowWidth';
 
-import mainApi from '../../utils/MainApi'
+import { MovieCard } from '../MoviesCard/MoviesCard';
+import './MoviesCardList.css';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-import { MovieCard } from '../MoviesCard/MoviesCard'
-import './MoviesCardList.css'
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 export function MoviesCardList({
-  searchQuery,
+  // searchQuery,
   renderMovies,
   handleSaveMovies,
   savedMoviesID,
   handleRemoveMovie,
   allSavedMovies,
-  renderSavedMovie,
-  setRenderSavedMovies,
+  // renderSavedMovie,
+  // setRenderSavedMovies,
   textError,
-  isMount,
+  // isMount,
 }) {
-  const currentUser = useContext(CurrentUserContext)
-  let { pathname } = useLocation()
-  console.log(allSavedMovies)
-  // const [moviesToRender, setMoviesToRender] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
+  let { pathname } = useLocation();
+  console.log(allSavedMovies);
 
+  // const [moviesToRender, setMoviesToRender] = useState([]);
   // Стейты для вывода кол-ва карточек в зависимости от ширины
-  const { width } = useChangeWindowWidth()
-  const [cardToRender, setCardToRender] = useState(0)
-  const [cardCount, setCardCount] = useState(0)
-  const moviesToAddMoreSizeS = 2
-  const moviesToAddMoreSizeM = 3
+  const { width } = useChangeWindowWidth();
+  const [cardToRender, setCardToRender] = useState(0);
+  const [cardCount, setCardCount] = useState(0);
+  const moviesToAddMoreSizeS = 2;
+  const moviesToAddMoreSizeM = 3;
 
   useEffect(() => {
     if (pathname === '/movies') {
       if (width <= 480) {
-        setCardCount(5)
-        setCardToRender(moviesToAddMoreSizeS)
+        setCardCount(5);
+        setCardToRender(moviesToAddMoreSizeS);
       } else if (width <= 768) {
-        setCardCount(8)
-        setCardToRender(moviesToAddMoreSizeS)
+        setCardCount(8);
+        setCardToRender(moviesToAddMoreSizeS);
       } else if (width > 768) {
-        setCardCount(12)
-        setCardToRender(moviesToAddMoreSizeM)
+        setCardCount(12);
+        setCardToRender(moviesToAddMoreSizeM);
       }
     }
-  }, [width])
+  }, [width]);
 
   // useEffect(() => {
   //   if (pathname === '/saved-movies' && allSavedMovies) {
@@ -54,8 +53,8 @@ export function MoviesCardList({
 
   // Кнопка показать "еще"
   function handleMoreBtn(evt) {
-    evt.preventDefault()
-    setCardCount(cardCount + cardToRender)
+    evt.preventDefault();
+    setCardCount(cardCount + cardToRender);
   }
 
   if (textError.length) {

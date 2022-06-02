@@ -38,17 +38,17 @@ export default function Movies({
       />
       {isLoading ? <Preloader /> :
         <MoviesCardList
-          isMount={isMount}
-          setMount={setMount}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          renderMovies={renderMovies}
-          setRenderMovies={setRenderMovies}
-          handleSaveMovies={handleSaveMovies}
-          savedMoviesID={savedMoviesID}
           allSavedMovies={allSavedMovies}
+          renderMovies={renderMovies}
+          savedMoviesID={savedMoviesID}
+          handleSaveMovies={handleSaveMovies}
           textError={textError}
           handleRemoveMovie={handleRemoveMovie}
+        // isMount={isMount}
+        // setMount={setMount}
+        // searchQuery={searchQuery}
+        // setSearchQuery={setSearchQuery}
+        // setRenderMovies={setRenderMovies}
         />
       }
 
