@@ -150,8 +150,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  url: 'http://localhost:3000',
-  // url: 'https://api.zootoo.ru',
+  // url: 'http://localhost:3000',
+  url: 'https://api.zootoo.ru',
 });
 
 
